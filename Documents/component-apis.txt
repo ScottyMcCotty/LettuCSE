@@ -1,0 +1,38 @@
+---------------------------
+ Component API Definitions
+---------------------------
+
+The objective of this document is to clearly define the functionality of each
+component of the robot. The robot is currently composed of three primary
+components or modules:
+
+- the client machine, which allows the client to specify and start a task
+- the arm, a potentially interchangable appendage for plant interactions
+- the frame, which moves the arm to the necessary position for interactions
+
+And the hierarchy of these modules is as follows.
+
+        ----------
+        | client |
+        ----------
+          /    \
+         /      \
+ ---------      ---------
+ | frame |      |  arm  |
+ ---------      ---------
+
+
+ Client machine -- arm API
+---------------------------
+
+Possible messages from client machine to arm:
+ - start(int x): arm begins enumerated action sequence #x
+ - get_status(): poll arm for success/fail/in-progress state
+
+ Client machine -- frame API
+-----------------------------
+
+Possible messages from client machine to frame:
+ - go(int x, int y): frame moves to coordinates (x, y)
+ - get_position(): poll frame for current coordinates
+
