@@ -35,3 +35,26 @@ open the device manager and check under the `Ports (COM & LPT)` section.
 Apparently there's an Arduino extension for VS Code. Feel free to try it out, but all the instructions I've written are for the actual Arduino IDE.
 
 UPDATE: I tried the extension and it didn't even fix all the syntax highlighting for my `.ino` file. I don't trust it...
+
+
+
+## SpongeBob voice: *A few days later*
+
+https://pyserial.readthedocs.io/en/latest/pyserial.html
+
+Install the library: `pip install pyserial`
+
+Plug in the arduino, figure out which port it's on (device manager on Windows, idk otherwise. The arduino IDE will tell you too)
+
+### simple_client.py
+
+Messing around trying to get the Serial library to work. It does. Note to self and others: **END EACH COMMAND WITH NEWLINE CHARACTER** `\n`
+
+### LED_client.py
+
+Example of making some LEDs flash. Red, blue, purple. Awkwardly waits until client sends return message,
+which happens when it turns the lights off (completing the command). This is 1 second after being told the command,
+so the client will awkwardly wait for feedback until it sends the next command. I think this closely resembles
+how our real client will work. It cannot send the next command until the previous command is done. Well, maybe it can?
+
+But should it?

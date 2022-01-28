@@ -33,3 +33,5 @@ I would consider the API to be successfully and fully tested when each of the li
 Keep in mind, each time the Arduino receives a color command it will keep the related LED on for only the next second.
 
 I'd suggest looking for a Serial communication library for Python.
+
+... see README.md in Arduino_Code folder for Python serial communication
