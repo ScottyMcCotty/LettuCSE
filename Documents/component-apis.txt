@@ -7,7 +7,7 @@ component of the robot. The robot is currently composed of three primary
 components or modules:
 
 - the client machine, which allows the client to specify and start a task
-- the arm, a potentially interchangable appendage for plant interactions
+- the toolhead, a potentially interchangable appendage for plant interactions
 - the frame, which moves the arm to the necessary position for interactions
 
 And the hierarchy of these modules is as follows.
@@ -17,17 +17,17 @@ And the hierarchy of these modules is as follows.
         ----------
           /    \
          /      \
- ---------      ---------
- | frame |      |  arm  |
- ---------      ---------
+ ---------     ------------
+ | frame |     | toolhead |
+ ---------     ------------
 
 
- Client machine -- arm API
+ Client machine -- toolhead API
 ---------------------------
 
-Possible messages from client machine to arm:
- - start(int x): arm begins enumerated action sequence #x
- - get_status(): poll arm for success/fail/in-progress state
+Possible messages from client machine to toolhead:
+ - start(int x): toolhead begins enumerated action sequence #x
+ - get_status(): poll toolhead for success/fail/in-progress state
 
  Client machine -- frame API
 -----------------------------
