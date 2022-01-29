@@ -33,6 +33,9 @@ Possible messages from client machine to arm:
 -----------------------------
 
 Possible messages from client machine to frame:
- - go(int x, int y): frame moves to coordinates (x, y)
- - get_position(): poll frame for current coordinates
+ - go(int x, int y): frame moves to coordinates (x, y) where
+   x is the number of stepper motor steps along the longer axis and
+   y is the number of stepper motor steps along the shorter axis
+ - calibrate(): calibrates or re-zeroes the stepper motors
+ - get_status(): poll frame for success/fail/in-progress state
 
