@@ -10,14 +10,32 @@ const int Z_DIR_PIN = 7;
 int current_x = -1;
 int current_y = -1;
 
-const int half_period = 1200;
+const int half_period = 1100;
+
+//String buf = "";
+bool string_complete = false;
 
 #define dir(x) ((x) < 0 ? LOW : HIGH)
 
 void setup() {
 
+  pinMode(X_STEP_PIN, OUTPUT);
+  pinMode(X_DIR_PIN, OUTPUT);
+  pinMode(Z_STEP_PIN, OUTPUT);
+  pinMode(Z_DIR_PIN, OUTPUT);
+
   Serial.begin(9600);
 
+  delay(500); // feels right
+
+  
+  
+  wait_for_input("Waiting to start (any keys)");
+
+  do_square(300);
+  
+
+  // calibration routine
   calibrate_axis(X_STEP_PIN, X_DIR_PIN);
   calibrate_axis(Z_STEP_PIN, Z_DIR_PIN);
 
@@ -29,13 +47,23 @@ void setup() {
 
 void loop() {
   
-  String input = wait_for_input("absolute move");
+  String input = wait_for_input("Absolute move coordinates? ");
 
   int space = input.indexOf(" ");
-  String x = input.substring(0, space);
-  String y = input.substring(space+1);
+  int x = input.substring(0, space).toInt();
+  int y = input.substring(space+1).toInt();
 
-  move_coordinates(x.toInt(), y.toInt());
+  Serial.print("Split into '"); Serial.print(x); Serial.print("' and '"); Serial.print(y); Serial.println("'");
+
+  move_coordinates(x, y);
+
+//  move_double(x, y, half_period);
+  
+//  move_not_blocking(X_STEP_PIN, X_DIR_PIN, abs(x), dir(x), half_period);
+//  delay(500);
+//  move_not_blocking(Z_STEP_PIN, Z_DIR_PIN, abs(y), dir(y), half_period);
+
+  
 //  Serial.println(x);
 //  Serial.println(y);
   
@@ -47,7 +75,7 @@ void calibrate_axis(int motor_pin, int dir_pin) {
   Serial.println("Enter integer, or 'save'");
 
   while (true) {
-    String input = wait_for_input("move");
+    String input = wait_for_input("Relative movement, single axis? ");
 
     if (input == "save") break;
   
@@ -72,17 +100,43 @@ String wait_for_input(String prompt) {
   int state = 0;
   int count = 0;
 
-  char buf[10] = {'\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0'};
+  char buf[] = {'\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0',
+                '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0'};
+
+  Serial.println("\n" + prompt);
   
   while (state == 0) {
-//    Serial.print("Waiting to " + prompt + " ("); Serial.print(++count); Serial.println(")");
-    state = Serial.readBytesUntil('\n', buf, 10);
+//    Serial.print(prompt); Serial.println(++count);
+    state = Serial.readBytesUntil('\n', buf, 20);
+//    while (Serial.available()) {
+//      Serial.read();
+//    }
   }
-
   Serial.print("Received input: '"); Serial.print(buf); Serial.println("'");
-
   return String(buf);
+
+//  string_complete = false;
+//  buf = "";
+//  while (!string_complete) {}
+//
+//  Serial.print("Received input: '"); Serial.print(buf); Serial.println("'");
+
+//  return buf;
 }
+
+//void serialEvent() {
+//  Serial.println("EVENT!");
+//  while (Serial.available()) {
+//    char inChar = (char)Serial.read();
+//
+//    if (inChar == '\n') {
+//      string_complete = true;
+//    }
+//    else {
+//      buf += inChar;
+//    }
+//  }
+//}
 
 
 /*
@@ -130,6 +184,12 @@ void move_coordinates(int x, int y) {
  * Return: None
  */
 void move_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, int dir, int half_step_delay) {
+
+  Serial.print("Moving single axis "); Serial.println(motor_step_pin);
+  Serial.print("  steps = "); Serial.println(num_steps);
+  Serial.print("  direction = "); Serial.println(dir);
+  Serial.print("  dir pin = "); Serial.println(motor_direction_pin);
+  Serial.print("  delay = "); Serial.println(half_step_delay);
   
   // set direction
   digitalWrite(motor_direction_pin, dir);
@@ -141,6 +201,50 @@ void move_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, i
     digitalWrite(motor_step_pin, LOW);
     delayMicroseconds(half_step_delay);
   }
+
+  Serial.println("Finished move_blocking");
+}
+
+void move_not_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, int dir, int half_step_delay) {
+
+  Serial.print("Moving single axis "); Serial.println(motor_step_pin);
+  Serial.print("  steps = "); Serial.println(num_steps);
+  Serial.print("  direction = "); Serial.println(dir);
+  Serial.print("  dir pin = "); Serial.println(motor_direction_pin);
+  Serial.print("  delay = "); Serial.println(half_step_delay);
+
+  // double the number of steps because we're incrementing every half-step!!
+  num_steps = num_steps * 2;
+
+  // set direction
+  digitalWrite(motor_direction_pin, dir);
+
+  // set up for movement
+  int counter = 0;
+  unsigned long othercounter = 0;
+//  Serial.println(sizeof(othercounter));
+  int pulse = HIGH;
+  unsigned long previous = micros();
+
+  while (counter < num_steps) {
+
+    unsigned long current = micros();
+    
+    if (current - previous > half_step_delay) {
+      digitalWrite(motor_step_pin, pulse);
+      pulse = (pulse + 1) % 2;
+      previous = current;
+      counter++;
+    }
+    else {
+      othercounter++;
+    }
+  }
+
+  Serial.println("Finished move:");
+  Serial.print("  # times skipped: "); Serial.println(othercounter);
+  Serial.print("  # times pulsed:  "); Serial.println(num_steps);
+  
 }
 
 
@@ -202,6 +306,12 @@ void move_double(int steps_x, int steps_y, int half_step_delay) {
     return;
   }
 
+  // just call move_blocking twice to achieve the same movement but slower
+//  move_blocking(more_steps_pin, more_dir_pin, more_steps / 2, more_dir, half_step_delay);
+//  move_blocking(less_steps_pin, less_dir_pin, less_steps / 2, less_dir, half_step_delay);
+//  return;
+  
+
   // set direction
   digitalWrite(more_dir_pin, more_dir);
   digitalWrite(less_dir_pin, less_dir);
@@ -231,13 +341,13 @@ void move_double(int steps_x, int steps_y, int half_step_delay) {
   int less_pulse = HIGH;
 
   // timestamp for remembering last time we send a pulse to a motor
-  int more_previous = micros();
-  int less_previous = more_previous;
+  unsigned long more_previous = micros();
+  unsigned long less_previous = more_previous;
 
   // do movement
   while (more_counter < more_steps && less_counter < less_steps) {
 
-    long current_time = micros();
+    unsigned long current_time = micros();
 
     if (current_time - more_previous > half_step_delay) {
       digitalWrite(more_steps_pin, more_pulse);
@@ -255,4 +365,16 @@ void move_double(int steps_x, int steps_y, int half_step_delay) {
   }
 
 //  Serial.println("Finished simultaneous motor movement");
+}
+
+void do_square(int side_length) {
+  int delay_ms = 300;
+  
+  move_double(-1 * side_length, 0, half_period);
+  delay(delay_ms);
+  move_double(0, side_length, half_period);
+  delay(delay_ms);
+  move_double(side_length, 0, half_period);
+  delay(delay_ms);
+  move_double(0, -1 * side_length, half_period);
 }
