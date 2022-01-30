@@ -137,24 +137,26 @@ void move_double(int steps_x, int steps_y, int half_step_delay) {
   int less_pulse = HIGH;
 
   // timestamp for remembering last time we send a pulse to a motor
-  int more_previous = micros();
-  int less_previous = more_previous;
+  unsigned long more_previous = micros();
+  unsigned long less_previous = more_previous;
 
   // do movement
   while (more_counter < more_steps && less_counter < less_steps) {
 
-    long current_time = micros();
+    unsigned long current_time = micros();
 
     if (current_time - more_previous > half_step_delay) {
       digitalWrite(more_steps_pin, more_pulse);
       more_pulse = (more_pulse + 1) % 2;
       more_previous = current_time;
+      more_counter++;
     }
 
     if (current_time - less_previous > other_step_delay) {
       digitalWrite(less_steps_pin, less_pulse);
       less_pulse = (less_pulse + 1) % 2;
       less_previous = current_time;
+      less_counter++;
     }
   }
 
