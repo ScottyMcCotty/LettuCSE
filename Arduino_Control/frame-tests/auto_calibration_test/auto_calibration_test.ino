@@ -1,8 +1,8 @@
 
 
 
-const int X_STOP_PIN = ; // this won't compile until an actual pin is selected
-const int Z_STOP_PIN = ; // not sure what pin it will be yet
+const int X_STOP_PIN = 9; // this won't compile until an actual pin is selected
+const int Z_STOP_PIN = 11; // not sure what pin it will be yet
 
 
 const int X_STEP_PIN = 2;
@@ -41,16 +41,18 @@ void setup() {
   
   wait_for_input("Waiting to start (any keys)");
 
-  do_square(300);
+//  do_square(300);
   
 
   // calibration routine
-  // calibrate_axis(X_STEP_PIN, X_DIR_PIN);
+//   calibrate_axis(X_STEP_PIN, X_DIR_PIN);
   // calibrate_axis(Z_STEP_PIN, Z_DIR_PIN);
 
   // auto calibration routine
   auto_calibrate_axis(X_STEP_PIN, X_DIR_PIN, X_STOP_PIN);
-  auto_calibrate_axis(Z_STEP_PIN, Z_DIR_PIN, Z_STOP_PIN);
+//  auto_calibrate_axis(Z_STEP_PIN, Z_DIR_PIN, Z_STOP_PIN);
+
+  calibrate_axis(Z_STEP_PIN, Z_DIR_PIN);
 
   current_x = 0;
   current_y = 0;
@@ -102,7 +104,7 @@ void calibrate_axis(int motor_pin, int dir_pin) {
 
 
 void auto_calibrate_axis(int motor_pin, int dir_pin, int stop_pin) {
-  Serial.print("Calibrating pin "); Serial.println(motor_pin);
+  Serial.print("Auto-calibrating pin "); Serial.println(motor_pin);
   // Serial.println("Enter integer, or 'save'");
 
   // set direction negative
@@ -113,18 +115,25 @@ void auto_calibrate_axis(int motor_pin, int dir_pin, int stop_pin) {
     delayMicroseconds(half_period);
     digitalWrite(motor_pin, LOW);
     delayMicroseconds(half_period);
+//    Serial.println("Moving negative");
+//    delay(200);
   }
+
+  delay(500);
 
   // we ran into the limit switch, now we want to back off a bit until it's not being touched
   digitalWrite(dir_pin, HIGH);
   while(digitalRead(stop_pin) == LOW) {
     // move it slowly away from the limit switch
     digitalWrite(motor_pin, HIGH);
-    delayMicroseconds(half_period * 3);
+    delayMicroseconds(half_period * 2);
     digitalWrite(motor_pin, LOW);
-    delayMicroseconds(half_period * 3);
+    delayMicroseconds(half_period * 2);
+//    Serial.println("Moving positive");
+//    delay(200);
   }
-  
+
+  Serial.println("Calibrated.");
   // we can say this is the home position. Barely just in front of triggering the limit switch
 }
 
