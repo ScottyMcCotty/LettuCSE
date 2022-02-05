@@ -32,7 +32,7 @@ void setup() {
   
   wait_for_input("Waiting to start (any keys)");
 
-  do_square(300);
+//  do_square(300);
   
 
   // calibration routine
