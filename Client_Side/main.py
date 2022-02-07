@@ -75,7 +75,7 @@ def main():
             try:
                 repot_single_plant(source_tray.ith_hole_location(source_hole), destination_tray.ith_hole_location(destination_hole), arduino_in_use)
             except(ArduinoError):
-                shut_down(arduino_in_use)
+                shut_down()
             source_hole+=1
             destination_hole+=1
 

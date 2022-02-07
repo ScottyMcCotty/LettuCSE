@@ -1,5 +1,3 @@
-import time
-import random
 from arduino_error import ArduinoError
 
 class Arduino:
@@ -9,37 +7,22 @@ class Arduino:
 
     def move_toolhead(self, coords):
         #TODO actually signal arduino    
-        if random.randint(0,100000) == 1:
-            raise ArduinoError("Error Moving Toolhead")
-        else:
-            x = round(coords[0]*self.mm_per_motor_step)
-            y = round(coords[1]*self.mm_per_motor_step)
-            print("Toolhead moving to (" + str(x) + ", " + str(y) + ")")
+        x = round(coords[0]*self.mm_per_motor_step)
+        y = round(coords[1]*self.mm_per_motor_step)
+        print("Toolhead moving to (" + str(x) + ", " + str(y) + ")")
 
     def lower_toolhead(self):
         #TODO actually signal arduino
-        if random.randint(0,10) == 1:
-            raise ArduinoError("Error Lowering Toolhead")
-        else:
-            print("Toolhead lowering")
+        print("Toolhead lowering")
 
     def raise_toolhead(self):
         #TODO actually signal arduino
-        if random.randint(0,10) == 1:
-            raise ArduinoError("Error Raising Toolhead")
-        else:
-            print("Toolhead raising")
+        print("Toolhead raising")
 
     def release_plant(self):
         #TODO actually signal arduino
-        if random.randint(0,10) == 1:
-            raise ArduinoError("Error Releasing Plant")
-        else:
-            print("Toolhead releasing")
+        print("Toolhead raising")
 
     def grab_plant(self):
         #TODO actually signal arduino
-        if random.randint(0,10) == 1:
-            raise ArduinoError("Error Grabbing Plant")
-        else:
-            print("Toolhead closing")
+        print("Toolhead closing")
