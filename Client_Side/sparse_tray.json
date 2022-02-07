@@ -1,10 +1,10 @@
 {
     "hole_size": 26,
-    "horizontal_distance": 101,
-    "vertical_distance": 50,
-    "horizontal_distance_to_edge": 41,
+    "horizontal_distance": 98,
+    "vertical_distance": 76,
+    "horizontal_distance_to_edge": 38,
     "vertical_distance_to_edge": 45,
-    "extra_gap": 110,
+    "extra_gap": 99,
     "columns": 6,
     "rows": 9,
     "rows_between_gap": 3

@@ -1,0 +1,2 @@
+class ArduinoError(Exception):
+    pass

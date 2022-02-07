@@ -11,7 +11,6 @@ class Tray:
     columns = 0
     shift_right = 0
 
-    mm_per_motor_step = 0.14 
     def __init__(self, json_link, shift_right=0):
         self.json_link = json_link
         tray_data = open(json_link)
@@ -33,8 +32,7 @@ class Tray:
         column_number = i% self.columns
         total_horizontal_distance = self.horizontal_distance*column_number
         total_hole_distance = self.hole_size*column_number + column_number/2
-        total_milimeters =  total_horizontal_distance + total_hole_distance + self.horizontal_distance_to_edge*2 + self.shift_right
-        return round(total_milimeters/self.mm_per_motor_step)
+        return total_horizontal_distance + total_hole_distance + self.horizontal_distance_to_edge*2 + self.shift_right
 
     def ith_hole_y(self, i):
         row_number = i//self.columns
@@ -42,8 +40,7 @@ class Tray:
 
         total_vertical_distance = self.vertical_distance*(row_number-thicker_rows) + self.extra_gap*(thicker_rows)
         total_hole_distance = self.hole_size*row_number + row_number/2
-        total_milimeters =  total_vertical_distance + total_hole_distance + self.vertical_distance_to_edge*2
-        return round(total_milimeters/self.mm_per_motor_step)
+        return total_vertical_distance + total_hole_distance + self.vertical_distance_to_edge*2
 
     def ith_hole_location(self, i):
         return self.ith_hole_x(i), self.ith_hole_y(i)
@@ -54,5 +51,13 @@ class Tray:
         distances = self.horizontal_distance*(self.columns-1)
         return edges + holes + distances
 
+    def get_height(self):
+        edges = self.vertical_distance_to_edge*2
+        holes = self.hole_size*self.rows
+        regular_distances = self.vertical_distance*(self.rows-1-(self.rows//self.rows_between_gap))
+        gaps = self.extra_gap*(self.rows//self.rows_between_gap-1)
+        return edges + holes + regular_distances + gaps
+
     def get_number_of_holes(self):
         return self.columns*self.rows
+    
