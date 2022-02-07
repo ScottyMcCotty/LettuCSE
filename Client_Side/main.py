@@ -15,17 +15,16 @@ def main():
             print("Tray is Full - Please Replace")
             destination_hole = 0
         else:
-            move_toolhead(destination_tray.ith_hole_location(source_hole))
+            move_toolhead(source_tray.ith_hole_location(source_hole))
             lower_toolhead()
             grab_plant()
             raise_toolhead()
-            move_toolhead(destination_tray.ith_hole_location(source_hole))
+            move_toolhead(destination_tray.ith_hole_location(destination_hole))
             lower_toolhead()
             release_plant()
             raise_toolhead()
             source_hole+=1
             destination_hole+=1
-
 
 
 
