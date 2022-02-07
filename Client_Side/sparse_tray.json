@@ -1,0 +1,11 @@
+{
+    "hole_size": 26,
+    "horizontal_distance": 101,
+    "vertical_distance": 50,
+    "horizontal_distance_to_edge": 41,
+    "vertical_distance_to_edge": 45,
+    "extra_gap": 110,
+    "columns": 6,
+    "rows": 9,
+    "rows_between_gap": 3
+}
