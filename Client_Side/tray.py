@@ -31,19 +31,18 @@ class Tray:
 
     def ith_hole_x(self, i):
         column_number = i% self.columns
-
         total_horizontal_distance = self.horizontal_distance*column_number
         total_hole_distance = self.hole_size*column_number + column_number/2
-        total_milimeters =  total_horizontal_distance + total_hole_distance + self.horizontal_distance_to_edge*2
+        total_milimeters =  total_horizontal_distance + total_hole_distance + self.horizontal_distance_to_edge*2 + self.shift_right
         return round(total_milimeters/self.mm_per_motor_step)
 
     def ith_hole_y(self, i):
-        row_number = i//self.rows
+        row_number = i//self.columns
         thicker_rows = row_number%self.rows_between_gap
 
         total_vertical_distance = self.vertical_distance*(row_number-thicker_rows) + self.extra_gap*(thicker_rows)
         total_hole_distance = self.hole_size*row_number + row_number/2
-        total_milimeters =  total_vertical_distance + total_hole_distance + self.vertical_distance_to_edge*2 + self.shift_right
+        total_milimeters =  total_vertical_distance + total_hole_distance + self.vertical_distance_to_edge*2
         return round(total_milimeters/self.mm_per_motor_step)
 
     def ith_hole_location(self, i):
