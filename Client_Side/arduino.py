@@ -12,6 +12,9 @@ class Arduino:
         # Attempt to connect to the Arduino using provided COM port (Liam)
         print("Attempting to establish a connection on port '" + comPort + "'\n")
         self.arduinoConnection = serial.Serial(port=comPort, baudrate=9600, timeout=.1)
+        # NOTE: Arduino seems to ignore the first pair of coordinates it is sent.
+        #       Followup commands work normally. Consider sending a dummy (0, 0)
+        #       write here on init? (Liam)
 
     def move_toolhead(self, coords):
         x = round(coords[0]*self.mm_per_motor_step)
