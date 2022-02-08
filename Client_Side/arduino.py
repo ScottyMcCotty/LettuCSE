@@ -14,7 +14,11 @@ class Arduino:
         self.arduinoConnection = serial.Serial(port=comPort, baudrate=9600, timeout=.1)
         # NOTE: Arduino seems to ignore the first pair of coordinates it is sent.
         #       Followup commands work normally. Consider sending a dummy (0, 0)
-        #       write here on init? (Liam)
+        #       write here on initialization? (Liam)
+        dummyInput = "0 0"
+        if dummyInput[-1] != '\n':
+            dummyInput += '\n'
+        self.arduinoConnection.write(bytes(dummyInput, 'utf-8'))
 
     def move_toolhead(self, coords):
         x = round(coords[0]*self.mm_per_motor_step)
@@ -28,7 +32,7 @@ class Arduino:
         # If the final char isn't a newline, add one (Liam)
         if input[-1] != '\n':
             input += '\n'
-        self.arduinoConnection.write(bytes(x, 'utf-8'))
+        self.arduinoConnection.write(bytes(input, 'utf-8'))
         # NOTE: Unsure if this sleep & readline are needed. They may cause problems (Liam)
         # Comment from Scott's example code: "We may need to write and immediately read
         #                                     a response, depending on the application"
