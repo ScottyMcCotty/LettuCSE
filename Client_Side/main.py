@@ -1,4 +1,4 @@
-import tty, sys, termios
+import sys
 from tray import Tray
 from arduino import Arduino
 from arduino_error import ArduinoError
@@ -44,7 +44,6 @@ def test_trays(tray_1, tray_2, arduino):
 
 
 def main():
-    tty.setcbreak(sys.stdin) #allows for single variable user input rather than requiring user to hit 'return'
 
     source_tray = Tray('dense_tray.json')
     destination_tray = Tray('sparse_tray.json', source_tray.get_width())
