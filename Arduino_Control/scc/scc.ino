@@ -39,7 +39,7 @@ void loop() {
     ycounter = 0;
 
     // Get the x coord and y coord from the input (limit of 5 is a safety catch)
-    while (input.substring(xcounter, xcounter + 1) != "," && xcounter <= 5) {
+    while (input.substring(xcounter, xcounter + 1) != " " && xcounter <= 5) {
       xcounter++;
     }
     xcoord = input.substring(0, xcounter).toInt();

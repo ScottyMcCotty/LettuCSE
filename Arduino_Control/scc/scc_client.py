@@ -39,7 +39,7 @@ def write_read(x):
     data = arduino.readline()
     return data
 
-# Process user input to see if it is in the format 'x,y' with max values of 100
+# Process user input to see if it is in the format 'x y' with max values of 100
 def check_input(input):
 
     # Error catch (input must be at least 3 chars to be a coord)
@@ -61,7 +61,7 @@ def check_input(input):
     xcoord = input[:(xcounter)]
     print("X coord: " + xcoord)
     # If the non-digit character is not a ',' or the value is greater than 100, return false
-    if input[xcounter] != "," or int(xcoord) > MAX_X_COORD:
+    if input[xcounter] != " " or int(xcoord) > MAX_X_COORD:
         return False
 
     # Do the same for the y coordinate
@@ -86,7 +86,7 @@ def check_input(input):
 # Loop where the user enters coordinates (may change in the future to use a file instead)
 while True:
 
-    coord = input("Enter a coordinate (format 'x,y'), or 'quit' to exit\n") # Taking input from user
+    coord = input("Enter a coordinate (format 'x y'), or 'quit' to exit\n") # Taking input from user
     if coord == "exit" or coord == "quit":
         break
     

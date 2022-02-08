@@ -3,6 +3,11 @@ from tray import Tray
 from arduino import Arduino
 from arduino_error import ArduinoError
 
+# GLOBAL VARIABLE: COM port used (Liam)
+# NOTE: Will need to be updated later, either to user input
+#       or the input JSON file (if possible)
+COM_PORT = "COM5"
+
 def end(arduino):
     arduino.move_toolhead((0,0))
     print("Repotting Completed")
@@ -24,7 +29,7 @@ def repot_single_plant(source, destination, arduino):
     arduino.lower_toolhead()
     arduino.grab_plant()
     arduino.raise_toolhead()
-    arduino.move_toolhead(destination)
+    arduino.move_toolhead(destination,)
     arduino.lower_toolhead()
     arduino.release_plant()
     arduino.raise_toolhead()
@@ -44,12 +49,13 @@ def test_trays(tray_1, tray_2, arduino):
 
 
 def main():
+
     tty.setcbreak(sys.stdin) #allows for single variable user input rather than requiring user to hit 'return'
 
     source_tray = Tray('dense_tray.json')
     destination_tray = Tray('sparse_tray.json', source_tray.get_width())
 
-    arduino_in_use = Arduino(0.14)
+    arduino_in_use = Arduino(0.14, COM_PORT)
 
     source_hole = destination_hole = 0
 
