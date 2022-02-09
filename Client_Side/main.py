@@ -1,18 +1,21 @@
-import tty, sys, termios
+import sys
 from tray import Tray
 from arduino import Arduino
 from arduino_error import ArduinoError
 
 def end(arduino):
+    '''Returns arm to the origin, exits without error'''
     arduino.move_toolhead((0,0))
     print("Repotting Completed")
     sys.exit(0)
 
 def shut_down():
+    '''Quits program without returning main arm to the origin, program returns an error'''
     print("EMERGENCY SHUTDOWN")
     sys.exit(1)
 
 def startup(arduino):
+    '''Greets user and gives instructions for use'''
     print("You have successfully initialized the LettuceCSE Lettuce Repotter, designed and implemented by Marin Orosa, Scott Ballinger, Mira Welner, and Liam Carr under the supervision of Professor Leith\n"
             "Use a keyboard interrupt (control c) to instantly freeze arm and shut down program\n"
             "Press 'e' when prompted to move arm to origin and end program\n"
@@ -20,6 +23,14 @@ def startup(arduino):
     ask_to_quit(arduino)
 
 def repot_single_plant(source, destination, arduino):
+    '''
+    Sends the arduino commands to move the plant from the source tray to the destination tray
+
+            Parameters:
+                    source (int tuple): The X and Y values of the plant to be repotted
+                    destination (int tuple): The X and Y values that the plant is sent to
+                    arduino (Arduino): The arduino object being used for the arm
+    '''
     arduino.move_toolhead(source)
     arduino.lower_toolhead()
     arduino.grab_plant()
@@ -30,13 +41,22 @@ def repot_single_plant(source, destination, arduino):
     arduino.raise_toolhead()
 
 def ask_to_quit(arduino):
+    """Asks the user if they want to continue repotting, ends program gracefully if they do not"""
     quit_or_continue=sys.stdin.read(1)[0]
     if quit_or_continue.lower() == 'e':
         end(arduino)
 
 def test_trays(tray_1, tray_2, arduino):
+    '''
+    Compares the sizes of the two trays, warns the user if they are different sizes (which may indicate a faulty json file)
+
+            Parameters:
+                    tray_1 (Tray): one of the two trays created from the JSON file
+                    tray_2 (Tray): the other of the two trays created from the JSON file
+                    arduino (Arduino): The arduino object being used for the arm
+    '''
     width_1, width_2 =  tray_1.get_width(), tray_2.get_width()
-    height_1, height_2 =  tray_1.get_height(), tray_2.get_height()
+    height_1, height_2 =  tray_1.get_length(), tray_2.get_length()
     if width_1-width_2 < -1 or width_1-width_2 > 1 or height_1-height_2 < -1 or height_1-height_2 > 1:
         print("Warning: the json files for your trays suggest that they are different sizes, you may have an error in your json file\n"
                         "Press e to end and any other key to continue")
@@ -44,7 +64,6 @@ def test_trays(tray_1, tray_2, arduino):
 
 
 def main():
-    tty.setcbreak(sys.stdin) #allows for single variable user input rather than requiring user to hit 'return'
 
     source_tray = Tray('dense_tray.json')
     destination_tray = Tray('sparse_tray.json', source_tray.get_width())
