@@ -3,10 +3,11 @@ from tray import Tray
 from arduino import Arduino
 from arduino_error import ArduinoError
 
+
 def end(arduino):
     '''Returns arm to the origin, exits without error'''
     arduino.move_toolhead((0,0))
-    print("Repotting Completed")
+    print("Transplanting Completed")
     sys.exit(0)
 
 def shut_down():
@@ -16,7 +17,7 @@ def shut_down():
 
 def startup(arduino):
     '''Greets user and gives instructions for use'''
-    print("You have successfully initialized the LettuceCSE Lettuce Repotter, designed and implemented by Marin Orosa, Scott Ballinger, Mira Welner, and Liam Carr under the supervision of Professor Leith\n"
+    print("You have successfully initialized the LettuceCSE Lettuce Repotter, designed and implemented by Martin Orosa, Scott Ballinger, Mira Welner, and Liam Carr under the supervision of Dr. Lith\n"
             "Use a keyboard interrupt (control c) to instantly freeze arm and shut down program\n"
             "Press 'e' when prompted to move arm to origin and end program\n"
             "Press any other key to begin")
