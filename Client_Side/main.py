@@ -63,6 +63,37 @@ def test_trays(tray_1, tray_2, arduino):
                         "Press e to end and any other key to continue")
         ask_to_quit(arduino)
 
+def transplant(source_tray, destination_tray, arduino):
+    '''
+    transplants the lettuce plants, notify user when a tray must be replaced
+
+            Parameters:
+                    source_tray (Tray): the tray from which the lettuce is being moved
+                    tray_2 (Tray): the tray to which the lettuce is being moved
+                    arduino (Arduino): The arduino object being used for the arm
+    '''
+    source_hole = destination_hole = 0
+    try:
+        while(True):
+            if source_hole == source_tray.get_number_of_holes():
+                print("Tray is empty - Press 'e' to end repotting or any other key to continue after tray is replaced\n")
+                ask_to_quit(arduino)
+                source_hole = 0
+            elif destination_hole == destination_tray.get_number_of_holes():
+                print("Tray is full - Press 'e' to end repotting or any other key to continue after tray is replaced\n")
+                ask_to_quit(arduino)
+                destination_hole = 0
+            else:
+                try:
+                    repot_single_plant(source_tray.ith_hole_location(source_hole), destination_tray.ith_hole_location(destination_hole), arduino)
+                except(ArduinoError):
+                    shut_down()
+                source_hole+=1
+                destination_hole+=1
+
+    except KeyboardInterrupt:
+        shut_down()
+
 
 def main():
 
@@ -71,33 +102,12 @@ def main():
 
     arduino_in_use = Arduino(0.14)
 
-    source_hole = destination_hole = 0
-
     test_trays(source_tray, destination_tray, arduino_in_use)
 
     startup(arduino_in_use)
     
 
-    try:
-        while(True):
-            if source_hole == source_tray.get_number_of_holes():
-                print("Tray is empty - Press 'e' to end repotting or any other key to continue after tray is replaced\n")
-                ask_to_quit(arduino_in_use)
-                source_hole = 0
-            elif destination_hole == destination_tray.get_number_of_holes():
-                print("Tray is full - Press 'e' to end repotting or any other key to continue after tray is replaced\n")
-                ask_to_quit(arduino_in_use)
-                destination_hole = 0
-            else:
-                try:
-                    repot_single_plant(source_tray.ith_hole_location(source_hole), destination_tray.ith_hole_location(destination_hole), arduino_in_use)
-                except(ArduinoError):
-                    shut_down()
-                source_hole+=1
-                destination_hole+=1
-
-    except KeyboardInterrupt:
-        shut_down()
+    transplant(source_tray, destination_tray, arduino_in_use)
 
 if __name__ == "__main__":
     main()
