@@ -13,15 +13,15 @@ class Tray:
         a link to the json file with the infornmations
     hole_side_length: float
         side length of the squares that the plant is in
-    space_between_holes_width: float
-        distance width-wise between holes
-    space_between_holes_length: float
-        distance length-wise between holes
-    side_edge: float
+    short_axis_distance: float
+        distance between columns
+    short_axis_distance: float
+        distance between columns
+    short_axis_distance_to_edge: float
         distance between edge of the board and first column of holes
-    top_and_bottom_edge: float
+    long_axis_distance_to_edge: float
         distance between edge of the board and first row of holes
-    clump_distance: float
+    extra_gap: float
         distance length-wise between the clumps of holes
     
 
@@ -40,11 +40,11 @@ class Tray:
     """
     json_link = ''
     hole_side_length = 0
-    space_between_holes_width = 0
-    space_between_holes_length = 0
-    side_edge = 0
-    top_bottom_edge = 0
-    clump_distance = 0
+    short_axis_distance = 0
+    long_axis_distance = 0
+    short_axis_distance_to_edge = 0
+    long_axis_distance_to_edge = 0
+    extra_gap = 0
     columns = 0
     shift_right = 0
 
@@ -54,11 +54,11 @@ class Tray:
         tray_values = json.load(tray_data)
 
         self.hole_side_length = tray_values['hole_size']
-        self.space_between_holes_width = tray_values['horizontal_distance']
-        self.space_between_holes_length = tray_values['vertical_distance']
-        self.side_edge = tray_values['horizontal_distance_to_edge']
-        self.top_bottom_edge = tray_values['vertical_distance_to_edge']
-        self.clump_distance = tray_values['extra_gap']
+        self.short_axis_distance = tray_values['short_axis_distance']
+        self.long_axis_distance = tray_values['long_axis_distance']
+        self.short_axis_distance_to_edge = tray_values['short_axis_distance_to_edge']
+        self.long_axis_distance_to_edge = tray_values['long_axis_distance_to_edge']
+        self.extra_gap = tray_values['extra_gap']
         self.columns = tray_values['columns']
         self.rows = tray_values['rows']
         self.rows_between_gap = tray_values['rows_between_gap']
@@ -76,9 +76,9 @@ class Tray:
                     (int): the distance between the given hole, and the right side of the frame, in milimeters 
         '''
         column_number = i% self.columns
-        total_horizontal_distance = self.space_between_holes_width*column_number
+        total_short_axis_distance = self.short_axis_distance*column_number
         total_hole_distance = self.hole_side_length*column_number + column_number/2
-        return total_horizontal_distance + total_hole_distance + self.side_edge*2 + self.shift_right
+        return total_short_axis_distance + total_hole_distance + self.short_axis_distance_to_edge*2 + self.shift_right
 
     def ith_hole_y(self, i):
         '''
@@ -93,9 +93,9 @@ class Tray:
         row_number = i//self.columns
         thicker_rows = row_number%self.rows_between_gap
 
-        total_vertical_distance = self.space_between_holes_length*(row_number-thicker_rows) + self.clump_distance*(thicker_rows)
+        total_long_axis_distance = self.long_axis_distance*(row_number-thicker_rows) + self.extra_gap*(thicker_rows)
         total_hole_distance = self.hole_side_length*row_number + row_number/2
-        return total_vertical_distance + total_hole_distance + self.top_bottom_edge*2
+        return total_long_axis_distance + total_hole_distance + self.long_axis_distance_to_edge*2
 
     def ith_hole_location(self, i):
         '''
@@ -112,26 +112,31 @@ class Tray:
     def get_width(self):
         '''
             Finds the width of the tray from the given JSON file
+            Parameters:
+                    None
 
             Returns:
                     (int): tray width in milimeters
         '''
-        edges = self.side_edge*2
+        edges = self.short_axis_distance_to_edge*2
         holes = self.hole_side_length*self.columns
-        distances = self.space_between_holes_width*(self.columns-1)
+        distances = self.short_axis_distance*(self.columns-1)
         return edges + holes + distances
 
     def get_length(self):
         '''
             Finds the height of the tray from the given JSON file
 
+            Parameters:
+                    None
+
             Returns:
                     (int): tray width in milimeters
         '''
-        edges = self.top_bottom_edge*2
+        edges = self.long_axis_distance_to_edge*2
         holes = self.hole_side_length*self.rows
-        regular_distances = self.space_between_holes_length*(self.rows-1-(self.rows//self.rows_between_gap))
-        gaps = self.clump_distance*(self.rows//self.rows_between_gap-1)
+        regular_distances = self.long_axis_distance*(self.rows-1-(self.rows//self.rows_between_gap))
+        gaps = self.extra_gap*(self.rows//self.rows_between_gap-1)
         return edges + holes + regular_distances + gaps
 
     def get_number_of_holes(self):
