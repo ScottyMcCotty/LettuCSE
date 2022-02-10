@@ -1,4 +1,3 @@
-import sys
 from tray import Tray
 from arduino import Arduino
 from arduino_error import ArduinoError
@@ -7,16 +6,16 @@ def end(arduino):
     '''Returns arm to the origin, exits without error'''
     arduino.move_toolhead((0,0))
     print("Repotting Completed")
-    sys.exit(0)
+    exit(0)
 
 def shut_down():
     '''Quits program without returning main arm to the origin, program returns an error'''
     print("EMERGENCY SHUTDOWN")
-    sys.exit(1)
+    exit(1)
 
 def startup(arduino):
     '''Greets user and gives instructions for use'''
-    print("You have successfully initialized the LettuceCSE Lettuce Repotter, designed and implemented by Marin Orosa, Scott Ballinger, Mira Welner, and Liam Carr under the supervision of Professor Leith\n"
+    print("You have successfully initialized the LettuceCSE Lettuce Repotter, designed and implemented by Marin Orosa, Scott Ballinger, Mira Welner, and Liam Carr under the supervision of Professor Lieth\n"
             "Use a keyboard interrupt (control c) to instantly freeze arm and shut down program\n"
             "Press 'e' when prompted to move arm to origin and end program\n"
             "Press any other key to begin")
@@ -42,7 +41,7 @@ def repot_single_plant(source, destination, arduino):
 
 def ask_to_quit(arduino):
     """Asks the user if they want to continue repotting, ends program gracefully if they do not"""
-    quit_or_continue=sys.stdin.read(1)[0]
+    quit_or_continue=input()
     if quit_or_continue.lower() == 'e':
         end(arduino)
 
