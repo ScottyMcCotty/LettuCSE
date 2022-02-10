@@ -1,9 +1,9 @@
 {
     "hole_size": 26,
-    "horizontal_distance": 98,
-    "vertical_distance": 76,
-    "horizontal_distance_to_edge": 38,
-    "vertical_distance_to_edge": 45,
+    "long_axis_distance": 98,
+    "short_axis_distance": 76,
+    "short_axis_distance_to_edge": 38,
+    "long_axis_distance_to_edge": 45,
     "extra_gap": 99,
     "columns": 6,
     "rows": 9,
