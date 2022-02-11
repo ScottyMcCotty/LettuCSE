@@ -54,7 +54,7 @@ class Tray:
         tray_values = json.load(tray_data)
 
         self.hole_side_length = tray_values['hole_size']
-        self.short_axis_distance = tray_values['shortaxis_distance']
+        self.short_axis_distance = tray_values['short_axis_distance']
         self.long_axis_distance = tray_values['long_axis_distance']
         self.short_axis_distance_to_edge = tray_values['short_axis_distance_to_edge']
         self.long_axis_distance_to_edge = tray_values['long_axis_distance_to_edge']

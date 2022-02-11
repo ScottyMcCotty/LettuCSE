@@ -41,7 +41,7 @@ def repot_single_plant(source, destination, arduino):
 
 def ask_to_quit(arduino):
     """Asks the user if they want to continue repotting, ends program gracefully if they do not"""
-    quit_or_continue=sys.stdin.read(1)[0]
+    quit_or_continue=input()
     if quit_or_continue.lower() == 'e':
         end(arduino)
 
