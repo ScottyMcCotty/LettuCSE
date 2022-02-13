@@ -49,7 +49,7 @@ def ask_to_quit(arduino):
 
 def test_trays(tray_1, tray_2, arduino):
     '''
-    Compares the sizes of the two trays, warns the user if they are different sizes (which may indicate a faulty json file)
+    Compares the sizes of the two trays, warns the user if the size difference is greater than 5% error (which may indicate a faulty json file)
 
             Parameters:
                     tray_1 (Tray): one of the two trays created from the JSON file
@@ -59,38 +59,37 @@ def test_trays(tray_1, tray_2, arduino):
                     None
     '''
     width_1, width_2 =  tray_1.get_width(), tray_2.get_width()
-    height_1, height_2 =  tray_1.get_length(), tray_2.get_length()
-    print(width_1, width_2)
-    print(height_1, height_2)
-    if width_1-width_2 < -1 or width_1-width_2 > 1 or height_1-height_2 < -1 or height_1-height_2 > 1:
-        print("Warning: the json files for your trays suggest that they are different sizes, you may have an error in your json file\n"
+    length_1, length_2 =  tray_1.get_length(), tray_2.get_length()
+    if (abs(width_1-width_2)/width_1) > 0.05:
+        print("Warning: the json files for your trays suggest that they are different widths, you may have an error in your json file\n"
                         "Press e to end and any other key to continue")
         ask_to_quit(arduino)
+    if (abs(length_1-length_2)/length_1) > 0.05:
+        print("Warning: the json files for your trays suggest that they are different lengths, you may have an error in your json file\n"
+                        "Press e to end and any other key to continue")
 
-
-def main():
-
-    source_tray = Tray('dense_tray.json')
-    destination_tray = Tray('sparse_tray.json', source_tray.get_width())
-
-    arduino_in_use = Arduino(0.14)
-
-    source_hole = destination_hole = 0
-
-    test_trays(source_tray, destination_tray, arduino_in_use)
-
-    startup(arduino_in_use)
     
+def transplant(source_tray, destination_tray, arduino):
+    '''
+    Compares the sizes of the two trays, warns the user if they are different sizes (which may indicate a faulty json file)
 
+            Parameters:
+                    source_tray (Tray): the original tray containing lettuce
+                    destination_tray (Tray): tray the lettuce is being moved to
+                    arduino (Arduino): The arduino object being used for the arm
+            Returns:
+                    None
+    '''
+    source_hole = destination_hole = 0
     try:
         while(True):
             if source_hole == source_tray.get_number_of_holes():
                 print("Tray is empty - Press 'e' to end repotting or any other key to continue after tray is replaced\n")
-                ask_to_quit(arduino_in_use)
+                ask_to_quit(arduino)
                 source_hole = 0
             elif destination_hole == destination_tray.get_number_of_holes():
                 print("Tray is full - Press 'e' to end repotting or any other key to continue after tray is replaced\n")
-                ask_to_quit(arduino_in_use)
+                ask_to_quit(arduino)
                 destination_hole = 0
             else:
                 try:
@@ -102,6 +101,16 @@ def main():
 
     except KeyboardInterrupt:
         shut_down()
+
+
+def main():
+    source_tray = Tray('dense_tray.json')
+    destination_tray = Tray('sparse_tray.json', source_tray.get_width())
+    arduino_in_use = Arduino(0.14)
+    test_trays(source_tray, destination_tray, arduino_in_use)
+    startup(arduino_in_use)
+    transplant(source_tray, destination_tray, arduino_in_use)
+    
 
 if __name__ == "__main__":
     main()
