@@ -60,6 +60,8 @@ def test_trays(tray_1, tray_2, arduino):
     '''
     width_1, width_2 =  tray_1.get_width(), tray_2.get_width()
     height_1, height_2 =  tray_1.get_length(), tray_2.get_length()
+    print(width_1, width_2)
+    print(height_1, height_2)
     if width_1-width_2 < -1 or width_1-width_2 > 1 or height_1-height_2 < -1 or height_1-height_2 > 1:
         print("Warning: the json files for your trays suggest that they are different sizes, you may have an error in your json file\n"
                         "Press e to end and any other key to continue")
