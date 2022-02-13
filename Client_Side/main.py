@@ -29,6 +29,8 @@ def repot_single_plant(source, destination, arduino):
                     source (int tuple): The X and Y values of the plant to be repotted
                     destination (int tuple): The X and Y values that the plant is sent to
                     arduino (Arduino): The arduino object being used for the arm
+            Returns:
+                    None
     '''
     arduino.move_toolhead(source)
     arduino.lower_toolhead()
@@ -53,6 +55,8 @@ def test_trays(tray_1, tray_2, arduino):
                     tray_1 (Tray): one of the two trays created from the JSON file
                     tray_2 (Tray): the other of the two trays created from the JSON file
                     arduino (Arduino): The arduino object being used for the arm
+            Returns:
+                    None
     '''
     width_1, width_2 =  tray_1.get_width(), tray_2.get_width()
     height_1, height_2 =  tray_1.get_length(), tray_2.get_length()
