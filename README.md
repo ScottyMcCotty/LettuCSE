@@ -9,6 +9,7 @@ Link to fancy project document:
 https://drive.google.com/file/d/1u0UsIFcKr7ICkoyBCivw6sfUZ3OYgkR3/view
 
 # Todo:
-* send email
-* discuss development standards
-* NO MORE PUSHING TO MAIN... after next week-ish
+* Discuss situation with Dr. Lieth, explain why his requirements are to much
+* Develop GUI
+* Design cup
+* Connect arduino with client code
