@@ -29,7 +29,7 @@ def repot_single_plant(source, destination, arduino):
     arduino.lower_toolhead()
     arduino.grab_plant()
     arduino.raise_toolhead()
-    arduino.move_toolhead(destination,)
+    arduino.move_toolhead(destination, COM_PORT)
     arduino.lower_toolhead()
     arduino.release_plant()
     arduino.raise_toolhead()
