@@ -1,3 +1,5 @@
+"""This module contains the Tray class"""
+
 import json
 
 class Tray:
@@ -22,8 +24,7 @@ class Tray:
     long_axis_distance_to_edge: float
         distance between edge of the board and first row of holes
     extra_gap: float
-        distance length-wise between the clumps of holes
-    
+        distance length-wise between the clumps of holes   
 
     Methods
     -------
@@ -67,45 +68,51 @@ class Tray:
 
     def ith_hole_x(self, i):
         '''
-        Finds the x location of the ith hole of the given tray in mm. Holes in the tray are numbered right to left, then top to bottom. 
+        Finds the x location of the ith hole of the given tray in mm.
+        Holes in the tray are numbered right to left, then top to bottom.
         i = 0 is the top left hole
 
             Parameters:
                     i (int): an integer representing which hole is being located
             Returns:
-                    (int): the distance between the given hole, and the right side of the frame, in milimeters 
+                    (int): the distance between the given hole and the right side
+                    of the frame, in milimeters
         '''
         column_number = i% self.columns
-        total_short_axis_distance = self.short_axis_distance*column_number
-        total_hole_distance = self.hole_side_length*column_number + column_number/2
-        return total_short_axis_distance + total_hole_distance + self.short_axis_distance_to_edge*2 + self.shift_right
+        total_gap = self.short_axis_distance*column_number
+        total_hole_width = self.hole_side_length*column_number + column_number/2
+        return total_gap + total_hole_width + self.short_axis_distance_to_edge*2 + self.shift_right
 
     def ith_hole_y(self, i):
         '''
-            Finds the y location of the ith hole of the given tray in mm. Holes in the tray are numbered right to left, then top to bottom. 
+            Finds the y location of the ith hole of the given tray in mm. Holes in the
+            tray are numbered right to left, then top to bottom.
             i = 0 is the top left hole
 
             Parameters:
                     i (int): an integer representing which hole is being located
             Returns:
-                    (int): the distance between the given hole, and the top of the frame, in milimeters 
+                    (int): the distance between the given hole, and the top of the frame,
+                    in milimeters
         '''
         row_number = i//self.columns
         thicker_rows = row_number%self.rows_between_gap
 
-        total_long_axis_distance = self.long_axis_distance*(row_number-thicker_rows) + self.extra_gap*(thicker_rows)
+        total_gap = self.long_axis_distance*(row_number-thicker_rows)+self.extra_gap*(thicker_rows)
         total_hole_distance = self.hole_side_length*row_number + row_number/2
-        return total_long_axis_distance + total_hole_distance + self.long_axis_distance_to_edge*2
+        return total_gap + total_hole_distance + self.long_axis_distance_to_edge*2
 
     def ith_hole_location(self, i):
         '''
-            Finds the (x,y) location of the ith hole of the given tray in mm. Holes in the tray are numbered right to left, then top to bottom. 
+            Finds the (x,y) location of the ith hole of the given tray in mm.
+            Holes in the tray are numbered right to left, then top to bottom.
             i = 0 is the top left hole
 
             Parameters:
                     i (int): an integer representing which hole is being located
             Returns:
-                    (int tuple): the location of the given hole, with location (0,0) being the top left and the units in milimeters 
+                    (int tuple): the location of the given hole, with location (0,0)
+                    being the top left and the units in milimeters
         '''
         return self.ith_hole_x(i), self.ith_hole_y(i)
 
@@ -125,20 +132,23 @@ class Tray:
 
     def get_length(self):
         '''
-            Finds the height of the tray from the given JSON file
+            Finds the length of the tray from the given JSON file
+
+            Parameters:
+                    None
 
             Parameters:
                     None
 
             Returns:
-                    (int): tray width in milimeters
+                    (int): tray length in milimeters
         '''
         edges = self.long_axis_distance_to_edge*2
         holes = self.hole_side_length*self.rows
-        regular_distances = self.long_axis_distance*(self.rows-1-(self.rows//self.rows_between_gap))
+        regular_distances = self.long_axis_distance*(self.rows-(self.rows//self.rows_between_gap))
         gaps = self.extra_gap*(self.rows//self.rows_between_gap-1)
         return edges + holes + regular_distances + gaps
 
     def get_number_of_holes(self):
+        """Returns total number of holes in tray"""
         return self.columns*self.rows
-    
