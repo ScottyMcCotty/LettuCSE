@@ -1,3 +1,4 @@
+"""Module contains the arduino class"""
 from arduino_error import ArduinoError
 
 class Arduino:
