@@ -1,8 +1,14 @@
-"""When run, this module makes the robot begin transplantin"""
+"""When run, this module makes the robot begin transplanting"""
 from tray import Tray
-from horizontal_arduino import Horizontal_Arduino
-from vertical_arduino import VerticalArduino
+from frame_arduino import FrameArduino
+from toolhead_arduino import ToolheadArduino
 from arduino_error import ArduinoError
+
+# GLOBAL VARIABLE: COM ports used for the frame & toolhead Arduinos (Liam)
+# NOTE: Will need to be updated later, either from user input
+#       or the input JSON file (if possible)
+COM_PORT_FRAME =    "COM5"
+COM_PORT_TOOLHEAD = "COM4"
 
 def end(arduino_for_xy_movement, arduino_for_arm_movement):
     '''Returns arm to the origin, exits without error'''
@@ -120,8 +126,8 @@ def main():
     """Run the transplanter"""
     source_tray = Tray('dense_tray.json')
     destination_tray = Tray('sparse_tray.json', source_tray.get_width())
-    arduino_for_xy_movement = Horizontal_Arduino(0.14)
-    arduino_for_arm_movement = VerticalArduino(0.14)
+    arduino_for_xy_movement = FrameArduino(0.14, COM_PORT_FRAME)
+    arduino_for_arm_movement = ToolheadArduino(0.14, COM_PORT_TOOLHEAD)
     test_trays(source_tray, destination_tray, arduino_for_xy_movement, arduino_for_arm_movement)
     startup(arduino_for_xy_movement, arduino_for_arm_movement)
     transplant(source_tray, destination_tray, arduino_for_xy_movement, arduino_for_arm_movement)
