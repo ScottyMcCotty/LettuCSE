@@ -34,8 +34,6 @@ class FrameArduino(Arduino):
     def dummy_command(self):
         """sends a basic fixed command to the Arduino"""
         dummyInput = "0 0"
-        if dummyInput[-1] != '\n':
-            dummyInput += '\n'
         self.arduinoConnection.write(bytes(dummyInput, 'utf-8'))
 
     def move_toolhead(self, coords):

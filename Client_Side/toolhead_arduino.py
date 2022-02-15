@@ -37,10 +37,7 @@ class ToolheadArduino(Arduino):
 
     def dummy_command(self):
         """sends a basic fixed command to the Arduino"""
-        dummyInput = "0 0"
-        if dummyInput[-1] != '\n':
-            dummyInput += '\n'
-        self.arduinoConnection.write(bytes(dummyInput, 'utf-8'))
+        #TODO actually signal arduino
 
     def lower_toolhead(self):
         """lowers the toolhead arm to the plant"""

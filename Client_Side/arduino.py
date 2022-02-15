@@ -47,14 +47,24 @@ class Arduino:
         """
         self.mm_per_motor_step = mm_per_motor_step
 
-        #TODO   remove this restriction when testing with 2 Arduinos.
-        #       This is only present since I can only test 1 arduino
-        #       at a time, and the code won't run if it doesn't find
-        #       the COM port connected
-        if comPort == "COM5":
-            print("Attempting to establish a connection on port '" + comPort + "'\n")
+        print("Attempting to establish a connection on port '" + comPort + "'\n")
+        
+        try:
             self.arduinoConnection = serial.Serial(port=comPort, baudrate=9600, timeout=.1)
-            self.dummy_command()
+        except:
+            print("ERROR: Could not establish connection to Arduino at port " + comPort)
+            print("Double check your COM port settings and try again")
+
+            #TODO   remove this option to continue in final production
+            #       this is only to allow testing 1 arduino at a time.
+            #       replace the following 5 lines with just "exit()"
+            print("Input 'c' to continue despite this (for testing), or anything else to exit")
+            userContinue = input()
+            print()
+            if userContinue != 'c':
+                exit()
+
+        self.dummy_command()
         
 
         
