@@ -2,7 +2,7 @@
 from arduino_error import ArduinoError
 from arduino import Arduino
 
-class VerticalArduino(Arduino):
+class ToolheadArduino(Arduino):
 
     """
     A class to represent the Arduino being used to move the arm up and down,
@@ -14,9 +14,13 @@ class VerticalArduino(Arduino):
     ----------
     mm_per_motor_step : int
         the number of milimeters the arm will move during each motor step
+    arduinoConnection : serial
+        the connection between the program and the Arduino
 
     Methods
     -------
+    dummy_command():
+        sends a basic fixed command to the Arduino
     lower_toolhead():
         lowers the toolhead arm to the plant
     raise_toolhead():
@@ -29,6 +33,14 @@ class VerticalArduino(Arduino):
 
 
     mm_per_motor_step = 1
+    arduinoConnection = None
+
+    def dummy_command(self):
+        """sends a basic fixed command to the Arduino"""
+        dummyInput = "0 0"
+        if dummyInput[-1] != '\n':
+            dummyInput += '\n'
+        self.arduinoConnection.write(bytes(dummyInput, 'utf-8'))
 
     def lower_toolhead(self):
         """lowers the toolhead arm to the plant"""
