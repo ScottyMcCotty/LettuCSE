@@ -45,14 +45,14 @@ void setup() {
   
 
   // calibration routine
-//   calibrate_axis(X_STEP_PIN, X_DIR_PIN);
-  // calibrate_axis(Z_STEP_PIN, Z_DIR_PIN);
+   calibrate_axis(X_STEP_PIN, X_DIR_PIN);
+   calibrate_axis(Z_STEP_PIN, Z_DIR_PIN);
 
   // auto calibration routine
-  auto_calibrate_axis(X_STEP_PIN, X_DIR_PIN, X_STOP_PIN);
+//  auto_calibrate_axis(X_STEP_PIN, X_DIR_PIN, X_STOP_PIN);
 //  auto_calibrate_axis(Z_STEP_PIN, Z_DIR_PIN, Z_STOP_PIN);
 
-  calibrate_axis(Z_STEP_PIN, Z_DIR_PIN);
+//  calibrate_axis(Z_STEP_PIN, Z_DIR_PIN);
 
   current_x = 0;
   current_y = 0;
