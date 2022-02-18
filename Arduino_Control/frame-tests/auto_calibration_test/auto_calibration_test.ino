@@ -13,7 +13,8 @@ const int Z_DIR_PIN = 7;
 int current_x = -1;
 int current_y = -1;
 
-const int half_period = 1100;
+const int half_period = 1200;
+const int min_period_speed = 1500;
 
 //String buf = "";
 bool string_complete = false;
@@ -33,7 +34,8 @@ void setup() {
   pinMode(X_STOP_PIN, INPUT_PULLUP);
   pinMode(Z_STOP_PIN, INPUT_PULLUP);
 
-  Serial.begin(9600);
+//  Serial.begin(9600);
+  Serial.begin(115200);
 
   delay(500); // feels right
 
@@ -369,6 +371,10 @@ void move_double(int steps_x, int steps_y, int half_step_delay) {
   // set delay: traveling shorter distance -> longer duration of pulses
   int other_step_delay = abs((float)half_step_delay * more_steps / less_steps);
 
+  if (other_step_delay > min_period_speed) {
+    other_step_delay = min_period_speed;
+  }
+
   // debugging feedback
   Serial.print("More axis:    "); Serial.println(more_steps_pin);
   Serial.print("  half steps: "); Serial.println(more_steps);
@@ -395,23 +401,28 @@ void move_double(int steps_x, int steps_y, int half_step_delay) {
   unsigned long less_previous = more_previous;
 
   // do movement
-  while (more_counter < more_steps && less_counter < less_steps) {
+  while (more_counter < more_steps || less_counter < less_steps) {
 
     unsigned long current_time = micros();
 
-    if (current_time - more_previous > half_step_delay) {
-      digitalWrite(more_steps_pin, more_pulse);
-      more_pulse = (more_pulse + 1) % 2;
-      more_previous = current_time;
-      more_counter++;
+    if (more_counter < more_steps) {
+      if (current_time - more_previous > half_step_delay) {
+        digitalWrite(more_steps_pin, more_pulse);
+        more_pulse = (more_pulse + 1) % 2;
+        more_previous = current_time;
+        more_counter++;
+      }
     }
 
-    if (current_time - less_previous > other_step_delay) {
-      digitalWrite(less_steps_pin, less_pulse);
-      less_pulse = (less_pulse + 1) % 2;
-      less_previous = current_time;
-      less_counter++;
+    if (less_counter < less_steps) {
+      if (current_time - less_previous > other_step_delay) {
+        digitalWrite(less_steps_pin, less_pulse);
+        less_pulse = (less_pulse + 1) % 2;
+        less_previous = current_time;
+        less_counter++;
+      }
     }
+    
   }
 
 //  Serial.println("Finished simultaneous motor movement");
