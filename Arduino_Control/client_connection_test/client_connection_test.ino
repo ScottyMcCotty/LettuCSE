@@ -13,8 +13,7 @@ const int Z_DIR_PIN = 7;
 int current_x = -1;
 int current_y = -1;
 
-const int half_period = 1200;
-const int min_period_speed = 1500;
+const int half_period = 1100;
 
 //String buf = "";
 bool string_complete = false;
@@ -40,15 +39,14 @@ void setup() {
   delay(500); // feels right
 
   
-  
-  wait_for_input("Waiting to start (any keys)");
+//  wait_for_input("Waiting to start (any keys)");
 
 //  do_square(300);
   
 
   // calibration routine
-   calibrate_axis(X_STEP_PIN, X_DIR_PIN);
-   calibrate_axis(Z_STEP_PIN, Z_DIR_PIN);
+//   calibrate_axis(X_STEP_PIN, X_DIR_PIN);
+//   calibrate_axis(Z_STEP_PIN, Z_DIR_PIN);
 
   // auto calibration routine
 //  auto_calibrate_axis(X_STEP_PIN, X_DIR_PIN, X_STOP_PIN);
@@ -58,7 +56,7 @@ void setup() {
 
   current_x = 0;
   current_y = 0;
-  Serial.println("Home has been set!\nAbsolute coordinate mode activated");
+//  Serial.println("Home has been set!\nAbsolute coordinate mode activated");
 
 }
 
@@ -70,9 +68,11 @@ void loop() {
   int x = input.substring(0, space).toInt();
   int y = input.substring(space+1).toInt();
 
-  Serial.print("Split into '"); Serial.print(x); Serial.print("' and '"); Serial.print(y); Serial.println("'");
+//  Serial.print("Split into '"); Serial.print(x); Serial.print("' and '"); Serial.print(y); Serial.println("'");
 
   move_coordinates(x, y);
+
+  Serial.println("Done");
 
 //  move_double(x, y, half_period);
   
@@ -155,7 +155,7 @@ String wait_for_input(String prompt) {
   char buf[] = {'\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0',
                 '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0'};
 
-  Serial.println("\n" + prompt);
+//  Serial.println("\n" + prompt);
   
   while (state == 0) {
 //    Serial.print(prompt); Serial.println(++count);
@@ -164,7 +164,7 @@ String wait_for_input(String prompt) {
 //      Serial.read();
 //    }
   }
-  Serial.print("Received input: '"); Serial.print(buf); Serial.println("'");
+//  Serial.print("Received input: '"); Serial.print(buf); Serial.println("'");
   return String(buf);
 
 //  string_complete = false;
@@ -208,14 +208,14 @@ void move_coordinates(int x, int y) {
     return;
   }
 
-  Serial.print("Moving from ("); Serial.print(current_x); Serial.print(", "); Serial.print(current_y);
-  Serial.print(") to ("); Serial.print(x); Serial.print(", "); Serial.print(y); Serial.println(")");
+//  Serial.print("Moving from ("); Serial.print(current_x); Serial.print(", "); Serial.print(current_y);
+//  Serial.print(") to ("); Serial.print(x); Serial.print(", "); Serial.print(y); Serial.println(")");
 
   move_double(x - current_x, y - current_y, half_period);
   current_x = x;
   current_y = y;
   
-  Serial.println("Finished move");
+//  Serial.println("Finished move");
   
 }
 
@@ -237,11 +237,11 @@ void move_coordinates(int x, int y) {
  */
 void move_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, int dir, int half_step_delay) {
 
-  Serial.print("Moving single axis "); Serial.println(motor_step_pin);
-  Serial.print("  steps = "); Serial.println(num_steps);
-  Serial.print("  direction = "); Serial.println(dir);
-  Serial.print("  dir pin = "); Serial.println(motor_direction_pin);
-  Serial.print("  delay = "); Serial.println(half_step_delay);
+//  Serial.print("Moving single axis "); Serial.println(motor_step_pin);
+//  Serial.print("  steps = "); Serial.println(num_steps);
+//  Serial.print("  direction = "); Serial.println(dir);
+//  Serial.print("  dir pin = "); Serial.println(motor_direction_pin);
+//  Serial.print("  delay = "); Serial.println(half_step_delay);
   
   // set direction
   digitalWrite(motor_direction_pin, dir);
@@ -254,16 +254,16 @@ void move_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, i
     delayMicroseconds(half_step_delay);
   }
 
-  Serial.println("Finished move_blocking");
+//  Serial.println("Finished move_blocking");
 }
 
 void move_not_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, int dir, int half_step_delay) {
 
-  Serial.print("Moving single axis "); Serial.println(motor_step_pin);
-  Serial.print("  steps = "); Serial.println(num_steps);
-  Serial.print("  direction = "); Serial.println(dir);
-  Serial.print("  dir pin = "); Serial.println(motor_direction_pin);
-  Serial.print("  delay = "); Serial.println(half_step_delay);
+//  Serial.print("Moving single axis "); Serial.println(motor_step_pin);
+//  Serial.print("  steps = "); Serial.println(num_steps);
+//  Serial.print("  direction = "); Serial.println(dir);
+//  Serial.print("  dir pin = "); Serial.println(motor_direction_pin);
+//  Serial.print("  delay = "); Serial.println(half_step_delay);
 
   // double the number of steps because we're incrementing every half-step!!
   num_steps = num_steps * 2;
@@ -293,9 +293,9 @@ void move_not_blocking(int motor_step_pin, int motor_direction_pin, int num_step
     }
   }
 
-  Serial.println("Finished move:");
-  Serial.print("  # times skipped: "); Serial.println(othercounter);
-  Serial.print("  # times pulsed:  "); Serial.println(num_steps);
+//  Serial.println("Finished move:");
+//  Serial.print("  # times skipped: "); Serial.println(othercounter);
+//  Serial.print("  # times pulsed:  "); Serial.println(num_steps);
   
 }
 
@@ -315,7 +315,7 @@ void move_not_blocking(int motor_step_pin, int motor_direction_pin, int num_step
 void move_double(int steps_x, int steps_y, int half_step_delay) {
 
   if (steps_x == 0 && steps_y == 0) {
-    Serial.println("Both step amounts are 0. Shortcutting out of here");
+//    Serial.println("Both step amounts are 0. Shortcutting out of here");
     return;
   }
 
@@ -353,7 +353,7 @@ void move_double(int steps_x, int steps_y, int half_step_delay) {
   }
 
   if (less_steps == 0) {
-    Serial.println("One of the step directions was 0. Shortcutting out of here");
+//    Serial.println("One of the step directions was 0. Shortcutting out of here");
     move_blocking(more_steps_pin, more_dir_pin, more_steps / 2, more_dir, half_step_delay);
     return;
   }
@@ -371,22 +371,18 @@ void move_double(int steps_x, int steps_y, int half_step_delay) {
   // set delay: traveling shorter distance -> longer duration of pulses
   int other_step_delay = abs((float)half_step_delay * more_steps / less_steps);
 
-  if (other_step_delay > min_period_speed) {
-    other_step_delay = min_period_speed;
-  }
-
   // debugging feedback
-  Serial.print("More axis:    "); Serial.println(more_steps_pin);
-  Serial.print("  half steps: "); Serial.println(more_steps);
-  Serial.print("       delay: "); Serial.println(half_step_delay);
-  Serial.print("   direction: "); Serial.println(more_dir);
-  Serial.print("     dir pin: "); Serial.println(more_dir_pin);
-  Serial.println();
-  Serial.print("Less axis:    "); Serial.println(less_steps_pin);
-  Serial.print("  half steps: "); Serial.println(less_steps);
-  Serial.print("       delay: "); Serial.println(other_step_delay);
-  Serial.print("   direction: "); Serial.println(less_dir);
-  Serial.print("     dir pin: "); Serial.println(less_dir_pin);
+//  Serial.print("More axis:    "); Serial.println(more_steps_pin);
+//  Serial.print("  half steps: "); Serial.println(more_steps);
+//  Serial.print("       delay: "); Serial.println(half_step_delay);
+//  Serial.print("   direction: "); Serial.println(more_dir);
+//  Serial.print("     dir pin: "); Serial.println(more_dir_pin);
+//  Serial.println();
+//  Serial.print("Less axis:    "); Serial.println(less_steps_pin);
+//  Serial.print("  half steps: "); Serial.println(less_steps);
+//  Serial.print("       delay: "); Serial.println(other_step_delay);
+//  Serial.print("   direction: "); Serial.println(less_dir);
+//  Serial.print("     dir pin: "); Serial.println(less_dir_pin);
     
   // half-step counters
   int more_counter = 0;
@@ -401,28 +397,23 @@ void move_double(int steps_x, int steps_y, int half_step_delay) {
   unsigned long less_previous = more_previous;
 
   // do movement
-  while (more_counter < more_steps || less_counter < less_steps) {
+  while (more_counter < more_steps && less_counter < less_steps) {
 
     unsigned long current_time = micros();
 
-    if (more_counter < more_steps) {
-      if (current_time - more_previous > half_step_delay) {
-        digitalWrite(more_steps_pin, more_pulse);
-        more_pulse = (more_pulse + 1) % 2;
-        more_previous = current_time;
-        more_counter++;
-      }
+    if (current_time - more_previous > half_step_delay) {
+      digitalWrite(more_steps_pin, more_pulse);
+      more_pulse = (more_pulse + 1) % 2;
+      more_previous = current_time;
+      more_counter++;
     }
 
-    if (less_counter < less_steps) {
-      if (current_time - less_previous > other_step_delay) {
-        digitalWrite(less_steps_pin, less_pulse);
-        less_pulse = (less_pulse + 1) % 2;
-        less_previous = current_time;
-        less_counter++;
-      }
+    if (current_time - less_previous > other_step_delay) {
+      digitalWrite(less_steps_pin, less_pulse);
+      less_pulse = (less_pulse + 1) % 2;
+      less_previous = current_time;
+      less_counter++;
     }
-    
   }
 
 //  Serial.println("Finished simultaneous motor movement");
