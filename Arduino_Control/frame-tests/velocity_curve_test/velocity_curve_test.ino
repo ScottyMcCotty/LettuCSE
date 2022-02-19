@@ -7,10 +7,13 @@
 //const double p_i = 300000.0 / START_SPEED;
 //const double p_f = 300000.0 / MAX_SPEED;
 
-const int STEPS_TO_MAX_SPEED = 300;
+const int STEPS_TO_MAX_SPEED = 400;
 
-const int STEP_PIN = 4;
-const int DIR_PIN = 7;
+const int STEP_PIN = 2;
+const int DIR_PIN = 5;
+
+//const int STEP_PIN = 4;
+//const int DIR_PIN = 7;
 
 double coefficient = 0.0;
 
@@ -37,7 +40,7 @@ void setup() {
   pinMode(STEP_PIN, OUTPUT);
   pinMode(DIR_PIN, OUTPUT);
   
-  Serial.begin(9600);
+  Serial.begin(115200);
 
 
   delay(500);
@@ -102,7 +105,8 @@ void move_there_and_back() {
 void populate_delay_array() {
 
   const double START = 2000.0; // delay at lowest (starting) speed
-  const double TARGET = 300.0; // delay at highest (target) speed
+//  const double TARGET = 300.0; // delay at highest (target) speed
+  const double TARGET = 250.0; // delay at highest (target) speed
   const int STEPS = STEPS_TO_MAX_SPEED; // number of steps to reach top speed
 
   const double m = (1.0 - (TARGET / START)) / (TARGET * STEPS);
