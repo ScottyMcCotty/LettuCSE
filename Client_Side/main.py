@@ -7,7 +7,7 @@ from arduino_error import ArduinoError
 # GLOBAL VARIABLE: COM ports used for the frame & toolhead Arduinos (Liam)
 # NOTE: Will need to be updated later, either from user input
 #       or the input JSON file (if possible)
-COM_PORT_FRAME =    "COM5"
+COM_PORT_FRAME =    "/dev/ttyACM0"
 COM_PORT_TOOLHEAD = "COM4"
 
 def end(frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
@@ -25,7 +25,7 @@ def shut_down() -> None:
 
 def startup(frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
     '''Greets user and gives instructions for use'''
-    print("You have successfully initialized the LettuCSE Lettuce Repotter, designed and "
+    print("You have successfully initialized the LettuCSE Lettuce Transplanter, designed and "
           "implemented by Martin Orosa, Scott Ballinger, Mira Welner, and Liam Carr under "
           "the supervision of Dr. Lieth\n"
           "Use a keyboard interrupt (control c) to instantly freeze arm and shut down program\n"

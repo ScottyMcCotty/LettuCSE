@@ -52,5 +52,5 @@ class FrameArduino(Arduino):
         #     Arduino shouldn't receive a ton of
         #     commands each second since the arm
         #     has to move
-        time.sleep(0.05)
+        time.sleep(1)
         value = self.arduinoConnection.readline()

@@ -21,14 +21,10 @@ class ToolheadArduino(Arduino):
     -------
     dummy_command():
         sends a basic fixed command to the Arduino
-    lower_toolhead():
-        lowers the toolhead arm to the plant
-    raise_toolhead():
-        raises the toolhead arm to the plant
-    release_plant():
-        opens the cup-grasp and lets the plant fall
     grab_plant():
-        closes the cup-grasp to hold the plant
+        lowers the toolhead arm to the plant and grabs it
+    release_plant():
+        releases the plant and raises the toolhead arm
     """
 
 
@@ -39,22 +35,12 @@ class ToolheadArduino(Arduino):
         """sends a basic fixed command to the Arduino"""
         #TODO actually signal arduino
 
-    def lower_toolhead(self):
-        """lowers the toolhead arm to the plant"""
-        #TODO actually signal arduino
-        print("Vertical toolhead lowering")
-
-    def raise_toolhead(self):
-        """raises the toolhead arm to the plant"""
-        #TODO actually signal arduino
-        print("Vertical toolhead raising")
-
     def release_plant(self):
         """opens the cup-grasp and lets the plant fall"""
         #TODO actually signal arduino
-        print("Vertical toolhead opening")
+        print("Toolhead releasing plant")
 
     def grab_plant(self):
         """closes the cup-grasp to hold the plant"""
         #TODO actually signal arduino
-        print("Vertical toolhead closing")
+        print("Toolhead grabbing plant")
