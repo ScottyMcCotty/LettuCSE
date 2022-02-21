@@ -1,20 +1,13 @@
 """When run, this module makes the robot begin transplanting"""
+from gui import GUI
 from tray import Tray
 from frame_arduino import FrameArduino
 from toolhead_arduino import ToolheadArduino
-from arduino_error import ArduinoError
-
-# GLOBAL VARIABLE: COM ports used for the frame & toolhead Arduinos (Liam)
-# NOTE: Will need to be updated later, either from user input
-#       or the input JSON file (if possible)
-COM_PORT_FRAME =    "/dev/ttyACM0"
-COM_PORT_TOOLHEAD = "COM4"
 
 def end(frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
     '''Returns arm to the origin, exits without error'''
     frame_arduino.move_toolhead((0,0))
     toolhead_arduino.release_plant()
-    toolhead_arduino.raise_toolhead()
     print("Repotting Completed")
     exit(0)
 
@@ -22,16 +15,6 @@ def shut_down() -> None:
     '''Quits program without returning main arm to the origin, program returns an error'''
     print("EMERGENCY SHUTDOWN")
     exit(1)
-
-def startup(frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
-    '''Greets user and gives instructions for use'''
-    print("You have successfully initialized the LettuCSE Lettuce Transplanter, designed and "
-          "implemented by Martin Orosa, Scott Ballinger, Mira Welner, and Liam Carr under "
-          "the supervision of Dr. Lieth\n"
-          "Use a keyboard interrupt (control c) to instantly freeze arm and shut down program\n"
-          "Press 'e' when prompted to move arm to origin and end program\n"
-          "Press any other key to begin")
-    ask_to_quit(frame_arduino, toolhead_arduino)
 
 def repot_single_plant(source: Tray, destination: Tray, frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
     '''
@@ -45,13 +28,9 @@ def repot_single_plant(source: Tray, destination: Tray, frame_arduino: FrameArdu
                     None
     '''
     frame_arduino.move_toolhead(source)
-    toolhead_arduino.lower_toolhead()
     toolhead_arduino.grab_plant()
-    toolhead_arduino.raise_toolhead()
     frame_arduino.move_toolhead(destination)
-    toolhead_arduino.lower_toolhead()
     toolhead_arduino.release_plant()
-    toolhead_arduino.raise_toolhead()
 
 def ask_to_quit(frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
     """Asks the user if they want to continue repotting, ends program gracefully if they do not"""
@@ -109,28 +88,28 @@ def transplant(source_tray: Tray, destination_tray: Tray, frame_arduino: FrameAr
                 ask_to_quit(frame_arduino, toolhead_arduino)
                 destination_hole = 0
             else:
-                try:
-                    repot_single_plant(source_tray.ith_hole_location(source_hole),
+                repot_single_plant(source_tray.ith_hole_location(source_hole),
                                        destination_tray.ith_hole_location(destination_hole), 
                                        frame_arduino, toolhead_arduino)
-                except ArduinoError:
-                    shut_down()
                 source_hole += 1
                 destination_hole += 1
 
     except KeyboardInterrupt:
-        shut_down()
-
+        shut_down()    
 
 def main():
     """Run the transplanter"""
+    gui = GUI()
     source_tray = Tray('dense_tray.json')
     destination_tray = Tray('sparse_tray.json', source_tray.get_width())
-    arduino_for_xy_movement = FrameArduino(0.14, COM_PORT_FRAME)
-    arduino_for_arm_movement = ToolheadArduino(0.14, COM_PORT_TOOLHEAD)
-    test_trays(source_tray, destination_tray, arduino_for_xy_movement, arduino_for_arm_movement)
-    startup(arduino_for_xy_movement, arduino_for_arm_movement)
-    transplant(source_tray, destination_tray, arduino_for_xy_movement, arduino_for_arm_movement)
+    frame_arduino = FrameArduino(0.14, gui)
+    toolhead_arduino = ToolheadArduino(0.14, gui)
+    test_trays(source_tray, destination_tray, frame_arduino, toolhead_arduino)
+    gui.configure_start_button(transplant, source_tray, destination_tray, frame_arduino, toolhead_arduino)
+    gui.loop()
+
+
+    
 
 if __name__ == "__main__":
     main()
