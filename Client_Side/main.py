@@ -10,30 +10,30 @@ from arduino_error import ArduinoError
 COM_PORT_FRAME =    "COM5"
 COM_PORT_TOOLHEAD = "COM4"
 
-def end(arduino_for_xy_movement, arduino_for_arm_movement):
+def end(frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
     '''Returns arm to the origin, exits without error'''
-    arduino_for_xy_movement.move_toolhead((0,0))
-    arduino_for_arm_movement.release_plant()
-    arduino_for_arm_movement.raise_toolhead()
+    frame_arduino.move_toolhead((0,0))
+    toolhead_arduino.release_plant()
+    toolhead_arduino.raise_toolhead()
     print("Repotting Completed")
     exit(0)
 
-def shut_down():
+def shut_down() -> None:
     '''Quits program without returning main arm to the origin, program returns an error'''
     print("EMERGENCY SHUTDOWN")
     exit(1)
 
-def startup(arduino_for_xy_movement, arduino_for_arm_movement):
+def startup(frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
     '''Greets user and gives instructions for use'''
-    print("You have successfully initialized the LettuceCSE Lettuce Repotter, designed and "
-          "implemented by Marin Orosa, Scott Ballinger, Mira Welner, and Liam Carr under "
-          "the supervision of Professor Lieth\n"
+    print("You have successfully initialized the LettuCSE Lettuce Repotter, designed and "
+          "implemented by Martin Orosa, Scott Ballinger, Mira Welner, and Liam Carr under "
+          "the supervision of Dr. Lieth\n"
           "Use a keyboard interrupt (control c) to instantly freeze arm and shut down program\n"
           "Press 'e' when prompted to move arm to origin and end program\n"
           "Press any other key to begin")
-    ask_to_quit(arduino_for_xy_movement, arduino_for_arm_movement)
+    ask_to_quit(frame_arduino, toolhead_arduino)
 
-def repot_single_plant(source, destination, arduino_for_xy_movement, arduino_for_arm_movement):
+def repot_single_plant(source: Tray, destination: Tray, frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
     '''
     Sends the arduino commands to move the plant from the source tray to the destination tray
 
@@ -44,22 +44,22 @@ def repot_single_plant(source, destination, arduino_for_xy_movement, arduino_for
             Returns:
                     None
     '''
-    arduino_for_xy_movement.move_toolhead(source)
-    arduino_for_arm_movement.lower_toolhead()
-    arduino_for_arm_movement.grab_plant()
-    arduino_for_arm_movement.raise_toolhead()
-    arduino_for_xy_movement.move_toolhead(destination)
-    arduino_for_arm_movement.lower_toolhead()
-    arduino_for_arm_movement.release_plant()
-    arduino_for_arm_movement.raise_toolhead()
+    frame_arduino.move_toolhead(source)
+    toolhead_arduino.lower_toolhead()
+    toolhead_arduino.grab_plant()
+    toolhead_arduino.raise_toolhead()
+    frame_arduino.move_toolhead(destination)
+    toolhead_arduino.lower_toolhead()
+    toolhead_arduino.release_plant()
+    toolhead_arduino.raise_toolhead()
 
-def ask_to_quit(arduino_for_xy_movement, arduino_for_arm_movement):
+def ask_to_quit(frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
     """Asks the user if they want to continue repotting, ends program gracefully if they do not"""
     quit_or_continue=input()
     if quit_or_continue.lower() == 'e':
-        end(arduino_for_xy_movement, arduino_for_arm_movement)
+        end(frame_arduino, toolhead_arduino)
 
-def test_trays(tray_1, tray_2, arduino_for_xy_movement, arduino_for_arm_movement):
+def test_trays(tray_1: Tray, tray_2: Tray, frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
     '''
     Compares the sizes of the two trays, warns the user if the size difference is greater
     than 5% error (which may indicate a faulty json file)
@@ -77,13 +77,13 @@ def test_trays(tray_1, tray_2, arduino_for_xy_movement, arduino_for_arm_movement
         print("Warning: the json files for your trays suggest that they are"
               "different widths, you may have an error in your json file\n"
               "Press e to end and any other key to continue")
-        ask_to_quit(arduino_for_xy_movement, arduino_for_arm_movement)
+        ask_to_quit(frame_arduino, toolhead_arduino)
     if (abs(length_1-length_2)/length_1) > 0.05:
         print("Warning: the json files for your trays suggest that they are "
               "different lengths, you may have an error in your json file\n"
               "Press e to end and any other key to continue")
 
-def transplant(source_tray, destination_tray, arduino_for_xy_movement, arduino_for_arm_movement):
+def transplant(source_tray: Tray, destination_tray: Tray, frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
     '''
     Compares the sizes of the two trays, warns the user if they are different
     sizes (which may indicate a faulty json file)
@@ -101,18 +101,18 @@ def transplant(source_tray, destination_tray, arduino_for_xy_movement, arduino_f
             if source_hole == source_tray.get_number_of_holes():
                 print("Tray is empty - Press 'e' to end repotting or any "
                       "other key to continue after tray is replaced\n")
-                ask_to_quit(arduino_for_xy_movement, arduino_for_arm_movement)
+                ask_to_quit(frame_arduino, toolhead_arduino)
                 source_hole = 0
             elif destination_hole == destination_tray.get_number_of_holes():
                 print("Tray is full - Press 'e' to end repotting or any "
                       "other key to continue after tray is replaced\n")
-                ask_to_quit(arduino_for_xy_movement, arduino_for_arm_movement)
+                ask_to_quit(frame_arduino, toolhead_arduino)
                 destination_hole = 0
             else:
                 try:
                     repot_single_plant(source_tray.ith_hole_location(source_hole),
                                        destination_tray.ith_hole_location(destination_hole), 
-                                       arduino_for_xy_movement, arduino_for_arm_movement)
+                                       frame_arduino, toolhead_arduino)
                 except ArduinoError:
                     shut_down()
                 source_hole += 1
