@@ -1,7 +1,7 @@
 """Module contains vertical arduino class"""
-from arduino import Arduino
-import serial.tools.list_ports
 import time
+import serial.tools.list_ports
+from arduino import Arduino
 from gui import GUI
 
 
@@ -35,19 +35,19 @@ class ToolheadArduino(Arduino):
 
 
     mm_per_motor_step = 1
-    arduinoConnection = None
+    arduino_connection = None
     serial_number = 42069
     gui = None
 
 
     def __init__(self, mm_per_motor_step:int, gui:GUI):
-        for arduino_port in serial.tools.list_ports.comports():
-            if int(self.serial_number) == int(arduino_port.serial_number):
-                self.arduinoConnection = serial.Serial(port=arduino_port.device, baudrate=9600, timeout=.1)
-                gui.toolhead_arduino_label(arduino_port.device)
+        for port in serial.tools.list_ports.comports():
+            if int(self.serial_number) == int(port.serial_number):
+                self.arduino_connection = serial.Serial(port.device, baudrate=9600, timeout=.1)
+                gui.toolhead_arduino_label(port.device)
         self.mm_per_motor_step = mm_per_motor_step
         self.gui = gui
-        if self.arduinoConnection == None:
+        if self.arduino_connection is None:
             gui.toolhead_arduino_label("Arduino not connected")
         else:
             self.wake_up()
@@ -60,12 +60,12 @@ class ToolheadArduino(Arduino):
         """opens the cup-grasp and lets the plant fall"""
         #TODO actually signal arduino
         self.gui.update_status("Toolhead releasing plant")
-        #TODO in the actual robot, the toolhead will wait until getting a response, but fur now we have a sleep
+        #TODO make it so that rather than sleep you wait for a response
         time.sleep(0.2)
 
     def grab_plant(self):
         """closes the cup-grasp to hold the plant"""
         #TODO actually signal arduino
         self.gui.update_status("Toolhead grabbing plant")
-        #TODO in the actual robot, the toolhead will wait until getting a response, but fur now we have a sleep
+        #TODO make it so that rather than sleep you wait for a response
         time.sleep(0.2)

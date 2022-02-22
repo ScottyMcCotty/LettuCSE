@@ -1,7 +1,8 @@
-from distutils import archive_util
-from arduino import Arduino
-import serial
+"""This module contains the Frame Arduino class which is a child of the Arduino class"""
 import time
+import serial as s
+from arduino import Arduino
+
 
 from gui import GUI
 
@@ -32,41 +33,38 @@ class FrameArduino(Arduino):
     """
 
 
-    mm_per_motor_step = 1 
+    mm_per_motor_step = 1
     serial_number = 55838343733351510170
-    arduinoConnection = None
+    arduino_connection = None
     gui = None
 
 
     def __init__(self, mm_per_motor_step:int, gui:GUI):
-        for arduino_port in serial.tools.list_ports.comports():
-            if int(self.serial_number) == int(arduino_port.serial_number):
-                self.arduinoConnection = serial.Serial(port=arduino_port.device, baudrate=9600, timeout=.1)
-                gui.frame_arduino_label(arduino_port.device)
+        for port in s.tools.list_ports.comports():
+            if int(self.serial_number) == int(port.serial_number):
+                self.arduino_connection = s.Serial(port.device, baudrate=9600, timeout=.1)
+                gui.frame_arduino_label(port.device)
         self.mm_per_motor_step = mm_per_motor_step
         self.gui = gui
-        if self.arduinoConnection == None:
+        if self.arduino_connection is None:
             gui.frame_arduino_label("Arduino not connected")
         else:
             self.wake_up()
 
 
     def wake_up(self):
-        """sends a basic fixed command to the Arduino"""
-        dummyInput = "0 0"
-        self.arduinoConnection.write(bytes(dummyInput, 'utf-8'))
+        """sends a wakes up the arduino by signalling it"""
+        self.arduino_connection.write(bytes("0 0", 'utf-8'))
 
     def move_toolhead(self, coords):
         """moves the arm to the given coordinates"""
-        x = round(coords[0]/self.mm_per_motor_step)
-        y = round(coords[1]/self.mm_per_motor_step)
-        self.gui.update_status("Horizontal toolhead moving to (" + str(x) + ", " + str(y) + ")")
+        x_coord = round(coords[0]/self.mm_per_motor_step)
+        y_coord = round(coords[1]/self.mm_per_motor_step)
+        self.gui.update_status("Toolhead moving to (" + str(x_coord) + ", " + str(y_coord) + ")")
 
-        input = str(x) + " " + str(y)
+        if self.arduino_connection:
+            self.arduino_connection.write(bytes(str(x_coord) + " " + str(y_coord), 'utf-8'))
+            self.arduino_connection.readline()
 
-        if self.arduinoConnection:
-            self.arduinoConnection.write(bytes(input, 'utf-8'))
-            self.arduinoConnection.readline()
-
-        #TODO in the actual robot, the toolhead will wait until getting a response, but fur now we have a sleep
-        time.sleep(0.5)
+        #TODO make it so that rather than sleep you wait for a response
+        time.sleep(0.2)

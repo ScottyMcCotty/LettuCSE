@@ -24,7 +24,7 @@ class Tray:
     long_axis_distance_to_edge: float
         distance between edge of the board and first row of holes
     extra_gap: float
-        distance length-wise between the clumps of holes   
+        distance length-wise between the clumps of holes
 
     Methods
     -------
@@ -51,8 +51,9 @@ class Tray:
 
     def __init__(self, json_link, shift_right=0):
         self.json_link = json_link
-        tray_data = open(json_link)
+        tray_data = open(json_link, encoding='UTF-8')
         tray_values = json.load(tray_data)
+        tray_data.close()
 
         self.hole_side_length = tray_values['hole_size']
         self.short_axis_distance = tray_values['short_axis_distance']
