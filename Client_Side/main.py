@@ -6,16 +6,9 @@ from frame_arduino import FrameArduino
 from toolhead_arduino import ToolheadArduino
 
 def end(frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
-    '''Returns arm to the origin, exits without error'''
+    '''Returns arm to the origin'''
     frame_arduino.move_toolhead((0,0))
     toolhead_arduino.release_plant()
-    print("Repotting Completed")
-    exit(0)
-
-def shut_down() -> None:
-    '''Quits program without returning main arm to the origin, program returns an error'''
-    print("EMERGENCY SHUTDOWN")
-    exit(1)
 
 def repot_single_plant(source: Tray, destination: Tray, frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
     '''
@@ -35,13 +28,11 @@ def repot_single_plant(source: Tray, destination: Tray, frame_arduino: FrameArdu
 
 
 def wait_for_tray_replace(main_button:Button, stop_trigger:IntVar, gui:GUI):
-    main_button["state"] = NORMAL
-    main_button["text"] = "Tray has been replaced, continue transplanting"
+    gui.set_buttons_to_waiting_for_tray_replacement()
     gui.update_status("Tray is full - replace tray or end program")
     main_button.wait_variable(stop_trigger)
-    main_button["text"] = "Transplanting in Progress"
 
-def transplant(source: Tray, destination: Tray, frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino, main_button:Button, stop:Button, gui:GUI) -> None:
+def transplant(source: Tray, destination: Tray, frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino, gui:GUI) -> None:
     '''
     Compares the sizes of the two trays, warns the user if they are different
     sizes (which may indicate a faulty json file)
@@ -57,19 +48,18 @@ def transplant(source: Tray, destination: Tray, frame_arduino: FrameArduino, too
     stop_trigger = IntVar()
     while gui.proceed:
         if source_hole == source.get_number_of_holes():
-            wait_for_tray_replace(main_button, stop_trigger, gui)
+            wait_for_tray_replace(gui.main_button, stop_trigger, gui)
             source_hole = 0
         elif destination_hole == destination.get_number_of_holes():
-            wait_for_tray_replace(main_button, stop_trigger, gui)
+            wait_for_tray_replace(gui.main_button, stop_trigger, gui)
             destination_hole = 0
         else:
-            main_button["state"] = DISABLED
-            main_button["text"] = "Transplanting in Progress"
+            gui.set_buttons_to_in_transplant_stage()
             repot_single_plant(source.ith_hole_location(source_hole),destination.ith_hole_location(destination_hole), frame_arduino, toolhead_arduino)
             source_hole += 1
             destination_hole += 1
-    main_button["state"] = NORMAL
-    main_button["text"] = "Click Here to Start Transplanting"
+    gui.set_buttons_to_pre_transplant_stage()
+    end(frame_arduino, toolhead_arduino)
      
 
 def main():
@@ -79,8 +69,8 @@ def main():
     destination_tray = Tray('sparse_tray.json', source_tray.get_width())
     frame_arduino = FrameArduino(0.14, gui)
     toolhead_arduino = ToolheadArduino(0.14, gui)
-    stop_button = gui.configure_stop_button()
-    gui.configure_main_button(transplant, source_tray, destination_tray, frame_arduino, toolhead_arduino, stop_button)
+    gui.configure_stop_button()
+    gui.configure_main_button(transplant, source_tray, destination_tray, frame_arduino, toolhead_arduino)
     gui.loop()
 
 

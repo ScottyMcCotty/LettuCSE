@@ -36,7 +36,7 @@ class ToolheadArduino(Arduino):
 
     mm_per_motor_step = 1
     arduinoConnection = None
-    serial_number = 11111111111111111
+    serial_number = 42069
     gui = None
 
 
@@ -61,11 +61,11 @@ class ToolheadArduino(Arduino):
         #TODO actually signal arduino
         self.gui.update_status("Toolhead releasing plant")
         #TODO in the actual robot, the toolhead will wait until getting a response, but fur now we have a sleep
-        time.sleep(0.5)
+        time.sleep(0.2)
 
     def grab_plant(self):
         """closes the cup-grasp to hold the plant"""
         #TODO actually signal arduino
         self.gui.update_status("Toolhead grabbing plant")
         #TODO in the actual robot, the toolhead will wait until getting a response, but fur now we have a sleep
-        time.sleep(0.5)
+        time.sleep(0.2)
