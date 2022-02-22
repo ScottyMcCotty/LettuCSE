@@ -130,25 +130,6 @@ class Tray:
         distances = self.short_axis_distance*(self.columns-1)
         return edges + holes + distances
 
-    def get_length(self):
-        '''
-            Finds the length of the tray from the given JSON file
-
-            Parameters:
-                    None
-
-            Parameters:
-                    None
-
-            Returns:
-                    (int): tray length in milimeters
-        '''
-        edges = self.long_axis_distance_to_edge*2
-        holes = self.hole_side_length*self.rows
-        regular_distances = self.long_axis_distance*(self.rows-(self.rows//self.rows_between_gap))
-        gaps = self.extra_gap*(self.rows//self.rows_between_gap-1)
-        return edges + holes + regular_distances + gaps
-
     def get_number_of_holes(self) -> int:
         """Returns total number of holes in tray"""
         return self.columns*self.rows
