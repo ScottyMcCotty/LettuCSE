@@ -7,7 +7,8 @@ from arduino_error import ArduinoError
 # GLOBAL VARIABLE: COM ports used for the frame & toolhead Arduinos (Liam)
 # NOTE: Will need to be updated later, either from user input
 #       or the input JSON file (if possible)
-COM_PORT_FRAME =    "COM5"
+# COM_PORT_FRAME =    "COM5"
+COM_PORT_FRAME =    "/dev/cu.usbserial-1410"
 COM_PORT_TOOLHEAD = "COM4"
 
 def end(arduino_for_xy_movement, arduino_for_arm_movement):

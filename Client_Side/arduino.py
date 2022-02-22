@@ -50,7 +50,8 @@ class Arduino:
         print("Attempting to establish a connection on port '" + comPort + "'\n")
         
         try:
-            self.arduinoConnection = serial.Serial(port=comPort, baudrate=9600, timeout=.1)
+            # self.arduinoConnection = serial.Serial(port=comPort, baudrate=9600, timeout=.1)
+            self.arduinoConnection = serial.Serial(port=comPort, baudrate=115200, timeout=.1)
         except:
             print("ERROR: Could not establish connection to Arduino at port " + comPort)
             print("Double check your COM port settings and try again")

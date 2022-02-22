@@ -43,7 +43,7 @@ class FrameArduino(Arduino):
         y = round(coords[1]/self.mm_per_motor_step)
         print("Horizontal toolhead moving to (" + str(x) + ", " + str(y) + ")")
 
-        input = str(x) + " " + str(y)
+        input = str(x) + " " + str(y) + "\n"
 
         self.arduinoConnection.write(bytes(input, 'utf-8'))
 
@@ -52,5 +52,13 @@ class FrameArduino(Arduino):
         #     Arduino shouldn't receive a ton of
         #     commands each second since the arm
         #     has to move
-        time.sleep(0.05)
-        value = self.arduinoConnection.readline()
+        # time.sleep(0.05)
+
+        # Blocking command
+        while(True):
+            
+            value = self.arduinoConnection.readline().decode("utf-8")
+            # print(f"Received from arduino: '{value}'")
+            if "Done" in value:
+                break
+
