@@ -1,7 +1,6 @@
 """This module contains the Frame Arduino class which is a child of the Arduino class"""
 import time
 from arduino import Arduino
-from gui import GUI
 
 class FrameArduino(Arduino):
 
@@ -19,7 +18,7 @@ class FrameArduino(Arduino):
 
     Methods
     -------
-    __init__(mm_per_motor_step, gui):
+    __init__(mm_per_motor_step):
         calls the parent init, and then lists the connected port in
         the frame arduino section of the GUI
     move_toolhead(coords):
@@ -27,9 +26,11 @@ class FrameArduino(Arduino):
     """
 
 
-    serial_number = 42069
+    serial_number = 55838343733351510170
+    port = "Arduino not connected"
+    status = ""
 
-    def __init__(self, mm_per_motor_step:int, gui:GUI):
+    def __init__(self, mm_per_motor_step:int):
         '''
             Initialize the arduino and then list the name of the port connected to the
             arduino in the toolhead port label on the gui
@@ -37,15 +38,11 @@ class FrameArduino(Arduino):
             Parameters:
                     mm_per_motor_step : int
                         the number of milimeters the arm will move during each motor step
-                    gui (GUI): the tkinter window object that everything is displayed on
             Returns:
                     None
         '''
-        super().__init__(mm_per_motor_step, gui)
-        if self.arduino_connection is None:
-            gui.frame_arduino_label("Arduino not connected")
-        else:
-            gui.frame_arduino_label(self.arduino_port)
+        super().__init__(mm_per_motor_step)
+        if self.arduino_connection is not None:
             super().wake_up()
 
     def move_toolhead(self, coords):
@@ -67,7 +64,7 @@ class FrameArduino(Arduino):
             self.arduino_connection.write(bytes(str(x_coord) + " " + str(y_coord), 'utf-8'))
             self.arduino_connection.readline()
 
-        self.gui.update_status("Toolhead moving to (" + str(x_coord) + ", " + str(y_coord) + ")")
+        self.status = "Toolhead moving to (" + str(x_coord) + ", " + str(y_coord) + ")"
 
         #make it so that rather than sleep you wait for a response
         time.sleep(0.5)

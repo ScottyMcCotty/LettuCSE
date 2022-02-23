@@ -1,7 +1,6 @@
 """Module contains vertical arduino class"""
 import time
 from arduino import Arduino
-from gui import GUI
 
 
 class ToolheadArduino(Arduino):
@@ -34,10 +33,12 @@ class ToolheadArduino(Arduino):
     """
 
 
-    serial_number = 55838343733351510170
+    serial_number = 42069
+    port = "Arduino not connected"
+    status = ""
 
 
-    def __init__(self, mm_per_motor_step:int, gui:GUI):
+    def __init__(self, mm_per_motor_step:int):
         '''
             Initialize the arduino and then list the name of the port connected to the
             arduino in the toolhead port label on the gui
@@ -49,17 +50,15 @@ class ToolheadArduino(Arduino):
             Returns:
                     None
         '''
-        super().__init__(mm_per_motor_step, gui)
-        if self.arduino_connection is None:
-            gui.toolhead_arduino_label("Arduino not connected")
-        else:
-            gui.toolhead_arduino_label(self.arduino_port)
+        super().__init__(mm_per_motor_step)
+        if self.arduino_connection is not None:
+            self.port_label = self.port
             super().wake_up()
 
     def release_plant(self):
         """opens the cup-grasp and lets the plant fall"""
         #actually signal arduino
-        self.gui.update_status("Toolhead releasing plant")
+        self.status = "Toolhead releasing plant"
 
         #make it so that rather than sleep you wait for a response
         time.sleep(0.1)
@@ -67,7 +66,7 @@ class ToolheadArduino(Arduino):
     def grab_plant(self):
         """closes the cup-grasp to hold the plant"""
         #actually signal arduino
-        self.gui.update_status("Toolhead grabbing plant")
+        self.status = "Toolhead grabbing plant"
 
         #make it so that rather than sleep you wait for a response
         time.sleep(0.1)

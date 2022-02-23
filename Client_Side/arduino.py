@@ -2,7 +2,6 @@
 from serial import Serial
 from serial.tools import list_ports
 
-from gui import GUI
 class Arduino:
 
     """
@@ -15,7 +14,7 @@ class Arduino:
     arduino_connection : Serial connection object
         connection to one of the arduinos, or a None object
         if there is no connection
-    arduino_port : int
+    port : int
         the unique port that the arduino can connect with
     gui : Tkinter object
         The main gui window
@@ -32,17 +31,14 @@ class Arduino:
 
     arduino_connection = None
     serial_number = None
-    arduino_port = None
-    gui = None
+    port = None
 
-    def __init__(self, mm_per_motor_step:int, gui:GUI):
+    def __init__(self, mm_per_motor_step:int):
         for port in list_ports.comports():
             if int(self.serial_number) == int(port.serial_number):
                 self.arduino_connection = Serial(port.device, baudrate=9600, timeout=.1)
-                self.arduino_port = port.device
+                self.port = port.device
         self.mm_per_motor_step = mm_per_motor_step
-        self.gui = gui
-        print(gui)
 
     def wake_up(self):
         """signals the arduino to wake it up"""

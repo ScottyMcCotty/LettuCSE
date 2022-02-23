@@ -2,6 +2,9 @@
 import tkinter as tk
 import threading
 
+from frame_arduino import FrameArduino
+from toolhead_arduino import ToolheadArduino
+
 class GUI:
     """
     A class to handle the graphical user interface
@@ -49,12 +52,15 @@ class GUI:
     """
 
     window = tk.Tk()
-    previous_label = None
+    previous_toolhead_status = ""
+    previous_frame_status = ""
     continue_transplanting = True
     stop_button = None
     start_button = None
+    toolhead_arduino = None
+    frame_arduino = None
 
-    def __init__(self):
+    def __init__(self, frame_arduino:FrameArduino, toolhead_arduino:ToolheadArduino):
         """
             Initializes the main window (self.window),
             the stop button (self.stop_button)
@@ -64,7 +70,12 @@ class GUI:
         self.window.geometry("1000x600")
         self.window.title("Lettuce Transplanter")
         self.window.configure(bg= 'green')
+        self.toolhead_arduino = toolhead_arduino
+        self.frame_arduino = frame_arduino
+        self.label_frame_arduino_port()
+        self.label_toolhead_arduino_port()
         self.configure_stop_button()
+        
 
         instructions_label = tk.Label(text="Welcome to the LettuCSE Lettuce Transplanter\n"
         "It was designed and implemented by Martin Orosa, Scott Ballinger, Mira Welner, "
@@ -72,23 +83,33 @@ class GUI:
         bg='green')
         instructions_label.place(relx = 0.5, rely = 0.1, anchor=tk.CENTER)
 
-    def update_status(self, status_message:str) -> None:
+    def update_frame_status(self) -> None:
         '''
-            Take the status_message and displays it in the center of the gui
+            Gets the frame status from the arduino and displays it in the frame staus section
             Parameters:
-                    status_message (str): the status message to be displayed
-
+                    None
             Returns:
                     None
         '''
+        if self.previous_frame_status is not self.frame_arduino.status:
+            update_message = tk.Label(text="Frame Arduino Status: " + self.frame_arduino.status, bg='green')
+            update_message.place(relx = 0.5, rely = 0.5, anchor=tk.CENTER)
+            self.previous_frame_status = self.frame_arduino.status
 
-        update_message = tk.Label(text=status_message, bg='green')
-        update_message.place(relx = 0.5, rely = 0.7, anchor=tk.CENTER)
-        if self.previous_label:
-            self.previous_label.destroy()
-        self.previous_label=update_message
+    def update_toolhead_status(self) -> None:
+        '''
+            Gets the frame status from the arduino and displays it in the frame staus section
+            Parameters:
+                    None
+            Returns:
+                    None
+        '''
+        if self.previous_toolhead_status is not self.toolhead_arduino.status:
+            update_message = tk.Label(text="Toolhead Arduino Status: " + self.toolhead_arduino.status, bg='green')
+            update_message.place(relx = 0.5, rely = 0.6, anchor=tk.CENTER)
+            self.previous_toolhead_status = self.toolhead_arduino.status
 
-    def frame_arduino_label(self, port:str) -> None:
+    def label_frame_arduino_port(self) -> None:
         '''
             Displays in the bottom right corner which port the toolhead arduino is connected on
             Parameters:
@@ -97,10 +118,10 @@ class GUI:
             Returns:
                     None
         '''
-        frame_label = tk.Label(self.window,text = "Frame arduino port: " + port, bg="green")
+        frame_label = tk.Label(self.window,text = "Frame arduino port: " + self.frame_arduino.port, bg="green")
         frame_label.place(relx = 0.0, rely = 1.0, anchor ='sw')
 
-    def toolhead_arduino_label(self, port:str) -> None:
+    def label_toolhead_arduino_port(self) -> None:
         '''
             Displays in the bottom right corner which port the toolhead arduino is connected on
             Parameters:
@@ -109,10 +130,10 @@ class GUI:
             Returns:
                     None
         '''
-        toolhead_label = tk.Label(self.window,text = "Toolhead arduino port: " + port, bg="green")
+        toolhead_label = tk.Label(self.window,text = "Toolhead arduino port: " + self.toolhead_arduino.port, bg="green")
         toolhead_label.place(relx = 1.0, rely = 1.0, anchor ='se')
 
-    def make_start_button(self, transplant, source, destination, frame_arduino, toolhead_arduino) -> None:
+    def make_start_button(self, transplant_robot) -> None:
         '''
             The main button must spawn another thread so it can run simultaniously to the gui.
             It also must have the transplanting function from the main file fed into it, the
@@ -130,9 +151,7 @@ class GUI:
                     None
         '''
         start_button = tk.Button(self.window,  text="Start Transplanting",
-            command=lambda:threading.Thread(target=transplant,
-            args=(source, destination, frame_arduino, toolhead_arduino, self))
-            .start())
+            command=lambda:threading.Thread(target=transplant_robot.transplant).start())
         start_button.place(relx = 0.5, rely = 0.3, anchor=tk.CENTER)
         self.start_button = start_button
 
@@ -140,6 +159,9 @@ class GUI:
         """Signals to the transplant function in main that the transplanting should finish"""
         self.continue_transplanting = False
         self.stop_button["state"] = tk.DISABLED
+
+    def stop_waiting(self) -> None:
+        self.stop_waiting = 1
 
     def configure_stop_button(self) -> None:
         """Create the second button that stops the transplanting"""
@@ -154,10 +176,11 @@ class GUI:
     def set_buttons_to_pre_transplant_stage(self) -> None:
         """Configures the buttons such that the user can only begin transplanting"""
         self.continue_transplanting = True
-        self.start_button["state"] = tk.NORMAL
-        self.start_button["text"] = "Start Transplanting"
-        self.stop_button["state"] = tk.DISABLED
         self.stop_button["text"] = "End Transplanting"
+        self.stop_button["state"] = tk.DISABLED
+        self.start_button["text"] = "Start Transplanting"
+        self.start_button["state"] = tk.NORMAL
+        
 
     def set_buttons_to_in_transplant_stage(self) -> None:
         """Configures the buttons such that the user can only stop transplanting"""
@@ -173,6 +196,11 @@ class GUI:
         self.stop_button["state"] = tk.NORMAL
         self.stop_button["text"] = "End Transplanting"
 
-    def display_window(self)-> None:
+
+    def display_window_frame(self)-> None:
         """Displays the GUI window - while this is running, everything in the thread stops"""
-        self.window.mainloop()
+        self.update_frame_status()
+        self.update_toolhead_status()
+        self.window.update_idletasks()
+        self.window.update()
+        
