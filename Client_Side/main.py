@@ -5,6 +5,13 @@ from tray import Tray
 from frame_arduino import FrameArduino
 from toolhead_arduino import ToolheadArduino
 
+# GLOBAL VARIABLE: COM ports used for the frame & toolhead Arduinos (Liam)
+# NOTE: Will need to be updated later, either from user input
+#       or the input JSON file (if possible)
+# COM_PORT_FRAME =    "COM5"
+COM_PORT_FRAME =    "/dev/cu.usbserial-1410"
+COM_PORT_TOOLHEAD = "COM4"
+
 def end(frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
     '''Returns arm to the origin'''
     frame_arduino.move_toolhead((0,0))

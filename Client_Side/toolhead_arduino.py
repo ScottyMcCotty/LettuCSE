@@ -52,9 +52,17 @@ class ToolheadArduino(Arduino):
         else:
             self.wake_up()
 
+    def lower_toolhead(self):
+        """lowers the toolhead arm to the plant"""
+        #TODO actually signal arduino
+        # print("Vertical toolhead lowering")
+        return
+
     def wake_up(self):
         """sends a basic fixed command to the Arduino"""
         #TODO actually signal arduino
+        # print("Vertical toolhead raising")
+        return
 
     def release_plant(self):
         """opens the cup-grasp and lets the plant fall"""
@@ -62,6 +70,7 @@ class ToolheadArduino(Arduino):
         self.gui.update_status("Toolhead releasing plant")
         #TODO make it so that rather than sleep you wait for a response
         time.sleep(0.2)
+        # print("Vertical toolhead opening")
 
     def grab_plant(self):
         """closes the cup-grasp to hold the plant"""
@@ -69,3 +78,5 @@ class ToolheadArduino(Arduino):
         self.gui.update_status("Toolhead grabbing plant")
         #TODO make it so that rather than sleep you wait for a response
         time.sleep(0.2)
+        # print("Vertical toolhead closing")
+

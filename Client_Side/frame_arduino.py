@@ -58,13 +58,32 @@ class FrameArduino(Arduino):
 
     def move_toolhead(self, coords):
         """moves the arm to the given coordinates"""
-        x_coord = round(coords[0]/self.mm_per_motor_step)
-        y_coord = round(coords[1]/self.mm_per_motor_step)
-        self.gui.update_status("Toolhead moving to (" + str(x_coord) + ", " + str(y_coord) + ")")
+        #TODO actually signal arduino    
+        x = round(coords[0]/self.mm_per_motor_step)
+        y = round(coords[1]/self.mm_per_motor_step)
+        print("Horizontal toolhead moving to (" + str(x) + ", " + str(y) + ")")
 
-        if self.arduino_connection:
-            self.arduino_connection.write(bytes(str(x_coord) + " " + str(y_coord), 'utf-8'))
-            self.arduino_connection.readline()
+        input = str(x) + " " + str(y) + "\n"
 
-        #TODO make it so that rather than sleep you wait for a response
-        time.sleep(0.2)
+        self.arduinoConnection.write(bytes(input, 'utf-8'))
+
+        # old code from graphical_user_interface branch, delete?
+        #if self.arduino_connection:
+        #    self.arduino_connection.write(bytes(str(x_coord) + " " + str(y_coord), 'utf-8'))
+        #    self.arduino_connection.readline()
+
+        #TODO time.sleep is needed for testing, but
+        #     in an actual running environment the
+        #     Arduino shouldn't receive a ton of
+        #     commands each second since the arm
+        #     has to move
+        # time.sleep(0.05)
+
+        # Blocking command
+        while(True):
+            
+            value = self.arduinoConnection.readline().decode("utf-8")
+            # print(f"Received from arduino: '{value}'")
+            if "Done" in value:
+                break
+
