@@ -17,9 +17,8 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="serial.html">serial</a><br>
-</td><td width="25%" valign=top><a href="time.html">time</a><br>
-</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="time.html">time</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -50,20 +49,17 @@ A&nbsp;class&nbsp;to&nbsp;represent&nbsp;the&nbsp;<a href="arduino.html#Arduino"
 &nbsp;<br>
 Attributes<br>
 ----------<br>
-mm_per_motor_step&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;number&nbsp;of&nbsp;milimeters&nbsp;the&nbsp;arm&nbsp;will&nbsp;move&nbsp;during&nbsp;each&nbsp;motor&nbsp;step<br>
-arduinoConnection&nbsp;:&nbsp;serial<br>
-&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;connection&nbsp;between&nbsp;the&nbsp;program&nbsp;and&nbsp;the&nbsp;<a href="arduino.html#Arduino">Arduino</a><br>
 serial_number&nbsp;:&nbsp;int<br>
 &nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;serial&nbsp;number&nbsp;of&nbsp;the&nbsp;arduino&nbsp;that&nbsp;is&nbsp;being&nbsp;used&nbsp;for&nbsp;the&nbsp;toolhead<br>
 &nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;you&nbsp;change&nbsp;the&nbsp;toolhead&nbsp;arduino&nbsp;you&nbsp;will&nbsp;have&nbsp;to&nbsp;change&nbsp;this&nbsp;number<br>
 &nbsp;<br>
 Methods<br>
 -------<br>
-<a href="#FrameArduino-wake_up">wake_up</a>():<br>
-&nbsp;&nbsp;&nbsp;&nbsp;sends&nbsp;a&nbsp;basic&nbsp;fixed&nbsp;command&nbsp;to&nbsp;the&nbsp;<a href="arduino.html#Arduino">Arduino</a>&nbsp;to&nbsp;wake&nbsp;it&nbsp;up<br>
+<a href="#FrameArduino-__init__">__init__</a>(mm_per_motor_step,&nbsp;gui):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;calls&nbsp;the&nbsp;parent&nbsp;init,&nbsp;and&nbsp;then&nbsp;lists&nbsp;the&nbsp;connected&nbsp;port&nbsp;in<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;frame&nbsp;arduino&nbsp;section&nbsp;of&nbsp;the&nbsp;GUI<br>
 <a href="#FrameArduino-move_toolhead">move_toolhead</a>(coords):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;moves&nbsp;the&nbsp;arm&nbsp;to&nbsp;the&nbsp;given&nbsp;coordinates<br>&nbsp;</tt></td></tr>
+&nbsp;&nbsp;&nbsp;&nbsp;moves&nbsp;the&nbsp;arm&nbsp;to&nbsp;the&nbsp;given&nbsp;coordinates,&nbsp;where&nbsp;a&nbsp;tray&nbsp;hole&nbsp;should&nbsp;be&nbsp;found<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="frame_arduino.html#FrameArduino">FrameArduino</a></dd>
@@ -72,21 +68,32 @@ Methods<br>
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="FrameArduino-__init__"><strong>__init__</strong></a>(self, mm_per_motor_step: int, gui: gui.GUI)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+<dl><dt><a name="FrameArduino-__init__"><strong>__init__</strong></a>(self, mm_per_motor_step: int, gui: gui.GUI)</dt><dd><tt>Initialize&nbsp;the&nbsp;arduino&nbsp;and&nbsp;then&nbsp;list&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;port&nbsp;connected&nbsp;to&nbsp;the<br>
+arduino&nbsp;in&nbsp;the&nbsp;toolhead&nbsp;port&nbsp;label&nbsp;on&nbsp;the&nbsp;gui<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mm_per_motor_step&nbsp;:&nbsp;int<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;number&nbsp;of&nbsp;milimeters&nbsp;the&nbsp;arm&nbsp;will&nbsp;move&nbsp;during&nbsp;each&nbsp;motor&nbsp;step<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gui&nbsp;(GUI):&nbsp;the&nbsp;tkinter&nbsp;window&nbsp;object&nbsp;that&nbsp;everything&nbsp;is&nbsp;displayed&nbsp;on<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
 
-<dl><dt><a name="FrameArduino-move_toolhead"><strong>move_toolhead</strong></a>(self, coords)</dt><dd><tt>moves&nbsp;the&nbsp;arm&nbsp;to&nbsp;the&nbsp;given&nbsp;coordinates</tt></dd></dl>
-
-<dl><dt><a name="FrameArduino-wake_up"><strong>wake_up</strong></a>(self)</dt><dd><tt>sends&nbsp;a&nbsp;wakes&nbsp;up&nbsp;the&nbsp;arduino&nbsp;by&nbsp;signalling&nbsp;it</tt></dd></dl>
+<dl><dt><a name="FrameArduino-move_toolhead"><strong>move_toolhead</strong></a>(self, coords)</dt><dd><tt>Moves&nbsp;the&nbsp;arm&nbsp;to&nbsp;the&nbsp;given&nbsp;coordinates<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coords&nbsp;:&nbsp;tuple(int)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;x&nbsp;and&nbsp;y&nbsp;location&nbsp;that&nbsp;the&nbsp;arm&nbsp;is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intending&nbsp;to&nbsp;move&nbsp;to,&nbsp;in&nbsp;milimeters<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
 
 <hr>
 Data and other attributes defined here:<br>
-<dl><dt><strong>arduino_connection</strong> = None</dl>
+<dl><dt><strong>serial_number</strong> = 42069</dl>
 
-<dl><dt><strong>gui</strong> = None</dl>
-
-<dl><dt><strong>mm_per_motor_step</strong> = 1</dl>
-
-<dl><dt><strong>serial_number</strong> = 55838343733351510170</dl>
+<hr>
+Methods inherited from <a href="arduino.html#Arduino">arduino.Arduino</a>:<br>
+<dl><dt><a name="FrameArduino-wake_up"><strong>wake_up</strong></a>(self)</dt><dd><tt>signals&nbsp;the&nbsp;arduino&nbsp;to&nbsp;wake&nbsp;it&nbsp;up</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="arduino.html#Arduino">arduino.Arduino</a>:<br>
@@ -96,5 +103,13 @@ Data descriptors inherited from <a href="arduino.html#Arduino">arduino.Arduino</
 <dl><dt><strong>__weakref__</strong></dt>
 <dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
 </dl>
+<hr>
+Data and other attributes inherited from <a href="arduino.html#Arduino">arduino.Arduino</a>:<br>
+<dl><dt><strong>arduino_connection</strong> = None</dl>
+
+<dl><dt><strong>arduino_port</strong> = None</dl>
+
+<dl><dt><strong>gui</strong> = None</dl>
+
 </td></tr></table></td></tr></table>
 </body></html>

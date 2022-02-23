@@ -1,6 +1,5 @@
 """Module contains vertical arduino class"""
 import time
-import serial.tools.list_ports
 from arduino import Arduino
 from gui import GUI
 
@@ -25,8 +24,9 @@ class ToolheadArduino(Arduino):
 
     Methods
     -------
-    wake_up():
-        sends a basic fixed command to the Arduino to wake it up
+    __init__(mm_per_motor_step, gui):
+        calls the parent init, and then lists the connected port in
+        the toolhead arduino section of the GUI
     grab_plant():
         lowers the toolhead arm to the plant and grabs it
     release_plant():
@@ -34,49 +34,40 @@ class ToolheadArduino(Arduino):
     """
 
 
-    mm_per_motor_step = 1
-    arduino_connection = None
-    serial_number = 42069
-    gui = None
+    serial_number = 55838343733351510170
 
 
     def __init__(self, mm_per_motor_step:int, gui:GUI):
-        for port in serial.tools.list_ports.comports():
-            if int(self.serial_number) == int(port.serial_number):
-                self.arduino_connection = serial.Serial(port.device, baudrate=9600, timeout=.1)
-                gui.toolhead_arduino_label(port.device)
-        self.mm_per_motor_step = mm_per_motor_step
-        self.gui = gui
+        '''
+            Initialize the arduino and then list the name of the port connected to the
+            arduino in the toolhead port label on the gui
+
+            Parameters:
+                    mm_per_motor_step : int
+                        the number of milimeters the arm will move during each motor step
+                    gui (GUI): the tkinter window object that everything is displayed on
+            Returns:
+                    None
+        '''
+        super().__init__(mm_per_motor_step, gui)
         if self.arduino_connection is None:
             gui.toolhead_arduino_label("Arduino not connected")
         else:
-            self.wake_up()
-
-    def lower_toolhead(self):
-        """lowers the toolhead arm to the plant"""
-        #TODO actually signal arduino
-        # print("Vertical toolhead lowering")
-        return
-
-    def wake_up(self):
-        """sends a basic fixed command to the Arduino"""
-        #TODO actually signal arduino
-        # print("Vertical toolhead raising")
-        return
+            gui.toolhead_arduino_label(self.arduino_port)
+            super().wake_up()
 
     def release_plant(self):
         """opens the cup-grasp and lets the plant fall"""
-        #TODO actually signal arduino
+        #actually signal arduino
         self.gui.update_status("Toolhead releasing plant")
-        #TODO make it so that rather than sleep you wait for a response
-        time.sleep(0.2)
-        # print("Vertical toolhead opening")
+
+        #make it so that rather than sleep you wait for a response
+        time.sleep(0.1)
 
     def grab_plant(self):
         """closes the cup-grasp to hold the plant"""
-        #TODO actually signal arduino
+        #actually signal arduino
         self.gui.update_status("Toolhead grabbing plant")
-        #TODO make it so that rather than sleep you wait for a response
-        time.sleep(0.2)
-        # print("Vertical toolhead closing")
 
+        #make it so that rather than sleep you wait for a response
+        time.sleep(0.1)

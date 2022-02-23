@@ -1,48 +1,49 @@
 """Module contains the arduino class"""
+from serial import Serial
+from serial.tools import list_ports
+
+from gui import GUI
 class Arduino:
 
     """
-    A parent class for the two arduinos used in the robot
+    A parent class that represents all arduinos in the robot
 
+    ...
+
+    Attributes
+    ----------
+    arduino_connection : Serial connection object
+        connection to one of the arduinos, or a None object
+        if there is no connection
+    arduino_port : int
+        the unique port that the arduino can connect with
+    gui : Tkinter object
+        The main gui window
+
+    Methods
+    -------
+    __init__(mm_per_motor_step, gui):
+        calls the parent init, and then lists the connected port in
+        the frame arduino section of the GUI
+    wake_up():
+        moves the arm to the given coordinates, where a tray hole should be found
     """
 
-    mm_per_motor_step = 1
-    arduinoConnection = None
 
-    def dummy_command(self):
-        raise NotImplementedError("Should be overridden by child definition")
+    arduino_connection = None
+    serial_number = None
+    arduino_port = None
+    gui = None
 
-    def __init__(self, mm_per_motor_step, comPort):
-        """
-        Constructs all the necessary attributes for the Arduino object and
-        sends a dummy command to deal with the first command being lost.
-
-        Parameters
-        ----------
-            mm_per_motor_step : int
-                the number of milimeters the arm will move during each motor step
-            comPort : string
-                the COM port used by Arduino to connect to the computer
-        """
+    def __init__(self, mm_per_motor_step:int, gui:GUI):
+        for port in list_ports.comports():
+            if int(self.serial_number) == int(port.serial_number):
+                self.arduino_connection = Serial(port.device, baudrate=9600, timeout=.1)
+                self.arduino_port = port.device
         self.mm_per_motor_step = mm_per_motor_step
+        self.gui = gui
+        print(gui)
 
-        print("Attempting to establish a connection on port '" + comPort + "'\n")
-        
-        try:
-            # self.arduinoConnection = serial.Serial(port=comPort, baudrate=9600, timeout=.1)
-            self.arduinoConnection = serial.Serial(port=comPort, baudrate=115200, timeout=.1)
-        except:
-            print("ERROR: Could not establish connection to Arduino at port " + comPort)
-            print("Double check your COM port settings and try again")
-
-            #TODO   remove this option to continue in final production
-            #       this is only to allow testing 1 arduino at a time.
-            #       replace the following 5 lines with just "exit()"
-            print("Input 'c' to continue despite this (for testing), or anything else to exit")
-            userContinue = input()
-            print()
-            if userContinue != 'c':
-                exit()
-
-        self.dummy_command()
-
+    def wake_up(self):
+        """signals the arduino to wake it up"""
+        self.arduino_connection.write(bytes("0 0", 'utf-8'))

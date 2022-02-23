@@ -81,10 +81,11 @@ class GUI:
             Returns:
                     None
         '''
-        if self.previous_label:
-            self.previous_label.destroy()
+
         update_message = tk.Label(text=status_message, bg='green')
         update_message.place(relx = 0.5, rely = 0.7, anchor=tk.CENTER)
+        if self.previous_label:
+            self.previous_label.destroy()
         self.previous_label=update_message
 
     def frame_arduino_label(self, port:str) -> None:
