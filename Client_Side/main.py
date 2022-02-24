@@ -1,8 +1,9 @@
 """When run, this module makes the robot begin transplanting"""
+from tkinter import IntVar
+from gui import GUI
 from tray import Tray
 from frame_arduino import FrameArduino
 from toolhead_arduino import ToolheadArduino
-from arduino_error import ArduinoError
 
 # GLOBAL VARIABLE: COM ports used for the frame & toolhead Arduinos (Liam)
 # NOTE: Will need to be updated later, either from user input
@@ -11,30 +12,12 @@ from arduino_error import ArduinoError
 COM_PORT_FRAME =    "/dev/cu.usbserial-1410"
 COM_PORT_TOOLHEAD = "COM4"
 
-def end(arduino_for_xy_movement, arduino_for_arm_movement):
-    '''Returns arm to the origin, exits without error'''
-    arduino_for_xy_movement.move_toolhead((0,0))
-    arduino_for_arm_movement.release_plant()
-    arduino_for_arm_movement.raise_toolhead()
-    print("Repotting Completed")
-    exit(0)
+def end(frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
+    '''Returns arm to the origin'''
+    frame_arduino.move_toolhead((0,0))
+    toolhead_arduino.release_plant()
 
-def shut_down():
-    '''Quits program without returning main arm to the origin, program returns an error'''
-    print("EMERGENCY SHUTDOWN")
-    exit(1)
-
-def startup(arduino_for_xy_movement, arduino_for_arm_movement):
-    '''Greets user and gives instructions for use'''
-    print("You have successfully initialized the LettuceCSE Lettuce Repotter, designed and "
-          "implemented by Marin Orosa, Scott Ballinger, Mira Welner, and Liam Carr under "
-          "the supervision of Professor Lieth\n"
-          "Use a keyboard interrupt (control c) to instantly freeze arm and shut down program\n"
-          "Press 'e' when prompted to move arm to origin and end program\n"
-          "Press any other key to begin")
-    ask_to_quit(arduino_for_xy_movement, arduino_for_arm_movement)
-
-def repot_single_plant(source, destination, arduino_for_xy_movement, arduino_for_arm_movement):
+def repot_single_plant(source: Tray, destination: Tray, frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino) -> None:
     '''
     Sends the arduino commands to move the plant from the source tray to the destination tray
 
@@ -45,46 +28,19 @@ def repot_single_plant(source, destination, arduino_for_xy_movement, arduino_for
             Returns:
                     None
     '''
-    arduino_for_xy_movement.move_toolhead(source)
-    arduino_for_arm_movement.lower_toolhead()
-    arduino_for_arm_movement.grab_plant()
-    arduino_for_arm_movement.raise_toolhead()
-    arduino_for_xy_movement.move_toolhead(destination)
-    arduino_for_arm_movement.lower_toolhead()
-    arduino_for_arm_movement.release_plant()
-    arduino_for_arm_movement.raise_toolhead()
+    frame_arduino.move_toolhead(source)
+    toolhead_arduino.grab_plant()
+    frame_arduino.move_toolhead(destination)
+    toolhead_arduino.release_plant()
 
-def ask_to_quit(arduino_for_xy_movement, arduino_for_arm_movement):
-    """Asks the user if they want to continue repotting, ends program gracefully if they do not"""
-    quit_or_continue=input()
-    if quit_or_continue.lower() == 'e':
-        end(arduino_for_xy_movement, arduino_for_arm_movement)
 
-def test_trays(tray_1, tray_2, arduino_for_xy_movement, arduino_for_arm_movement):
-    '''
-    Compares the sizes of the two trays, warns the user if the size difference is greater
-    than 5% error (which may indicate a faulty json file)
+def wait_for_tray_replace(stop_trigger:IntVar, gui:GUI) -> None:
+    """Pause transplanting while waiting for the human to replace the tray"""
+    gui.set_buttons_to_waiting_for_tray_replacement()
+    gui.update_status("Tray is full - replace tray or end program")
+    gui.start_button.wait_variable(stop_trigger)
 
-            Parameters:
-                    tray_1 (Tray): one of the two trays created from the JSON file
-                    tray_2 (Tray): the other of the two trays created from the JSON file
-                    arduino (Arduino): The arduino object being used for the arm
-            Returns:
-                    None
-    '''
-    width_1, width_2 =  tray_1.get_width(), tray_2.get_width()
-    length_1, length_2 =  tray_1.get_length(), tray_2.get_length()
-    if (abs(width_1-width_2)/width_1) > 0.05:
-        print("Warning: the json files for your trays suggest that they are"
-              "different widths, you may have an error in your json file\n"
-              "Press e to end and any other key to continue")
-        ask_to_quit(arduino_for_xy_movement, arduino_for_arm_movement)
-    if (abs(length_1-length_2)/length_1) > 0.05:
-        print("Warning: the json files for your trays suggest that they are "
-              "different lengths, you may have an error in your json file\n"
-              "Press e to end and any other key to continue")
-
-def transplant(source_tray, destination_tray, arduino_for_xy_movement, arduino_for_arm_movement):
+def transplant(source: Tray, destination: Tray, frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino, gui:GUI) -> None:
     '''
     Compares the sizes of the two trays, warns the user if they are different
     sizes (which may indicate a faulty json file)
@@ -97,41 +53,38 @@ def transplant(source_tray, destination_tray, arduino_for_xy_movement, arduino_f
                     None
     '''
     source_hole = destination_hole = 0
-    try:
-        while True:
-            if source_hole == source_tray.get_number_of_holes():
-                print("Tray is empty - Press 'e' to end repotting or any "
-                      "other key to continue after tray is replaced\n")
-                ask_to_quit(arduino_for_xy_movement, arduino_for_arm_movement)
-                source_hole = 0
-            elif destination_hole == destination_tray.get_number_of_holes():
-                print("Tray is full - Press 'e' to end repotting or any "
-                      "other key to continue after tray is replaced\n")
-                ask_to_quit(arduino_for_xy_movement, arduino_for_arm_movement)
-                destination_hole = 0
-            else:
-                try:
-                    repot_single_plant(source_tray.ith_hole_location(source_hole),
-                                       destination_tray.ith_hole_location(destination_hole), 
-                                       arduino_for_xy_movement, arduino_for_arm_movement)
-                except ArduinoError:
-                    shut_down()
-                source_hole += 1
-                destination_hole += 1
-
-    except KeyboardInterrupt:
-        shut_down()
-
+    stop_trigger = IntVar()
+    gui.set_buttons_to_pre_transplant_stage()
+    while gui.continue_transplanting:
+        if source_hole == source.get_number_of_holes():
+            wait_for_tray_replace(stop_trigger, gui)
+            source_hole = 0
+        elif destination_hole == destination.get_number_of_holes():
+            wait_for_tray_replace(stop_trigger, gui)
+            destination_hole = 0
+        else:
+            gui.set_buttons_to_in_transplant_stage()
+            repot_single_plant(source.ith_hole_location(source_hole),
+                               destination.ith_hole_location(destination_hole),
+                               frame_arduino, toolhead_arduino)
+            source_hole += 1
+            destination_hole += 1
+    gui.set_buttons_to_pre_transplant_stage()
+    end(frame_arduino, toolhead_arduino)
 
 def main():
     """Run the transplanter"""
+    gui = GUI()
     source_tray = Tray('dense_tray.json')
     destination_tray = Tray('sparse_tray.json', source_tray.get_width())
-    arduino_for_xy_movement = FrameArduino(0.14, COM_PORT_FRAME)
-    arduino_for_arm_movement = ToolheadArduino(0.14, COM_PORT_TOOLHEAD)
-    test_trays(source_tray, destination_tray, arduino_for_xy_movement, arduino_for_arm_movement)
-    startup(arduino_for_xy_movement, arduino_for_arm_movement)
-    transplant(source_tray, destination_tray, arduino_for_xy_movement, arduino_for_arm_movement)
+    frame_arduino = FrameArduino(0.14, gui)
+    toolhead_arduino = ToolheadArduino(0.14, gui)
+    gui.make_start_button(transplant,
+                          source_tray,
+                          destination_tray,
+                          frame_arduino,
+                          toolhead_arduino)
+    gui.display_window()
 
 if __name__ == "__main__":
     main()

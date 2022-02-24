@@ -1,6 +1,8 @@
 """Module contains vertical arduino class"""
-from arduino_error import ArduinoError
+import time
 from arduino import Arduino
+from gui import GUI
+
 
 class ToolheadArduino(Arduino):
 
@@ -16,45 +18,56 @@ class ToolheadArduino(Arduino):
         the number of milimeters the arm will move during each motor step
     arduinoConnection : serial
         the connection between the program and the Arduino
+    serial_number : int
+        the serial number of the arduino that is being used for the toolhead
+        if you change the toolhead arduino you will have to change this number
 
     Methods
     -------
-    dummy_command():
-        sends a basic fixed command to the Arduino
-    lower_toolhead():
-        lowers the toolhead arm to the plant
-    raise_toolhead():
-        raises the toolhead arm to the plant
-    release_plant():
-        opens the cup-grasp and lets the plant fall
+    __init__(mm_per_motor_step, gui):
+        calls the parent init, and then lists the connected port in
+        the toolhead arduino section of the GUI
     grab_plant():
-        closes the cup-grasp to hold the plant
+        lowers the toolhead arm to the plant and grabs it
+    release_plant():
+        releases the plant and raises the toolhead arm
     """
 
 
-    mm_per_motor_step = 1
-    arduinoConnection = None
+    serial_number = 55838343733351510170
 
-    def dummy_command(self):
-        """sends a basic fixed command to the Arduino"""
-        #TODO actually signal arduino
 
-    def lower_toolhead(self):
-        """lowers the toolhead arm to the plant"""
-        #TODO actually signal arduino
-        # print("Vertical toolhead lowering")
+    def __init__(self, mm_per_motor_step:int, gui:GUI):
+        '''
+            Initialize the arduino and then list the name of the port connected to the
+            arduino in the toolhead port label on the gui
 
-    def raise_toolhead(self):
-        """raises the toolhead arm to the plant"""
-        #TODO actually signal arduino
-        # print("Vertical toolhead raising")
+            Parameters:
+                    mm_per_motor_step : int
+                        the number of milimeters the arm will move during each motor step
+                    gui (GUI): the tkinter window object that everything is displayed on
+            Returns:
+                    None
+        '''
+        super().__init__(mm_per_motor_step, gui)
+        if self.arduino_connection is None:
+            gui.toolhead_arduino_label("Arduino not connected")
+        else:
+            gui.toolhead_arduino_label(self.arduino_port)
+            super().wake_up()
 
     def release_plant(self):
         """opens the cup-grasp and lets the plant fall"""
-        #TODO actually signal arduino
-        # print("Vertical toolhead opening")
+        #actually signal arduino
+        self.gui.update_status("Toolhead releasing plant")
+
+        #make it so that rather than sleep you wait for a response
+        time.sleep(0.1)
 
     def grab_plant(self):
         """closes the cup-grasp to hold the plant"""
-        #TODO actually signal arduino
-        # print("Vertical toolhead closing")
+        #actually signal arduino
+        self.gui.update_status("Toolhead grabbing plant")
+
+        #make it so that rather than sleep you wait for a response
+        time.sleep(0.1)
