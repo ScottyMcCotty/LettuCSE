@@ -47,7 +47,6 @@ class TransplanterRobot:
     frame_arduino = None
     toolhead_arduino = None
     trays_need_replacing = False
-    continue_transplanting = True
     button_stages = enum.Enum("button_stages", "PRE_TRANSPLANT IN_TRANSPLANT WAIT")
     current_state = None
 
@@ -104,8 +103,8 @@ class TransplanterRobot:
                         None
         '''
         source_hole_itt = destination_hole_itt = 0
-        self.current_state = self.button_stages.PRE_TRANSPLANT
-        while self.continue_transplanting:
+        self.current_state = self.button_stages.IN_TRANSPLANT
+        while self.current_state is not self.button_stages.PRE_TRANSPLANT:
             if source_hole_itt == self.source_tray.get_number_of_holes():
                 self.wait_for_tray_replace()
                 source_hole_itt = 0

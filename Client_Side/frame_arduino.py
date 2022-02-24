@@ -67,4 +67,4 @@ class FrameArduino(Arduino):
         self.status = "Toolhead moving to (" + str(x_coord) + ", " + str(y_coord) + ")"
 
         #make it so that rather than sleep you wait for a response
-        time.sleep(0.1)
+        time.sleep(0.2)
