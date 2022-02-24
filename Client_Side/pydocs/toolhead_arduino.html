@@ -40,7 +40,7 @@
 <font color="#000000" face="helvetica, arial"><a name="ToolheadArduino">class <strong>ToolheadArduino</strong></a>(<a href="arduino.html#Arduino">arduino.Arduino</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt><a href="#ToolheadArduino">ToolheadArduino</a>(mm_per_motor_step:&nbsp;int,&nbsp;gui:&nbsp;gui.GUI)<br>
+<td colspan=2><tt><a href="#ToolheadArduino">ToolheadArduino</a>(mm_per_motor_step:&nbsp;int)<br>
 &nbsp;<br>
 A&nbsp;class&nbsp;to&nbsp;represent&nbsp;the&nbsp;<a href="arduino.html#Arduino">Arduino</a>&nbsp;being&nbsp;used&nbsp;to&nbsp;move&nbsp;the&nbsp;arm&nbsp;up&nbsp;and&nbsp;down,<br>
 as&nbsp;well&nbsp;as&nbsp;open&nbsp;and&nbsp;close&nbsp;the&nbsp;cup&nbsp;device&nbsp;which&nbsp;drops&nbsp;or&nbsp;grabs&nbsp;the&nbsp;plant<br>
@@ -74,7 +74,7 @@ Methods<br>
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="ToolheadArduino-__init__"><strong>__init__</strong></a>(self, mm_per_motor_step: int, gui: gui.GUI)</dt><dd><tt>Initialize&nbsp;the&nbsp;arduino&nbsp;and&nbsp;then&nbsp;list&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;port&nbsp;connected&nbsp;to&nbsp;the<br>
+<dl><dt><a name="ToolheadArduino-__init__"><strong>__init__</strong></a>(self, mm_per_motor_step: int)</dt><dd><tt>Initialize&nbsp;the&nbsp;arduino&nbsp;and&nbsp;then&nbsp;list&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;port&nbsp;connected&nbsp;to&nbsp;the<br>
 arduino&nbsp;in&nbsp;the&nbsp;toolhead&nbsp;port&nbsp;label&nbsp;on&nbsp;the&nbsp;gui<br>
 &nbsp;<br>
 Parameters:<br>
@@ -90,7 +90,11 @@ Returns:<br>
 
 <hr>
 Data and other attributes defined here:<br>
-<dl><dt><strong>serial_number</strong> = 55838343733351510170</dl>
+<dl><dt><strong>port</strong> = 'Arduino not connected'</dl>
+
+<dl><dt><strong>serial_number</strong> = 42069</dl>
+
+<dl><dt><strong>status</strong> = ''</dl>
 
 <hr>
 Methods inherited from <a href="arduino.html#Arduino">arduino.Arduino</a>:<br>
@@ -107,10 +111,6 @@ Data descriptors inherited from <a href="arduino.html#Arduino">arduino.Arduino</
 <hr>
 Data and other attributes inherited from <a href="arduino.html#Arduino">arduino.Arduino</a>:<br>
 <dl><dt><strong>arduino_connection</strong> = None</dl>
-
-<dl><dt><strong>arduino_port</strong> = None</dl>
-
-<dl><dt><strong>gui</strong> = None</dl>
 
 </td></tr></table></td></tr></table>
 </body></html>

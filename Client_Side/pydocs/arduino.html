@@ -40,7 +40,7 @@
 <font color="#000000" face="helvetica, arial"><a name="Arduino">class <strong>Arduino</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt><a href="#Arduino">Arduino</a>(mm_per_motor_step:&nbsp;int,&nbsp;gui:&nbsp;gui.GUI)<br>
+<td colspan=2><tt><a href="#Arduino">Arduino</a>(mm_per_motor_step:&nbsp;int)<br>
 &nbsp;<br>
 A&nbsp;parent&nbsp;class&nbsp;that&nbsp;represents&nbsp;all&nbsp;arduinos&nbsp;in&nbsp;the&nbsp;robot<br>
 &nbsp;<br>
@@ -51,7 +51,7 @@ Attributes<br>
 arduino_connection&nbsp;:&nbsp;Serial&nbsp;connection&nbsp;<a href="builtins.html#object">object</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;connection&nbsp;to&nbsp;one&nbsp;of&nbsp;the&nbsp;arduinos,&nbsp;or&nbsp;a&nbsp;None&nbsp;<a href="builtins.html#object">object</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;there&nbsp;is&nbsp;no&nbsp;connection<br>
-arduino_port&nbsp;:&nbsp;int<br>
+port&nbsp;:&nbsp;int<br>
 &nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;unique&nbsp;port&nbsp;that&nbsp;the&nbsp;arduino&nbsp;can&nbsp;connect&nbsp;with<br>
 gui&nbsp;:&nbsp;Tkinter&nbsp;<a href="builtins.html#object">object</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;main&nbsp;gui&nbsp;window<br>
@@ -65,7 +65,7 @@ Methods<br>
 &nbsp;&nbsp;&nbsp;&nbsp;moves&nbsp;the&nbsp;arm&nbsp;to&nbsp;the&nbsp;given&nbsp;coordinates,&nbsp;where&nbsp;a&nbsp;tray&nbsp;hole&nbsp;should&nbsp;be&nbsp;found<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
-<dl><dt><a name="Arduino-__init__"><strong>__init__</strong></a>(self, mm_per_motor_step: int, gui: gui.GUI)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+<dl><dt><a name="Arduino-__init__"><strong>__init__</strong></a>(self, mm_per_motor_step: int)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
 
 <dl><dt><a name="Arduino-wake_up"><strong>wake_up</strong></a>(self)</dt><dd><tt>signals&nbsp;the&nbsp;arduino&nbsp;to&nbsp;wake&nbsp;it&nbsp;up</tt></dd></dl>
 
@@ -81,9 +81,7 @@ Data descriptors defined here:<br>
 Data and other attributes defined here:<br>
 <dl><dt><strong>arduino_connection</strong> = None</dl>
 
-<dl><dt><strong>arduino_port</strong> = None</dl>
-
-<dl><dt><strong>gui</strong> = None</dl>
+<dl><dt><strong>port</strong> = None</dl>
 
 <dl><dt><strong>serial_number</strong> = None</dl>
 

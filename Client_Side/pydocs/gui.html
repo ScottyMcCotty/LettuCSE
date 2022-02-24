@@ -41,42 +41,56 @@
 <font color="#000000" face="helvetica, arial"><a name="GUI">class <strong>GUI</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>A&nbsp;class&nbsp;to&nbsp;handle&nbsp;the&nbsp;graphical&nbsp;user&nbsp;interface<br>
+<td colspan=2><tt><a href="#GUI">GUI</a>(transplanter:&nbsp;transplanter_robot.TransplanterRobot)<br>
+&nbsp;<br>
+A&nbsp;class&nbsp;to&nbsp;handle&nbsp;the&nbsp;graphical&nbsp;user&nbsp;interface<br>
 &nbsp;<br>
 ...<br>
 &nbsp;<br>
 Attributes<br>
 ----------<br>
-window&nbsp;:&nbsp;tkinter&nbsp;<a href="builtins.html#object">object</a>&nbsp;(tk.TK)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;main&nbsp;gui&nbsp;window<br>
-previous_status_label:&nbsp;string<br>
-&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;center&nbsp;of&nbsp;the&nbsp;gui&nbsp;contains&nbsp;a&nbsp;status&nbsp;update,&nbsp;and<br>
-&nbsp;&nbsp;&nbsp;&nbsp;when&nbsp;a&nbsp;new&nbsp;one&nbsp;is&nbsp;displayed&nbsp;the&nbsp;old&nbsp;one&nbsp;must&nbsp;be&nbsp;deleted.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;attribute&nbsp;holds&nbsp;the&nbsp;old&nbsp;label&nbsp;so&nbsp;it&nbsp;can&nbsp;be&nbsp;deleted<br>
-continue_transplanting:&nbsp;boolean<br>
-&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;this&nbsp;value&nbsp;is&nbsp;true,&nbsp;then&nbsp;the&nbsp;transplant&nbsp;function&nbsp;in&nbsp;main<br>
-&nbsp;&nbsp;&nbsp;&nbsp;continues&nbsp;looping.&nbsp;If&nbsp;not,&nbsp;it&nbsp;stops<br>
-start_button:&nbsp;tk.Button<br>
-&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;button&nbsp;for&nbsp;spawning&nbsp;the&nbsp;thread&nbsp;to&nbsp;run&nbsp;the&nbsp;transplant&nbsp;function<br>
+window:Tkinter&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;main&nbsp;gui&nbsp;window<br>
+toolhead_label:&nbsp;tk.Label<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;tkinter&nbsp;label&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;displays&nbsp;what<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;toolhead&nbsp;arduino&nbsp;is&nbsp;doing&nbsp;at&nbsp;the&nbsp;moment<br>
+frame_label:&nbsp;tk.Label<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;tkinter&nbsp;label&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;displays&nbsp;what<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;frame&nbsp;arduino&nbsp;is&nbsp;doing&nbsp;at&nbsp;the&nbsp;moment<br>
 stop_button:&nbsp;tk.Button<br>
-&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;button&nbsp;for&nbsp;stopping&nbsp;the&nbsp;transplant<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;button&nbsp;that&nbsp;stops&nbsp;the&nbsp;transplanting<br>
+&nbsp;&nbsp;&nbsp;&nbsp;thread<br>
+start_button:&nbsp;tk.Buttion<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;button&nbsp;that&nbsp;spawns&nbsp;the&nbsp;transplanting<br>
+&nbsp;&nbsp;&nbsp;&nbsp;thread&nbsp;and&nbsp;continues&nbsp;the&nbsp;transplant&nbsp;after<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;process&nbsp;is&nbsp;paused<br>
+previous_state:&nbsp;Enum():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;process&nbsp;state&nbsp;that&nbsp;the&nbsp;transplanter&nbsp;robot<br>
+&nbsp;&nbsp;&nbsp;&nbsp;was&nbsp;in&nbsp;last&nbsp;frame<br>
+transplanter_robot:&nbsp;TransplanterRobot<br>
+&nbsp;&nbsp;&nbsp;&nbsp;An&nbsp;instance&nbsp;of&nbsp;the&nbsp;class&nbsp;representing<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;entire&nbsp;robot<br>
+state:&nbsp;Enum()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;state&nbsp;that&nbsp;the&nbsp;transplanter&nbsp;robot<br>
+&nbsp;&nbsp;&nbsp;&nbsp;was&nbsp;in&nbsp;previously<br>
 &nbsp;<br>
 Methods<br>
 -------<br>
-<a href="#GUI-update_status">update_status</a>(status_message):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Updates&nbsp;the&nbsp;center&nbsp;label&nbsp;that&nbsp;says&nbsp;what&nbsp;the&nbsp;transplanter&nbsp;is&nbsp;doing&nbsp;&nbsp;with&nbsp;the&nbsp;new&nbsp;message<br>
-<a href="#GUI-frame_arduino_label">frame_arduino_label</a>(status_message):<br>
+<a href="#GUI-__init__">__init__</a>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Creates&nbsp;the&nbsp;<a href="#GUI">GUI</a>&nbsp;window,&nbsp;the&nbsp;start&nbsp;and&nbsp;stop&nbsp;buttons,&nbsp;and&nbsp;all&nbsp;the&nbsp;lables<br>
+update_frame_status():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Updates&nbsp;the&nbsp;location&nbsp;of&nbsp;the&nbsp;frame&nbsp;based&nbsp;on&nbsp;input&nbsp;from&nbsp;the&nbsp;transplanter_robot<br>
+update_toolhead_status():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Updates&nbsp;the&nbsp;location&nbsp;of&nbsp;the&nbsp;frame&nbsp;based&nbsp;on&nbsp;input&nbsp;from&nbsp;the&nbsp;transplanter_robot<br>
+label_frame_arduino_port():<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Displays&nbsp;in&nbsp;the&nbsp;bottom&nbsp;left&nbsp;corner&nbsp;which&nbsp;port&nbsp;the&nbsp;frame&nbsp;arduino&nbsp;is&nbsp;connected&nbsp;on<br>
-<a href="#GUI-toolhead_arduino_label">toolhead_arduino_label</a>(status_message):<br>
+label_toolhead_arduino_port():<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Displays&nbsp;in&nbsp;the&nbsp;bottom&nbsp;read&nbsp;corner&nbsp;which&nbsp;port&nbsp;the&nbsp;toolhead&nbsp;arduino&nbsp;is&nbsp;connected&nbsp;on<br>
-<a href="#GUI-make_start_button">make_start_button</a>(self,&nbsp;transplant,&nbsp;source,&nbsp;destination,&nbsp;frame_arduino,&nbsp;toolhead_arduino):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Uses&nbsp;the&nbsp;transplant&nbsp;function&nbsp;and&nbsp;its&nbsp;args&nbsp;to&nbsp;spawn&nbsp;a&nbsp;thread&nbsp;that&nbsp;runs&nbsp;the&nbsp;'transplant'<br>
-&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;after&nbsp;the&nbsp;start&nbsp;button&nbsp;is&nbsp;pressed<br>
 <a href="#GUI-stop_transplanting">stop_transplanting</a>():<br>
 &nbsp;&nbsp;&nbsp;&nbsp;stop&nbsp;the&nbsp;transplanting&nbsp;procccess&nbsp;and&nbsp;start&nbsp;over&nbsp;afterwards.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;is&nbsp;NOT&nbsp;the&nbsp;pause&nbsp;that&nbsp;happens&nbsp;when&nbsp;a&nbsp;tray&nbsp;is&nbsp;being&nbsp;replaced<br>
-<a href="#GUI-configure_stop_button">configure_stop_button</a>():<br>
-&nbsp;&nbsp;&nbsp;&nbsp;creates&nbsp;the&nbsp;button&nbsp;that&nbsp;stops&nbsp;the&nbsp;transplanting&nbsp;and&nbsp;starts&nbsp;over<br>
+<a href="#GUI-continue_transplanting">continue_transplanting</a>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;continue&nbsp;transplant&nbsp;from&nbsp;where&nbsp;it&nbsp;left&nbsp;off<br>
 <a href="#GUI-set_buttons_to_pre_transplant_stage">set_buttons_to_pre_transplant_stage</a>():<br>
 &nbsp;&nbsp;&nbsp;&nbsp;start&nbsp;button&nbsp;can&nbsp;be&nbsp;clicked,&nbsp;stop&nbsp;button&nbsp;cannot<br>
 <a href="#GUI-set_buttons_to_in_transplant_stage">set_buttons_to_in_transplant_stage</a>():<br>
@@ -85,36 +99,15 @@ Methods<br>
 &nbsp;&nbsp;&nbsp;&nbsp;either&nbsp;button&nbsp;can&nbsp;be&nbsp;clicked<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
-<dl><dt><a name="GUI-__init__"><strong>__init__</strong></a>(self)</dt><dd><tt>Initializes&nbsp;the&nbsp;main&nbsp;window&nbsp;(self.<strong>window</strong>),<br>
-the&nbsp;stop&nbsp;button&nbsp;(self.<strong>stop_button</strong>)<br>
-and&nbsp;creates&nbsp;the&nbsp;instructions&nbsp;label&nbsp;which&nbsp;is&nbsp;not<br>
-an&nbsp;attribute</tt></dd></dl>
+<dl><dt><a name="GUI-__init__"><strong>__init__</strong></a>(self, transplanter: transplanter_robot.TransplanterRobot)</dt><dd><tt>Initializes&nbsp;the&nbsp;main&nbsp;window,&nbsp;the&nbsp;start&nbsp;and&nbsp;stop<br>
+buttons&nbsp;in&nbsp;the&nbsp;PRE_TRANSPLANT&nbsp;state,&nbsp;the&nbsp;toolhead<br>
+and&nbsp;frame&nbsp;lables,&nbsp;and&nbsp;the&nbsp;toolhead&nbsp;and&nbsp;frame&nbsp;port&nbsp;lables</tt></dd></dl>
 
-<dl><dt><a name="GUI-configure_stop_button"><strong>configure_stop_button</strong></a>(self) -&gt; None</dt><dd><tt>Create&nbsp;the&nbsp;second&nbsp;button&nbsp;that&nbsp;stops&nbsp;the&nbsp;transplanting</tt></dd></dl>
+<dl><dt><a name="GUI-continue_transplanting"><strong>continue_transplanting</strong></a>(self) -&gt; None</dt><dd><tt>The&nbsp;main&nbsp;button&nbsp;is&nbsp;given&nbsp;this&nbsp;command&nbsp;when&nbsp;it&nbsp;is&nbsp;pressed<br>
+after&nbsp;the&nbsp;first&nbsp;time.&nbsp;This&nbsp;spawns&nbsp;no&nbsp;new&nbsp;threads&nbsp;and&nbsp;simply&nbsp;continues<br>
+the&nbsp;transplanting&nbsp;process</tt></dd></dl>
 
-<dl><dt><a name="GUI-display_window"><strong>display_window</strong></a>(self) -&gt; None</dt><dd><tt>Displays&nbsp;the&nbsp;<a href="#GUI">GUI</a>&nbsp;window&nbsp;-&nbsp;while&nbsp;this&nbsp;is&nbsp;running,&nbsp;everything&nbsp;in&nbsp;the&nbsp;thread&nbsp;stops</tt></dd></dl>
-
-<dl><dt><a name="GUI-frame_arduino_label"><strong>frame_arduino_label</strong></a>(self, port: str) -&gt; None</dt><dd><tt>Displays&nbsp;in&nbsp;the&nbsp;bottom&nbsp;right&nbsp;corner&nbsp;which&nbsp;port&nbsp;the&nbsp;toolhead&nbsp;arduino&nbsp;is&nbsp;connected&nbsp;on<br>
-Parameters:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port&nbsp;(str):&nbsp;the&nbsp;port&nbsp;address&nbsp;to&nbsp;be&nbsp;displayed<br>
-&nbsp;<br>
-Returns:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
-
-<dl><dt><a name="GUI-make_start_button"><strong>make_start_button</strong></a>(self, transplant, source, destination, frame_arduino, toolhead_arduino) -&gt; None</dt><dd><tt>The&nbsp;main&nbsp;button&nbsp;must&nbsp;spawn&nbsp;another&nbsp;thread&nbsp;so&nbsp;it&nbsp;can&nbsp;run&nbsp;simultaniously&nbsp;to&nbsp;the&nbsp;gui.<br>
-It&nbsp;also&nbsp;must&nbsp;have&nbsp;the&nbsp;transplanting&nbsp;function&nbsp;from&nbsp;the&nbsp;main&nbsp;file&nbsp;fed&nbsp;into&nbsp;it,&nbsp;the<br>
-args&nbsp;seperately&nbsp;from&nbsp;the&nbsp;target.&nbsp;The&nbsp;lambda&nbsp;before&nbsp;the&nbsp;threading.Thread&nbsp;is&nbsp;so&nbsp;that<br>
-it&nbsp;only&nbsp;runs&nbsp;the&nbsp;function&nbsp;once&nbsp;it&nbsp;is&nbsp;clicked&nbsp;and&nbsp;a&nbsp;new&nbsp;thread&nbsp;is&nbsp;spawned.<br>
-&nbsp;<br>
-Parameters:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transplanting_function&nbsp;(function):&nbsp;the&nbsp;function&nbsp;from&nbsp;main&nbsp;which&nbsp;transplants<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source&nbsp;(Tray):&nbsp;the&nbsp;tray&nbsp;that&nbsp;the&nbsp;lettuce&nbsp;is&nbsp;being&nbsp;moved&nbsp;from<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination&nbsp;(Tray):&nbsp;the&nbsp;tray&nbsp;that&nbsp;the&nbsp;lettuce&nbsp;is&nbsp;being&nbsp;moved&nbsp;to<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame_arduino&nbsp;(FrameArduino)&nbsp;the&nbsp;arduino&nbsp;controling&nbsp;the&nbsp;frame<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;toolhead_arduino&nbsp;(ToolheadArduino)&nbsp;the&nbsp;arduino&nbsp;controling&nbsp;the&nbsp;toolhead<br>
-&nbsp;<br>
-Returns:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
+<dl><dt><a name="GUI-display_window_frame"><strong>display_window_frame</strong></a>(self) -&gt; None</dt><dd><tt>Displays&nbsp;the&nbsp;<a href="#GUI">GUI</a>&nbsp;window&nbsp;-&nbsp;while&nbsp;this&nbsp;is&nbsp;running,&nbsp;everything&nbsp;in&nbsp;the&nbsp;thread&nbsp;stops</tt></dd></dl>
 
 <dl><dt><a name="GUI-set_buttons_to_in_transplant_stage"><strong>set_buttons_to_in_transplant_stage</strong></a>(self) -&gt; None</dt><dd><tt>Configures&nbsp;the&nbsp;buttons&nbsp;such&nbsp;that&nbsp;the&nbsp;user&nbsp;can&nbsp;only&nbsp;stop&nbsp;transplanting</tt></dd></dl>
 
@@ -123,20 +116,6 @@ Returns:<br>
 <dl><dt><a name="GUI-set_buttons_to_waiting_for_tray_replacement"><strong>set_buttons_to_waiting_for_tray_replacement</strong></a>(self) -&gt; None</dt><dd><tt>Configures&nbsp;the&nbsp;buttons&nbsp;such&nbsp;that&nbsp;the&nbsp;user&nbsp;can&nbsp;start&nbsp;or&nbsp;stop&nbsp;while&nbsp;replacing&nbsp;the&nbsp;tray</tt></dd></dl>
 
 <dl><dt><a name="GUI-stop_transplanting"><strong>stop_transplanting</strong></a>(self) -&gt; None</dt><dd><tt>Signals&nbsp;to&nbsp;the&nbsp;transplant&nbsp;function&nbsp;in&nbsp;main&nbsp;that&nbsp;the&nbsp;transplanting&nbsp;should&nbsp;finish</tt></dd></dl>
-
-<dl><dt><a name="GUI-toolhead_arduino_label"><strong>toolhead_arduino_label</strong></a>(self, port: str) -&gt; None</dt><dd><tt>Displays&nbsp;in&nbsp;the&nbsp;bottom&nbsp;right&nbsp;corner&nbsp;which&nbsp;port&nbsp;the&nbsp;toolhead&nbsp;arduino&nbsp;is&nbsp;connected&nbsp;on<br>
-Parameters:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port&nbsp;(str):&nbsp;the&nbsp;port&nbsp;address&nbsp;to&nbsp;be&nbsp;displayed<br>
-&nbsp;<br>
-Returns:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
-
-<dl><dt><a name="GUI-update_status"><strong>update_status</strong></a>(self, status_message: str) -&gt; None</dt><dd><tt>Take&nbsp;the&nbsp;status_message&nbsp;and&nbsp;displays&nbsp;it&nbsp;in&nbsp;the&nbsp;center&nbsp;of&nbsp;the&nbsp;gui<br>
-Parameters:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status_message&nbsp;(str):&nbsp;the&nbsp;status&nbsp;message&nbsp;to&nbsp;be&nbsp;displayed<br>
-&nbsp;<br>
-Returns:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
 
 <hr>
 Data descriptors defined here:<br>
@@ -148,13 +127,19 @@ Data descriptors defined here:<br>
 </dl>
 <hr>
 Data and other attributes defined here:<br>
-<dl><dt><strong>continue_transplanting</strong> = True</dl>
+<dl><dt><strong>frame_label</strong> = None</dl>
 
-<dl><dt><strong>previous_label</strong> = None</dl>
+<dl><dt><strong>previous_state</strong> = None</dl>
 
 <dl><dt><strong>start_button</strong> = None</dl>
 
+<dl><dt><strong>state</strong> = None</dl>
+
 <dl><dt><strong>stop_button</strong> = None</dl>
+
+<dl><dt><strong>toolhead_label</strong> = None</dl>
+
+<dl><dt><strong>transplanter</strong> = None</dl>
 
 <dl><dt><strong>window</strong> = &lt;tkinter.Tk object .&gt;</dl>
 

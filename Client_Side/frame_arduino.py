@@ -64,7 +64,7 @@ class FrameArduino(Arduino):
             self.arduino_connection.write(bytes(str(x_coord) + " " + str(y_coord), 'utf-8'))
             self.arduino_connection.readline()
 
-        self.status = "Toolhead moving to (" + str(x_coord) + ", " + str(y_coord) + ")"
+        self.status = "Frame Arduino moving to (" + str(x_coord) + ", " + str(y_coord) + ")"
 
         #make it so that rather than sleep you wait for a response
         time.sleep(0.2)

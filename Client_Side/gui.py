@@ -12,19 +12,35 @@ class GUI:
 
     Attributes
     ----------
-    window : tkinter object (tk.TK)
-        the main gui window
-    previous_status_label: string
-        the center of the gui contains a status update, and
-        when a new one is displayed the old one must be deleted.
-        this attribute holds the old label so it can be deleted
-    start_button: tk.Button
-        the button for spawning the thread to run the transplant function
+    window:Tkinter object
+        The main gui window
+    toolhead_label: tk.Label
+        The tkinter label object that displays what
+        the toolhead arduino is doing at the moment
+    frame_label: tk.Label
+        The tkinter label object that displays what
+        the frame arduino is doing at the moment
     stop_button: tk.Button
-        the button for stopping the transplant
+        The button that stops the transplanting
+        thread
+    start_button: tk.Buttion
+        The button that spawns the transplanting
+        thread and continues the transplant after
+        the process is paused
+    previous_state: Enum():
+        The process state that the transplanter robot
+        was in last frame
+    transplanter_robot: TransplanterRobot
+        An instance of the class representing
+        the entire robot
+    state: Enum()
+        The state that the transplanter robot
+        was in previously
 
     Methods
     -------
+    __init__():
+        Creates the GUI window, the start and stop buttons, and all the lables
     update_frame_status():
         Updates the location of the frame based on input from the transplanter_robot
     update_toolhead_status():
@@ -33,14 +49,11 @@ class GUI:
         Displays in the bottom left corner which port the frame arduino is connected on
     label_toolhead_arduino_port():
         Displays in the bottom read corner which port the toolhead arduino is connected on
-    make_start_button(self, transplant, source, destination, frame_arduino, toolhead_arduino):
-        Uses the transplant function and its args to spawn a thread that runs the 'transplant'
-        function after the start button is pressed
     stop_transplanting():
         stop the transplanting procccess and start over afterwards.
         This is NOT the pause that happens when a tray is being replaced
-    configure_stop_button():
-        creates the button that stops the transplanting and starts over
+    continue_transplanting():
+        continue transplant from where it left off
     set_buttons_to_pre_transplant_stage():
         start button can be clicked, stop button cannot
     set_buttons_to_in_transplant_stage():
@@ -50,35 +63,49 @@ class GUI:
     """
 
     window = tk.Tk()
-    previous_toolhead_status = ""
-    previous_frame_status = ""
-    previous_toolhead_status_label = None
-    previous_frame_status_label = None
-    previous_start_button = None
-    previous_stop_button = None
+    toolhead_label = None
+    frame_label = None
     stop_button = None
     start_button = None
-    transplanter_robot = None
+    previous_state = None
+    transplanter = None
     state = None
 
-    def __init__(self, transplanter_robot:TransplanterRobot):
-        """
-            Initializes the main window (self.window),
-            the stop button (self.stop_button)
-            and creates the instructions label which is not
-            an attribute
-        """
-        self.window.geometry("1000x600")
+    def __init__(self, transplanter:TransplanterRobot):
+        '''
+            Initializes the main window, the start and stop
+            buttons in the PRE_TRANSPLANT state, the toolhead
+            and frame lables, and the toolhead and frame port lables
+        '''
+        self.transplanter = transplanter
+        self.state = transplanter.button_stages
         self.window.title("Lettuce Transplanter")
-        self.window.configure(bg= 'green')
-        self.toolhead_arduino = transplanter_robot.toolhead_arduino
-        self.state = transplanter_robot.button_stages
-        self.previous_state = None
-        self.previous_start_button = None
-        self.previous_stop_button = None
-        self.transplanter_robot = transplanter_robot
-        self.label_frame_arduino_port()
-        self.label_toolhead_arduino_port()
+        self.window.configure(bg= 'green', height=600, width=1000)
+
+        self.frame_label = tk.Label(bg="green")
+        self.frame_label.place(relx = 0.5, rely = 0.5, anchor=tk.CENTER)
+
+        self.toolhead_label = tk.Label(bg="green")
+        self.toolhead_label.place(relx = 0.5, rely = 0.6, anchor=tk.CENTER)
+
+        self.stop_button = tk.Button(self.window,
+                                    text="End Transplanting",
+                                    command=self.stop_transplanting,
+                                    state=tk.DISABLED)
+        self.stop_button.place(relx = 0.5, rely = 0.4, anchor=tk.CENTER)
+        self.start_button = tk.Button(self.window,
+                                      text="Start Transplanting",
+                                      command=lambda:threading.Thread(target=self.transplanter.transplant).start(),
+                                      state=tk.NORMAL)
+        self.start_button.place(relx = 0.5, rely = 0.3, anchor=tk.CENTER)
+
+        frame_label = tk.Label(self.window,text = "Frame arduino port: " + self.transplanter.frame_arduino.port, bg="green")
+        frame_label.place(relx = 0.0, rely = 1.0, anchor ='sw')
+
+
+        toolhead_label = tk.Label(self.window,text = "Toolhead arduino port: " + self.transplanter.toolhead_arduino.port, bg="green")
+        toolhead_label.place(relx = 1.0, rely = 1.0, anchor ='se')
+
         instructions_label = tk.Label(text="Welcome to the LettuCSE Lettuce Transplanter\n"
                                             "It was designed and implemented by Martin Orosa,"
                                             "Scott Ballinger, Mira Welner, and Liam Carr "
@@ -86,141 +113,50 @@ class GUI:
                                         bg='green')
         instructions_label.place(relx = 0.5, rely = 0.1, anchor=tk.CENTER)
 
-    def update_frame_status(self) -> None:
-        '''
-            Gets the frame status from the arduino and displays it in the frame staus section
-            Parameters:
-                    None
-            Returns:
-                    None
-        '''
-        if self.previous_frame_status is not self.transplanter_robot.frame_arduino.status:
-            frame_status = tk.Label(text="Frame Arduino Status: " + self.transplanter_robot.frame_arduino.status, bg='green')
-            frame_status.place(relx = 0.5, rely = 0.5, anchor=tk.CENTER)
-            self.previous_frame_status = self.transplanter_robot.frame_arduino.status
-            #if self.previous_frame_status_label:
-                #self.previous_frame_status_label.destroy()
-            self.previous_frame_status_label = frame_status
-
-    def update_toolhead_status(self) -> None:
-        '''
-            Gets the frame status from the arduino and displays it in the frame staus section
-            Parameters:
-                    None
-            Returns:
-                    None
-        '''
-        if self.previous_toolhead_status is not self.toolhead_arduino.status:
-            toolhead_status = tk.Label(text="Toolhead Arduino Status: " + self.toolhead_arduino.status, bg='green')
-            toolhead_status.place(relx = 0.5, rely = 0.6, anchor=tk.CENTER)
-            self.previous_toolhead_status = self.toolhead_arduino.status
-            #if self.previous_toolhead_status_label:
-                #self.previous_toolhead_status_label.destroy()
-            self.previous_toolhead_status_label = toolhead_status
-
-    def label_frame_arduino_port(self) -> None:
-        '''
-            Displays in the bottom right corner which port the toolhead arduino is connected on
-            Parameters:
-                    port (str): the port address to be displayed
-
-            Returns:
-                    None
-        '''
-        frame_label = tk.Label(self.window,text = "Frame arduino port: " + self.transplanter_robot.frame_arduino.port, bg="green")
-        frame_label.place(relx = 0.0, rely = 1.0, anchor ='sw')
-
-    def label_toolhead_arduino_port(self) -> None:
-        '''
-            Displays in the bottom right corner which port the toolhead arduino is connected on
-            Parameters:
-                    port (str): the port address to be displayed
-
-            Returns:
-                    None
-        '''
-        toolhead_label = tk.Label(self.window,text = "Toolhead arduino port: " + self.toolhead_arduino.port, bg="green")
-        toolhead_label.place(relx = 1.0, rely = 1.0, anchor ='se')
-
     def stop_transplanting(self) -> None:
         """Signals to the transplant function in main that the transplanting should finish"""
-        self.transplanter_robot.current_state = self.state.PRE_TRANSPLANT
+        self.transplanter.current_state = self.state.PRE_TRANSPLANT
 
 
     def continue_transplanting(self) -> None:
         """The main button is given this command when it is pressed
         after the first time. This spawns no new threads and simply continues
         the transplanting process"""
-        self.transplanter_robot.current_state = self.state.IN_TRANSPLANT
-
-    def eliminate_previous_buttons(self) -> None:
-        """Removes any previous buttons so that you don't have buttons behind
-        the new buttons"""
-        if self.previous_stop_button:
-            self.previous_stop_button.destroy()
-        if self.previous_start_button:
-            self.previous_start_button.destroy()
+        self.transplanter.current_state = self.state.IN_TRANSPLANT
 
     def set_buttons_to_pre_transplant_stage(self) -> None:
         """Configures the buttons such that the user can only begin transplanting"""
-        self.transplanter_robot.continue_transplanting = True
-        stop_button = tk.Button(self.window,
-                                text="End Transplanting",
-                                command=self.stop_transplanting,
-                                state=tk.DISABLED)
-        stop_button.place(relx = 0.5, rely = 0.4, anchor=tk.CENTER)
-        self.start_button = tk.Button(self.window,
-                                      text="Start Transplanting",
-                                      command=lambda:threading.Thread(target=self.transplanter_robot.transplant).start(),
-                                      state=tk.NORMAL)
-        self.start_button.place(relx = 0.5, rely = 0.3, anchor=tk.CENTER)
-        self.eliminate_previous_buttons()
-
-
-
+        self.stop_button.config(state=tk.DISABLED)
+        self.start_button.config(text="Start Transplanting",
+                                 command=lambda:threading.Thread(target=self.transplanter.transplant).start(),
+                                 state=tk.NORMAL)
 
     def set_buttons_to_in_transplant_stage(self) -> None:
         """Configures the buttons such that the user can only stop transplanting"""
-        stop_button = tk.Button(self.window,
-                                text="End Transplanting",
-                                command=self.stop_transplanting,
-                                state=tk.NORMAL)
-        stop_button.place(relx = 0.5, rely = 0.4, anchor=tk.CENTER)
-        self.start_button = tk.Button(self.window,
-                                      text="Start Transplanting",
-                                      command=lambda:threading.Thread(target=self.transplanter_robot.transplant).start(),
-                                      state=tk.DISABLED)
-        self.start_button.place(relx = 0.5, rely = 0.3, anchor=tk.CENTER)
-        self.eliminate_previous_buttons()
+        self.stop_button.config(state=tk.NORMAL)
+        self.start_button.config(text="Start Transplanting",
+                                 command=lambda:threading.Thread(target=self.transplanter.transplant).start(),
+                                 state=tk.DISABLED)
 
     def set_buttons_to_waiting_for_tray_replacement(self) -> None:
         """Configures the buttons such that the user can start or stop while replacing the tray"""
-        stop_button = tk.Button(self.window,
-                                text="End Transplanting",
-                                command=self.stop_transplanting,
-                                state=tk.NORMAL)
-        stop_button.place(relx = 0.5, rely = 0.4, anchor=tk.CENTER)
-        self.start_button = tk.Button(self.window,
-                                      text="Trays have been replaced manually - continue transplanting",
-                                      command=self.continue_transplanting,
-                                      state=tk.NORMAL)
-        self.start_button.place(relx = 0.5, rely = 0.3, anchor=tk.CENTER)
-        self.eliminate_previous_buttons()
+        self.stop_button.config(state=tk.NORMAL)
+        self.start_button.config(text="Trays have been replaced manually - continue transplanting",
+                                 command=self.continue_transplanting,
+                                 state=tk.NORMAL)
 
 
     def display_window_frame(self)-> None:
         """Displays the GUI window - while this is running, everything in the thread stops"""
-        if self.transplanter_robot.current_state is not self.state.IN_TRANSPLANT:
-            print(self.transplanter_robot.current_state)
-        if self.transplanter_robot.current_state is not self.previous_state:
-            if self.transplanter_robot.current_state is self.state.PRE_TRANSPLANT:
+        if self.transplanter.current_state is not self.previous_state:
+            if self.transplanter.current_state is self.state.PRE_TRANSPLANT:
                 self.set_buttons_to_pre_transplant_stage()
-            elif self.transplanter_robot.current_state is self.state.IN_TRANSPLANT:
+            elif self.transplanter.current_state is self.state.IN_TRANSPLANT:
                 self.set_buttons_to_in_transplant_stage()
-            elif self.transplanter_robot.current_state is self.state.WAIT:
+            elif self.transplanter.current_state is self.state.WAIT:
                 self.set_buttons_to_waiting_for_tray_replacement()
-        self.previous_state = self.transplanter_robot.current_state
-        self.update_frame_status()
-        self.update_toolhead_status()
+        self.previous_state = self.transplanter.current_state
+        self.toolhead_label.config(text=self.transplanter.toolhead_arduino.status)
+        self.frame_label.config(text=self.transplanter.frame_arduino.status)
         self.window.update_idletasks()
         self.window.update()
