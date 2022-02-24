@@ -13,8 +13,8 @@ def main():
     toolhead_arduino = ToolheadArduino(0.14)
     transplanter_robot = TransplanterRobot(source_tray, destination_tray, frame_arduino, toolhead_arduino)
     gui = GUI(transplanter_robot)
+    gui.make_start_button()
 
-    gui.make_start_button(transplanter_robot)
 
     while True:
         gui.display_window_frame()

@@ -1,5 +1,6 @@
 """Contains the transplanter_robot class"""
 import enum
+from time import sleep
 from frame_arduino import FrameArduino
 from toolhead_arduino import ToolheadArduino
 from tray import Tray
@@ -7,7 +8,9 @@ from tray import Tray
 class TransplanterRobot:
     """
     A class to handle the ways that all the trays and arduinos mesh together
-    to transplant a plant from one location to another
+    to transplant a plant from one location to another. The enum variables
+    which represent the state are entirely controled by the GUI. If you are wondering
+    where the state was changed and are confused, LOOK IN THE GUI CLASS.
 
     ...
 
@@ -24,9 +27,6 @@ class TransplanterRobot:
     trays_need_replacing: boolean
         whether the robot should pause to wait for
         trays replaced
-    continue_transplanting: boolean
-        whether the process should keep
-        going or if it has been shut off
 
     Methods
     -------
@@ -84,10 +84,12 @@ class TransplanterRobot:
 
 
     def wait_for_tray_replace(self) -> None:
-        """Pause transplanting while waiting for the human to replace the tray"""
+        """Pause transplanting while waiting for the human to replace the tray
+           The current state variable is altered in the GUI class when one
+           of the buttons is pressed"""
         self.current_state = self.button_stages.WAIT
-        print("FUCK YOU")
-        #self.gui.start_button.wait_variable(self.gui.continue_transplanting)
+        while self.current_state is self.button_stages.WAIT:
+            sleep(0.1)
 
     def transplant(self) -> None:
         '''

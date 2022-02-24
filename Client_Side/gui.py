@@ -76,7 +76,7 @@ class GUI:
         self.transplanter_robot = transplanter_robot
         self.label_frame_arduino_port()
         self.label_toolhead_arduino_port()
-        self.configure_stop_button()
+        self.make_stop_button()
         self.button_stages = transplanter_robot.button_stages
 
         instructions_label = tk.Label(text="Welcome to the LettuCSE Lettuce Transplanter\n"
@@ -141,12 +141,14 @@ class GUI:
         toolhead_label = tk.Label(self.window,text = "Toolhead arduino port: " + self.toolhead_arduino.port, bg="green")
         toolhead_label.place(relx = 1.0, rely = 1.0, anchor ='se')
 
-    def make_start_button(self, transplant_robot) -> None:
+    def make_start_button(self) -> None:
         '''
             The main button must spawn another thread so it can run simultaniously to the gui.
             It also must have the transplanting function from the main file fed into it, the
             args seperately from the target. The lambda before the threading.Thread is so that
-            it only runs the function once it is clicked and a new thread is spawned.
+            it only runs the function once it is clicked and a new thread is spawned. This 
+            command is only run once, all future times that the main start button is run,
+            it continues this thread
 
             Parameters:
                     transplanting_function (function): the function from main which transplants
@@ -159,7 +161,7 @@ class GUI:
                     None
         '''
         start_button = tk.Button(self.window,  text="Start Transplanting",
-            command=lambda:threading.Thread(target=transplant_robot.transplant).start())
+            command=lambda:threading.Thread(target=self.transplanter_robot.transplant).start())
         start_button.place(relx = 0.5, rely = 0.3, anchor=tk.CENTER)
         self.start_button = start_button
 
@@ -167,8 +169,17 @@ class GUI:
         """Signals to the transplant function in main that the transplanting should finish"""
         self.transplanter_robot.continue_transplanting = False
         self.stop_button["state"] = tk.DISABLED
+        self.transplanter_robot.current_state = self.button_stages.PRE_TRANSPLANT
 
-    def configure_stop_button(self) -> None:
+
+    def continue_transplanting(self) -> None:
+        """The main button is given this command when it is pressed
+        after the first time. This spawns no new threads and simply continues
+        the transplanting process"""
+        self.transplanter_robot.continue_transplanting = True
+        self.transplanter_robot.current_state = self.button_stages.IN_TRANSPLANT
+
+    def make_stop_button(self) -> None:
         """Create the second button that stops the transplanting"""
         stop_button = tk.Button(self.window,
                                 text="End Transplanting",
@@ -176,7 +187,6 @@ class GUI:
         stop_button.place(relx = 0.5, rely = 0.4, anchor=tk.CENTER)
         stop_button["state"] = tk.DISABLED
         self.stop_button = stop_button
-
 
     def set_buttons_to_pre_transplant_stage(self) -> None:
         """Configures the buttons such that the user can only begin transplanting"""
@@ -198,6 +208,7 @@ class GUI:
         """Configures the buttons such that the user can start or stop while replacing the tray"""
         self.start_button["state"] = tk.NORMAL
         self.start_button["text"] = "Trays Have Been Replaced, Continue Transplanting"
+        self.start_button["command"] = self.continue_transplanting
         self.stop_button["state"] = tk.NORMAL
         self.stop_button["text"] = "End Transplanting"
 
@@ -214,4 +225,3 @@ class GUI:
         self.update_toolhead_status()
         self.window.update_idletasks()
         self.window.update()
-
