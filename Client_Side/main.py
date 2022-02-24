@@ -11,8 +11,9 @@ def main():
     destination_tray = Tray('sparse_tray.json', source_tray.get_width())
     frame_arduino = FrameArduino(0.14)
     toolhead_arduino = ToolheadArduino(0.14)
-    gui = GUI(frame_arduino, toolhead_arduino)
-    transplanter_robot = TransplanterRobot(source_tray, destination_tray, frame_arduino, toolhead_arduino, gui)
+    transplanter_robot = TransplanterRobot(source_tray, destination_tray, frame_arduino, toolhead_arduino)
+    gui = GUI(transplanter_robot)
+
     gui.make_start_button(transplanter_robot)
 
     while True:
