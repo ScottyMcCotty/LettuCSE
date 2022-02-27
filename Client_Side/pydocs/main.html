@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module main</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>main</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/punky/Documents/school/ECS193/LettuCSE/Client_Side/main.py">/home/punky/Documents/school/ECS193/LettuCSE/Client_Side/main.py</a></font></td></tr></table>
+    <p><tt>When&nbsp;run,&nbsp;this&nbsp;module&nbsp;makes&nbsp;the&nbsp;robot&nbsp;begin&nbsp;transplanting</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-end"><strong>end</strong></a>(frame_arduino: frame_arduino.FrameArduino, toolhead_arduino: toolhead_arduino.ToolheadArduino) -&gt; None</dt><dd><tt>Returns&nbsp;arm&nbsp;to&nbsp;the&nbsp;origin</tt></dd></dl>
+ <dl><dt><a name="-main"><strong>main</strong></a>()</dt><dd><tt>Run&nbsp;the&nbsp;transplanter</tt></dd></dl>
+ <dl><dt><a name="-repot_single_plant"><strong>repot_single_plant</strong></a>(source: tray.Tray, destination: tray.Tray, frame_arduino: frame_arduino.FrameArduino, toolhead_arduino: toolhead_arduino.ToolheadArduino) -&gt; None</dt><dd><tt>Sends&nbsp;the&nbsp;arduino&nbsp;commands&nbsp;to&nbsp;move&nbsp;the&nbsp;plant&nbsp;from&nbsp;the&nbsp;source&nbsp;tray&nbsp;to&nbsp;the&nbsp;destination&nbsp;tray<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source&nbsp;(int&nbsp;tuple):&nbsp;The&nbsp;X&nbsp;and&nbsp;Y&nbsp;values&nbsp;of&nbsp;the&nbsp;plant&nbsp;to&nbsp;be&nbsp;repotted<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination&nbsp;(int&nbsp;tuple):&nbsp;The&nbsp;X&nbsp;and&nbsp;Y&nbsp;values&nbsp;that&nbsp;the&nbsp;plant&nbsp;is&nbsp;sent&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arduino&nbsp;(Arduino):&nbsp;The&nbsp;arduino&nbsp;object&nbsp;being&nbsp;used&nbsp;for&nbsp;the&nbsp;arm<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
+ <dl><dt><a name="-transplant"><strong>transplant</strong></a>(source: tray.Tray, destination: tray.Tray, frame_arduino: frame_arduino.FrameArduino, toolhead_arduino: toolhead_arduino.ToolheadArduino, gui: gui.GUI) -&gt; None</dt><dd><tt>Compares&nbsp;the&nbsp;sizes&nbsp;of&nbsp;the&nbsp;two&nbsp;trays,&nbsp;warns&nbsp;the&nbsp;user&nbsp;if&nbsp;they&nbsp;are&nbsp;different<br>
+sizes&nbsp;(which&nbsp;may&nbsp;indicate&nbsp;a&nbsp;faulty&nbsp;json&nbsp;file)<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_tray&nbsp;(Tray):&nbsp;the&nbsp;original&nbsp;tray&nbsp;containing&nbsp;lettuce<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_tray&nbsp;(Tray):&nbsp;tray&nbsp;the&nbsp;lettuce&nbsp;is&nbsp;being&nbsp;moved&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arduino&nbsp;(Arduino):&nbsp;The&nbsp;arduino&nbsp;object&nbsp;being&nbsp;used&nbsp;for&nbsp;the&nbsp;arm<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
+ <dl><dt><a name="-wait_for_tray_replace"><strong>wait_for_tray_replace</strong></a>(stop_trigger: tkinter.IntVar, gui: gui.GUI) -&gt; None</dt><dd><tt>Pause&nbsp;transplanting&nbsp;while&nbsp;waiting&nbsp;for&nbsp;the&nbsp;human&nbsp;to&nbsp;replace&nbsp;the&nbsp;tray</tt></dd></dl>
+</td></tr></table>
+</body></html>
