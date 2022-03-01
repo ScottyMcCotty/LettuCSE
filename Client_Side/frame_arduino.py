@@ -43,6 +43,7 @@ class FrameArduino(Arduino):
         '''
         super().__init__(mm_per_motor_step)
         if self.arduino_connection is not None:
+            self.port_label = self.port
             super().wake_up()
 
     def move_toolhead(self, coords):
@@ -64,7 +65,7 @@ class FrameArduino(Arduino):
             self.arduino_connection.write(bytes(str(x_coord) + " " + str(y_coord), 'utf-8'))
             self.arduino_connection.readline()
 
-        self.status = "Frame Arduino moving to (" + str(x_coord) + ", " + str(y_coord) + ")"
+        self.status = (x_coord, y_coord)
 
         #make it so that rather than sleep you wait for a response
-        time.sleep(0.2)
+        time.sleep(0.5)

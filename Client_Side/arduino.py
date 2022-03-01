@@ -36,8 +36,12 @@ class Arduino:
     def __init__(self, mm_per_motor_step:int):
         for port in list_ports.comports():
             if int(self.serial_number) == int(port.serial_number):
-                self.arduino_connection = Serial(port.device, baudrate=9600, timeout=.1)
-                self.port = port.device
+                try:
+                    self.arduino_connection = Serial(port.device, baudrate=9600, timeout=.1)
+                    self.port = port.device
+                except:
+                    self.port = "ERROR CHANGE PORT PERMISSIONS TO ACCESS PORTd"
+                
         self.mm_per_motor_step = mm_per_motor_step
 
     def wake_up(self):
