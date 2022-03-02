@@ -71,7 +71,7 @@ class FrameArduino(Arduino):
             self.arduino_connection.write(bytes(str(x_coord) + " " + str(y_coord), 'utf-8'))
             while (True):
                 value = self.arduino_connection.readline().decode("utf-8")
-                #TODO: Should there be the possibility of sending something back other than 
+                #TODO: Should there be the possibility of sending something back other than Done?
                 if "Done" in value:
                     break
                 if time.time() > timeout:
