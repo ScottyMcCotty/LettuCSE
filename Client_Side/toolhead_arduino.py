@@ -70,6 +70,9 @@ class ToolheadArduino(Arduino):
                 value = self.arduino_connection.readline().decode("utf-8")
                 if "Up" in value:
                     break
+                if "Error" in value:
+                    #TODO: throw unrecognized command error
+                    break
                 if time.time() > timeout:
                     #TODO: throw timeout error
                     break
@@ -84,12 +87,15 @@ class ToolheadArduino(Arduino):
 
         timeout = time.time() + 25 # 25s to timeout
 
-        #sending a '2' to toolhead arduino signifies releasing->raising
+        #sending a '1' to toolhead arduino signifies lowering->grabbing
         if self.arduino_connection:
             self.arduino_connection.write(bytes("1"), 'utf-8')
             while (True):
                 value = self.arduino_connection.readline().decode("utf-8")
                 if "Down" in value:
+                    break
+                if "Error" in value:
+                    #TODO: throw unrecognized command error
                     break
                 if time.time() > timeout:
                     #TODO: throw timeout error
