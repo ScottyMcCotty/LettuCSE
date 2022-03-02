@@ -63,11 +63,12 @@ class FrameArduino(Arduino):
         x_coord = round(coords[0]/self.mm_per_motor_step)
         y_coord = round(coords[1]/self.mm_per_motor_step)
 
-        if self.arduino_connection:
-            self.arduino_connection.write(bytes(str(x_coord) + " " + str(y_coord), 'utf-8'))
-            self.arduino_connection.readline()
-
         self.gui.update_status("Toolhead moving to (" + str(x_coord) + ", " + str(y_coord) + ")")
 
-        #make it so that rather than sleep you wait for a response
-        time.sleep(0.5)
+        if self.arduino_connection:
+            self.arduino_connection.write(bytes(str(x_coord) + " " + str(y_coord), 'utf-8'))
+            while (True):
+                value = self.arduino_connection.readline().decode("utf-8")
+                #TODO: Should there be the possibility of sending something back other than 
+                if "Done" in value:
+                    break
