@@ -65,10 +65,15 @@ class FrameArduino(Arduino):
 
         self.gui.update_status("Toolhead moving to (" + str(x_coord) + ", " + str(y_coord) + ")")
 
+        timeout = time.time() + 15 # Command given 15 seconds before timing out
+
         if self.arduino_connection:
             self.arduino_connection.write(bytes(str(x_coord) + " " + str(y_coord), 'utf-8'))
             while (True):
                 value = self.arduino_connection.readline().decode("utf-8")
                 #TODO: Should there be the possibility of sending something back other than 
                 if "Done" in value:
+                    break
+                if time.time() > timeout:
+                    #TODO: Throw timeout error
                     break
