@@ -15,10 +15,14 @@ class Arduino:
     arduino_connection : Serial connection object
         connection to one of the arduinos, or a None object
         if there is no connection
-    port : int
-        the unique port that the arduino can connect with
-    gui : Tkinter object
-        The main gui window
+    serial number : int
+        The unique serial number on the arduino.
+        It is a 'None' here since the serial number
+        is different for child classes
+    port_name : string
+        The port that the arduino is on with,
+        or a string indicating that no port
+        was found for the arduino's serial number
 
     Methods
     -------
@@ -27,16 +31,20 @@ class Arduino:
         the frame arduino section of the GUI
     wake_up():
         moves the arm to the given coordinates, where a tray hole should be found
-    """
 
+    send_string_to_arduino():
+        Turns the string into bytes and
+        sends it along to the arduino, waits
+        until the task is done to continue
+
+    """
 
     arduino_connection = None
     serial_number = None
     port_name = "Arduino not connected"
 
 
-
-    def __init__(self):
+    def __init__(self) -> None:
         """
             Search through all possible ports to find one with the correct
             serial number, if such an arduino can be found (serial number
@@ -53,19 +61,19 @@ class Arduino:
                     self.port_name = "ERROR CHANGE PORT PERMISSIONS TO ACCESS PORT"
         self.mm_per_motor_step = 0.14
 
-    def wake_up(self):
+    def wake_up(self) -> None:
         """signals the arduino to wake it up"""
         self.arduino_connection.write(bytes("0 0", 'utf-8'))
 
-    def send_string_to_arduino(self, string_to_send):
+    def send_string_to_arduino(self, string_to_send:str) -> None:
         """Convert input to bytes, send it to arduino, wait until
         the command is "Done" before continuing"""
         if self.arduino_connection:
             self.arduino_connection.write(bytes(string_to_send, 'utf-8'))
             self.arduino_connection.readline()
-            sleep(1)
             #while(True):
                 #value = self.arduino_connection.readline().decode("utf-8")
-                #print(f"Received from arduino: '{value}'")
                 #if "Done" in value:
                 #    break
+        else:
+            sleep(0.5)

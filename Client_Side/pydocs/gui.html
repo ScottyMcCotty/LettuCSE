@@ -19,7 +19,8 @@
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="threading.html">threading</a><br>
 </td><td width="25%" valign=top><a href="tkinter.html">tkinter</a><br>
-</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+</td><td width="25%" valign=top><a href="turtle.html">turtle</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -51,10 +52,10 @@ Attributes<br>
 ----------<br>
 window:Tkinter&nbsp;<a href="builtins.html#object">object</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;main&nbsp;gui&nbsp;window<br>
-toolhead_label:&nbsp;tk.Label<br>
+toolhead_arduino_port_label:&nbsp;tk.Label<br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;tkinter&nbsp;label&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;displays&nbsp;what<br>
 &nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;toolhead&nbsp;arduino&nbsp;is&nbsp;doing&nbsp;at&nbsp;the&nbsp;moment<br>
-frame_label:&nbsp;tk.Label<br>
+frame_arduino_port_label:&nbsp;tk.Label<br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;tkinter&nbsp;label&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;displays&nbsp;what<br>
 &nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;frame&nbsp;arduino&nbsp;is&nbsp;doing&nbsp;at&nbsp;the&nbsp;moment<br>
 stop_button:&nbsp;tk.Button<br>
@@ -82,10 +83,8 @@ update_frame_status():<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Updates&nbsp;the&nbsp;location&nbsp;of&nbsp;the&nbsp;frame&nbsp;based&nbsp;on&nbsp;input&nbsp;from&nbsp;the&nbsp;transplanter_robot<br>
 update_toolhead_status():<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Updates&nbsp;the&nbsp;location&nbsp;of&nbsp;the&nbsp;frame&nbsp;based&nbsp;on&nbsp;input&nbsp;from&nbsp;the&nbsp;transplanter_robot<br>
-label_frame_arduino_port():<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Displays&nbsp;in&nbsp;the&nbsp;bottom&nbsp;left&nbsp;corner&nbsp;which&nbsp;port&nbsp;the&nbsp;frame&nbsp;arduino&nbsp;is&nbsp;connected&nbsp;on<br>
-label_toolhead_arduino_port():<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Displays&nbsp;in&nbsp;the&nbsp;bottom&nbsp;read&nbsp;corner&nbsp;which&nbsp;port&nbsp;the&nbsp;toolhead&nbsp;arduino&nbsp;is&nbsp;connected&nbsp;on<br>
+<a href="#GUI-toolhead_location_label">toolhead_location_label</a>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Displays&nbsp;the&nbsp;x&nbsp;and&nbsp;y&nbsp;coords&nbsp;of&nbsp;the&nbsp;frame<br>
 <a href="#GUI-stop_transplanting">stop_transplanting</a>():<br>
 &nbsp;&nbsp;&nbsp;&nbsp;stop&nbsp;the&nbsp;transplanting&nbsp;procccess&nbsp;and&nbsp;start&nbsp;over&nbsp;afterwards.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;is&nbsp;NOT&nbsp;the&nbsp;pause&nbsp;that&nbsp;happens&nbsp;when&nbsp;a&nbsp;tray&nbsp;is&nbsp;being&nbsp;replaced<br>
@@ -109,6 +108,8 @@ the&nbsp;transplanting&nbsp;process</tt></dd></dl>
 
 <dl><dt><a name="GUI-display_window_frame"><strong>display_window_frame</strong></a>(self) -&gt; None</dt><dd><tt>Displays&nbsp;the&nbsp;<a href="#GUI">GUI</a>&nbsp;window&nbsp;-&nbsp;while&nbsp;this&nbsp;is&nbsp;running,&nbsp;everything&nbsp;in&nbsp;the&nbsp;thread&nbsp;stops</tt></dd></dl>
 
+<dl><dt><a name="GUI-move_turtle"><strong>move_turtle</strong></a>(self, parameters) -&gt; None</dt></dl>
+
 <dl><dt><a name="GUI-set_buttons_to_in_transplant_stage"><strong>set_buttons_to_in_transplant_stage</strong></a>(self) -&gt; None</dt><dd><tt>Configures&nbsp;the&nbsp;buttons&nbsp;such&nbsp;that&nbsp;the&nbsp;user&nbsp;can&nbsp;only&nbsp;stop&nbsp;transplanting</tt></dd></dl>
 
 <dl><dt><a name="GUI-set_buttons_to_pre_transplant_stage"><strong>set_buttons_to_pre_transplant_stage</strong></a>(self) -&gt; None</dt><dd><tt>Configures&nbsp;the&nbsp;buttons&nbsp;such&nbsp;that&nbsp;the&nbsp;user&nbsp;can&nbsp;only&nbsp;begin&nbsp;transplanting</tt></dd></dl>
@@ -127,9 +128,9 @@ Data descriptors defined here:<br>
 </dl>
 <hr>
 Data and other attributes defined here:<br>
-<dl><dt><strong>frame_label</strong> = None</dl>
-
 <dl><dt><strong>previous_state</strong> = None</dl>
+
+<dl><dt><strong>previous_toolhead_location</strong> = None</dl>
 
 <dl><dt><strong>start_button</strong> = None</dl>
 
@@ -137,9 +138,13 @@ Data and other attributes defined here:<br>
 
 <dl><dt><strong>stop_button</strong> = None</dl>
 
-<dl><dt><strong>toolhead_label</strong> = None</dl>
+<dl><dt><strong>toolhead_location_label</strong> = None</dl>
 
 <dl><dt><strong>transplanter</strong> = None</dl>
+
+<dl><dt><strong>turtle</strong> = None</dl>
+
+<dl><dt><strong>turtle_canvas</strong> = None</dl>
 
 <dl><dt><strong>window</strong> = &lt;tkinter.Tk object .&gt;</dl>
 

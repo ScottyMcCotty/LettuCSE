@@ -16,10 +16,10 @@ class GUI:
     ----------
     window:Tkinter object
         The main gui window
-    toolhead_label: tk.Label
+    toolhead_arduino_port_label: tk.Label
         The tkinter label object that displays what
         the toolhead arduino is doing at the moment
-    frame_label: tk.Label
+    frame_arduino_port_label: tk.Label
         The tkinter label object that displays what
         the frame arduino is doing at the moment
     stop_button: tk.Button
@@ -47,10 +47,8 @@ class GUI:
         Updates the location of the frame based on input from the transplanter_robot
     update_toolhead_status():
         Updates the location of the frame based on input from the transplanter_robot
-    label_frame_arduino_port():
-        Displays in the bottom left corner which port the frame arduino is connected on
-    label_toolhead_arduino_port():
-        Displays in the bottom read corner which port the toolhead arduino is connected on
+    toolhead_location_label():
+        Displays the x and y coords of the frame
     stop_transplanting():
         stop the transplanting procccess and start over afterwards.
         This is NOT the pause that happens when a tray is being replaced
@@ -66,8 +64,7 @@ class GUI:
 
     window = tk.Tk()
     turtle_canvas = None
-    toolhead_label = None
-    frame_label = None
+    toolhead_location_label = None
     stop_button = None
     start_button = None
     previous_state = None
@@ -87,11 +84,8 @@ class GUI:
         self.window.title("Lettuce Transplanter")
         self.window.configure(bg= 'green', height=800, width=1400)
 
-        self.frame_label = tk.Label(bg="green")
-        self.frame_label.place(relx = 0.5, rely = 0.3, anchor=tk.CENTER)
-
-        self.toolhead_label = tk.Label(bg="green")
-        self.toolhead_label.place(relx = 0.5, rely = 0.35, anchor=tk.CENTER)
+        self.toolhead_location_label = tk.Label(bg="green")
+        self.toolhead_location_label.place(relx = 0.5, rely = 0.3, anchor=tk.CENTER)
 
         self.stop_button = tk.Button(self.window,
                                     text="End Transplanting",
@@ -104,12 +98,12 @@ class GUI:
                                       state=tk.NORMAL)
         self.start_button.place(relx = 0.5, rely = 0.2, anchor=tk.CENTER)
 
-        frame_label = tk.Label(self.window,text = "Frame arduino port: " + self.transplanter.frame_arduino.port_name, bg="green")
-        frame_label.place(relx = 0.0, rely = 1.0, anchor ='sw')
+        frame_arduino_port_label = tk.Label(self.window,text = "Frame arduino port: " + self.transplanter.frame_arduino.port_name, bg="green")
+        frame_arduino_port_label.place(relx = 0.0, rely = 1.0, anchor ='sw')
 
 
-        toolhead_label = tk.Label(self.window,text = "Toolhead arduino port: " + self.transplanter.toolhead_arduino.port_name, bg="green")
-        toolhead_label.place(relx = 1.0, rely = 1.0, anchor ='se')
+        toolhead_arduino_port_label = tk.Label(self.window,text = "Toolhead arduino port: " + self.transplanter.toolhead_arduino.port_name, bg="green")
+        toolhead_arduino_port_label.place(relx = 1.0, rely = 1.0, anchor ='se')
 
         instructions_label = tk.Label(text="Welcome to the LettuCSE Lettuce Transplanter\n\n\n"
                                             "It was designed and implemented by Martin Orosa,"
@@ -186,8 +180,7 @@ class GUI:
         if self.previous_toolhead_location != self.transplanter.frame_arduino.status and self.transplanter.frame_arduino.status:
             self.move_turtle(self.transplanter.frame_arduino.status)
             self.previous_toolhead_location = self.transplanter.frame_arduino.status
-            self.toolhead_label.config(text = self.transplanter.toolhead_arduino.status)
-            self.frame_label.config(text="Frame arduino moving toolhead to " 
+            self.toolhead_location_label.config(text="Frame arduino moving toolhead to " 
                                       + str(self.transplanter.frame_arduino.status))
 
         self.window.update_idletasks()

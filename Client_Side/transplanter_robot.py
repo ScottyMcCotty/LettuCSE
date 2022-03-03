@@ -78,9 +78,10 @@ class TransplanterRobot:
         '''
         self.frame_arduino.move_toolhead(source)
         self.toolhead_arduino.lower_toolhead()
-        self.frame_arduino.move_toolhead(destination)
         self.toolhead_arduino.raise_toolhead()
-
+        self.frame_arduino.move_toolhead(destination)
+        self.toolhead_arduino.lower_toolhead()
+        self.toolhead_arduino.raise_toolhead()
 
     def wait_for_tray_replace(self) -> None:
         """Pause transplanting while waiting for the human to replace the tray

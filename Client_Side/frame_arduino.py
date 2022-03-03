@@ -12,39 +12,23 @@ class FrameArduino(Arduino):
     Attributes
     ----------
     serial_number : int
-        the serial number of the arduino that is being used for the toolhead
+        the serial number of the arduino that is being used for the frame
         if you change the toolhead arduino you will have to change this number
+    status : tuple(int)
+        the location of the toolhead which is reported to the GUI so it can
+        be displayed
 
     Methods
     -------
-    __init__(mm_per_motor_step):
-        calls the parent init, and then lists the connected port in
-        the frame arduino section of the GUI
     move_toolhead(coords):
         moves the arm to the given coordinates, where a tray hole should be found
     """
 
 
     serial_number = 55838343733351510170
-    port_name = "Arduino not connected"
     status = ""
 
-    def __init__(self):
-        '''
-            Initialize the arduino and then list the name of the port connected to the
-            arduino in the toolhead port label on the gui
-
-            Parameters:
-                    None
-            Returns:
-                    None
-        '''
-        super().__init__()
-        if self.arduino_connection is not None:
-            super().wake_up()
-
     def move_toolhead(self, coords):
-
         '''
             Moves the arm to the given coordinates
 
