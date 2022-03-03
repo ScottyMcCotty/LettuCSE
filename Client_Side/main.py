@@ -9,8 +9,8 @@ def main():
     """Run the transplanter"""
     source_tray = Tray('dense_tray.json')
     destination_tray = Tray('sparse_tray.json', source_tray.get_width())
-    frame_arduino = FrameArduino(0.14)
-    toolhead_arduino = ToolheadArduino(0.14)
+    frame_arduino = FrameArduino()
+    toolhead_arduino = ToolheadArduino()
     transplanter_robot = TransplanterRobot(source_tray, destination_tray, frame_arduino, toolhead_arduino)
     gui = GUI(transplanter_robot)
 

@@ -104,11 +104,11 @@ class GUI:
                                       state=tk.NORMAL)
         self.start_button.place(relx = 0.5, rely = 0.2, anchor=tk.CENTER)
 
-        frame_label = tk.Label(self.window,text = "Frame arduino port: " + self.transplanter.frame_arduino.port, bg="green")
+        frame_label = tk.Label(self.window,text = "Frame arduino port: " + self.transplanter.frame_arduino.port_name, bg="green")
         frame_label.place(relx = 0.0, rely = 1.0, anchor ='sw')
 
 
-        toolhead_label = tk.Label(self.window,text = "Toolhead arduino port: " + self.transplanter.toolhead_arduino.port, bg="green")
+        toolhead_label = tk.Label(self.window,text = "Toolhead arduino port: " + self.transplanter.toolhead_arduino.port_name, bg="green")
         toolhead_label.place(relx = 1.0, rely = 1.0, anchor ='se')
 
         instructions_label = tk.Label(text="Welcome to the LettuCSE Lettuce Transplanter\n\n\n"
@@ -148,7 +148,6 @@ class GUI:
     def move_turtle(self, parameters) -> None:
         self.turtle.showturtle()
         location_on_canvas = (round(parameters[0]/16 - 270), round(parameters[1]/20-160))
-        print(location_on_canvas)
         self.turtle.goto(location_on_canvas)
 
     def set_buttons_to_pre_transplant_stage(self) -> None:

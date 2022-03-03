@@ -63,7 +63,7 @@ class TransplanterRobot:
         '''Returns arm to the origin' and retracts it in order
             to prepare the robot for shutdown'''
         self.frame_arduino.move_toolhead((0,0))
-        self.toolhead_arduino.release_plant()
+        self.toolhead_arduino.raise_toolhead()
 
     def repot_single_plant(self, source:tuple, destination: tuple) -> None:
         '''
@@ -77,9 +77,9 @@ class TransplanterRobot:
                         None
         '''
         self.frame_arduino.move_toolhead(source)
-        self.toolhead_arduino.grab_plant()
+        self.toolhead_arduino.lower_toolhead()
         self.frame_arduino.move_toolhead(destination)
-        self.toolhead_arduino.release_plant()
+        self.toolhead_arduino.raise_toolhead()
 
 
     def wait_for_tray_replace(self) -> None:

@@ -1,5 +1,4 @@
 """This module contains the Frame Arduino class which is a child of the Arduino class"""
-import time
 from arduino import Arduino
 
 class FrameArduino(Arduino):
@@ -27,23 +26,21 @@ class FrameArduino(Arduino):
 
 
     serial_number = 55838343733351510170
-    port = "Arduino not connected"
+    port_name = "Arduino not connected"
     status = ""
 
-    def __init__(self, mm_per_motor_step:int):
+    def __init__(self):
         '''
             Initialize the arduino and then list the name of the port connected to the
             arduino in the toolhead port label on the gui
 
             Parameters:
-                    mm_per_motor_step : int
-                        the number of milimeters the arm will move during each motor step
+                    None
             Returns:
                     None
         '''
-        super().__init__(mm_per_motor_step)
+        super().__init__()
         if self.arduino_connection is not None:
-            self.port_label = self.port
             super().wake_up()
 
     def move_toolhead(self, coords):
@@ -53,19 +50,12 @@ class FrameArduino(Arduino):
 
             Parameters:
                     coords : tuple(int)
-                        the x and y location that the arm is
+                        the 2D coords that the arm is
                         intending to move to, in milimeters
             Returns:
                     None
         '''
         x_coord = round(coords[0]/self.mm_per_motor_step)
         y_coord = round(coords[1]/self.mm_per_motor_step)
-
-        if self.arduino_connection:
-            self.arduino_connection.write(bytes(str(x_coord) + " " + str(y_coord), 'utf-8'))
-            self.arduino_connection.readline()
-
+        super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))
         self.status = (x_coord, y_coord)
-
-        #make it so that rather than sleep you wait for a response
-        time.sleep(0.5)

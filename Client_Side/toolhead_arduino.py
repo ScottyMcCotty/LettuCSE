@@ -1,5 +1,4 @@
 """Module contains vertical arduino class"""
-import time
 from arduino import Arduino
 
 
@@ -26,47 +25,23 @@ class ToolheadArduino(Arduino):
     __init__(mm_per_motor_step, gui):
         calls the parent init, and then lists the connected port in
         the toolhead arduino section of the GUI
-    grab_plant():
-        lowers the toolhead arm to the plant and grabs it
-    release_plant():
-        releases the plant and raises the toolhead arm
+    raise_toolhead():
+        signals the arduino to raise the toolhead
+    lower_toolhead():
+        signals the arduino to lower the toolhead
     """
 
 
     serial_number = 42069
-    port = "Arduino not connected"
     status = ""
 
+    def raise_toolhead(self):
+        """Sends a '0' signal to the toolhead arduino,
+        which instructs the toolhead to go up"""
+        super().send_string_to_arduino(str(0))
 
-    def __init__(self, mm_per_motor_step:int):
-        '''
-            Initialize the arduino and then list the name of the port connected to the
-            arduino in the toolhead port label on the gui
 
-            Parameters:
-                    mm_per_motor_step : int
-                        the number of milimeters the arm will move during each motor step
-                    gui (GUI): the tkinter window object that everything is displayed on
-            Returns:
-                    None
-        '''
-        super().__init__(mm_per_motor_step)
-        if self.arduino_connection is not None:
-            self.port_label = self.port
-            super().wake_up()
-
-    def release_plant(self):
-        """opens the cup-grasp and lets the plant fall"""
-        #actually signal arduino
-        self.status = "Toolhead releasing plant"
-
-        #make it so that rather than sleep you wait for a response
-        time.sleep(0.1)
-
-    def grab_plant(self):
-        """closes the cup-grasp to hold the plant"""
-        #actually signal arduino
-        self.status = "Toolhead grabbing plant"
-
-        #make it so that rather than sleep you wait for a response
-        time.sleep(0.1)
+    def lower_toolhead(self):
+        """Sends a '1' signal to the toolhead arduino,
+        which instructs the toolhead to go down"""
+        super().send_string_to_arduino(str(1))
