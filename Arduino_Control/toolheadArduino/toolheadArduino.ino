@@ -24,7 +24,7 @@ void setup() {
   pinMode(Y_STOP_PIN, INPUT_PULLUP);
   
   // Start the connection with baudrate = 115200 and a minor delay
-  Serial.begin(115200)
+  Serial.begin(115200);
   delay(500);
 
   //TODO: Call calibration function if needed
@@ -70,7 +70,44 @@ void calibrate() {
 }
 
 // AUTO Calibrate (requires limit switches installed):
-// Set the "up" position by moving until a limit switch is hit
+// Set the "up" position by moving until a limit switch is hit.
+// Note this function is currently not called at all. Revisit when limit switches installed.
+
+//TODO: Unsure if this code calibrates by moving up into the raised position, or if it moves down.
+//      Needs testing in lab once limit switches are installed
+void auto_calibrate(int motor_pin, int dir_pin, int stop_pin) {
+  Serial.print("Auto-calibrating pin "); Serial.println(motor_pin);
+  // Serial.println("Enter integer, or 'save'");
+
+  // set direction negative
+  digitalWrite(dir_pin, LOW);
+  while (digitalRead(stop_pin) == HIGH) {
+    // motor hasn't been triggered yet, keep rolling in negative direction
+    digitalWrite(motor_pin, HIGH);
+    delayMicroseconds(half_period);
+    digitalWrite(motor_pin, LOW);
+    delayMicroseconds(half_period);
+//    Serial.println("Moving negative");
+//    delay(200);
+  }
+
+  delay(500);
+
+  // we ran into the limit switch, now we want to back off a bit until it's not being touched
+  digitalWrite(dir_pin, HIGH);
+  while(digitalRead(stop_pin) == LOW) {
+    // move it slowly away from the limit switch
+    digitalWrite(motor_pin, HIGH);
+    delayMicroseconds(half_period * 2);
+    digitalWrite(motor_pin, LOW);
+    delayMicroseconds(half_period * 2);
+//    Serial.println("Moving positive");
+//    delay(200);
+  }
+
+  Serial.println("Calibrated.");
+  // we can say this is the home position. Barely just in front of triggering the limit switch
+}
 
 /*
  * Scott's function move_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, int dir, int half_step_delay)
@@ -157,11 +194,11 @@ void toolhead_move(bool movePos) {
   // Move the motor based on the input direction
   if (movePos) { // move to lowered position
     //TODO: We don't know yet if lowering requires negative or positive movement. Will need to test in lab
-    move_not_blocking(Y_STEP_PIN, Y_DIR_PIN, LOWERED_MOVEMENT, dir(LOWERED_MOVEMENT), half_step_delay);
+    move_not_blocking(Y_STEP_PIN, Y_DIR_PIN, LOWERED_MOVEMENT, dir(LOWERED_MOVEMENT), half_period);
     positionDown = true;
     Serial.println("Down");
   } else { // move to raised position
-    move_not_blocking(Y_STEP_PIN, Y_DIR_PIN, RAISED_MOVEMENT, dir(RAISED_MOVEMENT), half_step_delay);
+    move_not_blocking(Y_STEP_PIN, Y_DIR_PIN, RAISED_MOVEMENT, dir(RAISED_MOVEMENT), half_period);
     positionDown = false;
     Serial.println("Up");
   }
