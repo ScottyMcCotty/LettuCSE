@@ -63,9 +63,9 @@ class ToolheadArduino(Arduino):
 
         timeout = time.time() + 25 # 25s to timeout
 
-        #sending a '2' to toolhead arduino signifies releasing->raising
+        #sending a '0' to toolhead arduino signifies releasing->raising
         if self.arduino_connection:
-            self.arduino_connection.write(bytes("2"), 'utf-8')
+            self.arduino_connection.write(bytes("0"), 'utf-8')
             while (True):
                 value = self.arduino_connection.readline().decode("utf-8")
                 if "Up" in value:
