@@ -6,8 +6,13 @@ const int Y_DIR_PIN = 5;
 
 const int half_period = 1100; // Unsure what this does but is called for calibrating
 
-// If true (1), toolhead is extended downward. False (0) means toolhead is raised.
+const int RAISED_MOVEMENT   = 1000;  // Number of motor steps to go from lowered to raised position
+const int LOWERED_MOVEMENT  = -1000; // Number of motor steps to go from raised to lowered position
+
+// If true (1), toolhead is extended downward. False (0) means toolhead is raised. Toolhead assumed to start raised.
 bool positionDown = false;
+
+#define dir(x) ((x) < 0 ? LOW : HIGH)
 
 
 void setup() {
@@ -65,7 +70,7 @@ void calibrate() {
 }
 
 // AUTO Calibrate (requires limit switches installed):
-// Set the "up" position by 
+// Set the "up" position by moving until a limit switch is hit
 
 /*
  * Scott's function move_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, int dir, int half_step_delay)
@@ -140,7 +145,7 @@ String wait_for_input(String prompt) {
   return String(buf);
 }
 
-// TOOLHEAD MOVEMENT FUNCTION: 0 input means move to low position, 1 moves to high
+// TOOLHEAD MOVEMENT FUNCTION: true input means move to low position, false moves to raised
 void toolhead_move(bool movePos) {
 
   // Shouldn't ever try to move to the position it is already at
@@ -152,10 +157,12 @@ void toolhead_move(bool movePos) {
   // Move the motor based on the input direction
   if (movePos) { // move to lowered position
     //TODO: We don't know yet if lowering requires negative or positive movement. Will need to test in lab
-    
+    move_not_blocking(Y_STEP_PIN, Y_DIR_PIN, LOWERED_MOVEMENT, dir(LOWERED_MOVEMENT), half_step_delay);
+    positionDown = true;
     Serial.println("Down");
   } else { // move to raised position
-
+    move_not_blocking(Y_STEP_PIN, Y_DIR_PIN, RAISED_MOVEMENT, dir(RAISED_MOVEMENT), half_step_delay);
+    positionDown = false;
     Serial.println("Up");
   }
 }
