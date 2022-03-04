@@ -25,7 +25,7 @@ class FrameArduino(Arduino):
     """
 
 
-    serial_number = 55838343733351510170
+    serial_number = "957363235323514040C0"
     status = ""
 
     def move_toolhead(self, coords):

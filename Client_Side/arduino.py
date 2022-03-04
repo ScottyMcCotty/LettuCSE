@@ -52,7 +52,7 @@ class Arduino:
             0.14, this must be changed if the motor is changed.
         """
         for port in list_ports.comports():
-            if int(self.serial_number) == int(port.serial_number):
+            if str(self.serial_number) == str(port.serial_number):
                 try:
                     self.arduino_connection = Serial(port.device, baudrate=9600, timeout=.1)
                     self.port_name = port.device

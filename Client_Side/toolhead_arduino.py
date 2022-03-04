@@ -1,6 +1,7 @@
 """Module contains vertical arduino class"""
 from arduino import Arduino
 
+
 class ToolheadArduino(Arduino):
 
     """
@@ -25,7 +26,8 @@ class ToolheadArduino(Arduino):
     """
 
 
-    serial_number = 42069
+    serial_number = "957363235323515012A2"
+
 
     def raise_toolhead(self):
         """Sends a '0' signal to the toolhead arduino,
