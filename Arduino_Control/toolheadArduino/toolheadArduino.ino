@@ -187,20 +187,22 @@ String wait_for_input(String prompt) {
 void toolhead_move(bool movePos) {
 
   // Shouldn't ever try to move to the position it is already at
-  if (movePos == positionDown) {
+  /*if (movePos == positionDown) {
     Serial.println("Error");
     return;
-  }
+  }*/
 
   // Move the motor based on the input direction
   if (movePos) { // move to lowered position
     //TODO: We don't know yet if lowering requires negative or positive movement. Will need to test in lab
     move_not_blocking(Y_STEP_PIN, Y_DIR_PIN, LOWERED_MOVEMENT, dir(LOWERED_MOVEMENT), half_period);
     positionDown = true;
-    Serial.println("Done");
+    //Serial.println("Done");
   } else { // move to raised position
     move_not_blocking(Y_STEP_PIN, Y_DIR_PIN, RAISED_MOVEMENT, dir(RAISED_MOVEMENT), half_period);
     positionDown = false;
-    Serial.println("Done");
+    //Serial.println("Done");
   }
+
+  Serial.println("Done");
 }
