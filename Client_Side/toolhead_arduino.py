@@ -68,10 +68,7 @@ class ToolheadArduino(Arduino):
             self.arduino_connection.write(bytes("0"), 'utf-8')
             while (True):
                 value = self.arduino_connection.readline().decode("utf-8")
-                if "Up" in value:
-                    break
-                if "Error" in value:
-                    #TODO: throw unrecognized command error
+                if "Done" in value:
                     break
                 if time.time() > timeout:
                     #TODO: throw timeout error
@@ -92,10 +89,7 @@ class ToolheadArduino(Arduino):
             self.arduino_connection.write(bytes("1"), 'utf-8')
             while (True):
                 value = self.arduino_connection.readline().decode("utf-8")
-                if "Down" in value:
-                    break
-                if "Error" in value:
-                    #TODO: throw unrecognized command error
+                if "Done" in value:
                     break
                 if time.time() > timeout:
                     #TODO: throw timeout error
