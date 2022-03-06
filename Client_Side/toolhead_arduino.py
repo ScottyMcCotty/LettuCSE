@@ -61,45 +61,13 @@ class ToolheadArduino(Arduino):
         #actually signal arduino
         self.gui.update_status("Toolhead releasing plant")
 
-        timeout = time.time() + 25 # 25s to timeout
-
-        #sending a '2' to toolhead arduino signifies releasing->raising
-        if self.arduino_connection:
-            self.arduino_connection.write(bytes("2"), 'utf-8')
-            while (True):
-                value = self.arduino_connection.readline().decode("utf-8")
-                if "Up" in value:
-                    break
-                if "Error" in value:
-                    #TODO: throw unrecognized command error
-                    break
-                if time.time() > timeout:
-                    #TODO: throw timeout error
-                    break
-
         #make it so that rather than sleep you wait for a response
-        #time.sleep(0.1)
+        time.sleep(0.1)
 
     def grab_plant(self):
         """closes the cup-grasp to hold the plant"""
         #actually signal arduino
         self.gui.update_status("Toolhead grabbing plant")
 
-        timeout = time.time() + 25 # 25s to timeout
-
-        #sending a '1' to toolhead arduino signifies lowering->grabbing
-        if self.arduino_connection:
-            self.arduino_connection.write(bytes("1"), 'utf-8')
-            while (True):
-                value = self.arduino_connection.readline().decode("utf-8")
-                if "Down" in value:
-                    break
-                if "Error" in value:
-                    #TODO: throw unrecognized command error
-                    break
-                if time.time() > timeout:
-                    #TODO: throw timeout error
-                    break
-
         #make it so that rather than sleep you wait for a response
-        #time.sleep(0.1)
+        time.sleep(0.1)

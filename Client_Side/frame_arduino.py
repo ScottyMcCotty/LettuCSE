@@ -63,17 +63,11 @@ class FrameArduino(Arduino):
         x_coord = round(coords[0]/self.mm_per_motor_step)
         y_coord = round(coords[1]/self.mm_per_motor_step)
 
-        self.gui.update_status("Toolhead moving to (" + str(x_coord) + ", " + str(y_coord) + ")")
-
-        timeout = time.time() + 15 # Command given 15 seconds before timing out
-
         if self.arduino_connection:
             self.arduino_connection.write(bytes(str(x_coord) + " " + str(y_coord), 'utf-8'))
-            while (True):
-                value = self.arduino_connection.readline().decode("utf-8")
-                #TODO: Should there be the possibility of sending something back other than Done?
-                if "Done" in value:
-                    break
-                if time.time() > timeout:
-                    #TODO: Throw timeout error
-                    break
+            self.arduino_connection.readline()
+
+        self.gui.update_status("Toolhead moving to (" + str(x_coord) + ", " + str(y_coord) + ")")
+
+        #make it so that rather than sleep you wait for a response
+        time.sleep(0.5)
