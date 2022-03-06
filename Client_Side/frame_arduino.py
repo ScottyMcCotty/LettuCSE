@@ -27,8 +27,9 @@ class FrameArduino(Arduino):
 
     serial_number = "957363235323514040C0"
     status = ""
+    distance_for_picking_up_cup = 25
 
-    def move_toolhead(self, coords:tuple) -> None:
+    def move_toolhead_to_coords(self, coords:tuple) -> None:
         '''
             Moves the arm to the given coordinates
 
@@ -44,10 +45,34 @@ class FrameArduino(Arduino):
         super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))
         self.status = (x_coord, y_coord)
 
+    def move_toolhead_behind_coords(self, coords:tuple) -> None:
+        '''
+            Moves the arm to the given coordinates
+
+            Parameters:
+                    coords : tuple(int)
+                        the 2D coords that the arm is
+                        intending to move to, in milimeters
+            Returns:
+                    None
+        '''
+        x_coord = round(coords[0]/self.mm_per_motor_step)
+        y_coord = round((coords[1]-self.distance_for_picking_up_cup)/self.mm_per_motor_step)
+        super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))
+        self.status = (x_coord, y_coord)
+
     def move_toolhead_forward(self) -> None:
         """Move the toolhead slightly forward so the toolhead
         can pick up the cup"""
         x_coord = self.status[0]
-        y_coord = round(self.status[1] + 25/self.mm_per_motor_step)
+        y_coord = round(self.status[1] + self.distance_for_picking_up_cup/self.mm_per_motor_step)
+        super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))
+        self.status = (x_coord, y_coord)
+
+    def move_toolhead_back(self) -> None:
+        """Move the toolhead slightly
+        backward to drop the cup"""
+        x_coord = self.status[0]
+        y_coord = round(self.status[1] - self.distance_for_picking_up_cup/self.mm_per_motor_step)
         super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))
         self.status = (x_coord, y_coord)
