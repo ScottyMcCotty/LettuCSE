@@ -1,5 +1,4 @@
 """Contains the transplanter_robot class"""
-import enum
 from time import sleep
 from frame_arduino import FrameArduino
 from toolhead_arduino import ToolheadArduino
@@ -27,6 +26,9 @@ class TransplanterRobot:
     trays_need_replacing: boolean
         whether the robot should pause to wait for
         trays replaced
+    end_transplanting_process: boolean
+        whether the transplanting process should end
+        and the toolhead should go back to its origin
 
     Methods
     -------
@@ -47,8 +49,7 @@ class TransplanterRobot:
     frame_arduino = None
     toolhead_arduino = None
     trays_need_replacing = False
-    button_stages = enum.Enum("button_stages", "PRE_TRANSPLANT IN_TRANSPLANT WAIT")
-    current_state = None
+    transplanting_over = False
 
 
     def __init__(self, source: Tray, destination: Tray, frame_arduino: FrameArduino, toolhead_arduino: ToolheadArduino):
@@ -56,12 +57,12 @@ class TransplanterRobot:
         self.destination_tray = destination
         self.frame_arduino = frame_arduino
         self.toolhead_arduino = toolhead_arduino
-        self.current_state = self.button_stages.PRE_TRANSPLANT
 
 
     def end(self) -> None:
         '''Returns arm to the origin' and retracts it in order
             to prepare the robot for shutdown'''
+        self.transplanting_over = True
         self.frame_arduino.move_toolhead((0,0))
         self.toolhead_arduino.raise_toolhead()
 
@@ -78,18 +79,25 @@ class TransplanterRobot:
         '''
         self.frame_arduino.move_toolhead(source)
         self.toolhead_arduino.lower_toolhead()
+        self.frame_arduino.move_toolhead_forward()
         self.toolhead_arduino.raise_toolhead()
         self.frame_arduino.move_toolhead(destination)
         self.toolhead_arduino.lower_toolhead()
+        self.frame_arduino.move_toolhead_forward()
         self.toolhead_arduino.raise_toolhead()
 
-    def wait_for_tray_replace(self) -> None:
+    def pause(self) -> None:
         """Pause transplanting while waiting for the human to replace the tray
            The current state variable is altered in the GUI class when one
            of the buttons is pressed"""
-        self.current_state = self.button_stages.WAIT
-        while self.current_state is self.button_stages.WAIT:
+        self.trays_need_replacing = True
+        while self.trays_need_replacing:
             sleep(0.1)
+
+    def continue_transplant(self) -> None:
+        """Ends the 'pause' function if it is
+        running"""
+        self.trays_need_replacing = False
 
     def transplant(self) -> None:
         '''
@@ -104,20 +112,16 @@ class TransplanterRobot:
                         None
         '''
         source_hole_itt = destination_hole_itt = 0
-        self.current_state = self.button_stages.IN_TRANSPLANT
-        while self.current_state is not self.button_stages.PRE_TRANSPLANT:
+        while not self.transplanting_over:
             if source_hole_itt == self.source_tray.get_number_of_holes():
-                self.wait_for_tray_replace()
+                self.pause()
                 source_hole_itt = 0
             elif destination_hole_itt == self.destination_tray.get_number_of_holes():
-                self.wait_for_tray_replace()
+                self.pause()
                 destination_hole_itt = 0
             else:
-                self.current_state = self.button_stages.IN_TRANSPLANT
                 source_hole = self.source_tray.ith_hole_location(source_hole_itt)
                 destination_hole = self.destination_tray.ith_hole_location(destination_hole_itt)
                 self.repot_single_plant(source_hole,destination_hole)
                 source_hole_itt += 1
                 destination_hole_itt += 1
-        self.current_state = self.button_stages.PRE_TRANSPLANT
-        self.end()

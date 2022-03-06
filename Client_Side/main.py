@@ -11,12 +11,13 @@ def main():
     destination_tray = Tray('sparse_tray.json', source_tray.get_width())
     frame_arduino = FrameArduino()
     toolhead_arduino = ToolheadArduino()
-    transplanter_robot = TransplanterRobot(source_tray, destination_tray, frame_arduino, toolhead_arduino)
-    gui = GUI(transplanter_robot)
+    transplanter = TransplanterRobot(source_tray, destination_tray, frame_arduino, toolhead_arduino)
+    gui = GUI(transplanter.transplant, transplanter.end, transplanter.continue_transplant)
+    gui.label_ports(toolhead_arduino.port_name, frame_arduino.port_name)
 
 
     while True:
-        gui.display_window_frame()
+        gui.update_window(transplanter.frame_arduino.status, transplanter.trays_need_replacing)
 
 if __name__ == "__main__":
     main()

@@ -2,9 +2,7 @@
 import tkinter as tk
 import threading
 import turtle
-
-
-from transplanter_robot import TransplanterRobot
+from typing import Callable
 
 class GUI:
     """
@@ -16,12 +14,12 @@ class GUI:
     ----------
     window:Tkinter object
         The main gui window
-    toolhead_arduino_port_label: tk.Label
+    turtle_canvas: Tkinter canvas
+        The canvas that the turtle object moves
+        around on to show where the head is going
+    toolhead_location_label: tk.Label
         The tkinter label object that displays what
         the toolhead arduino is doing at the moment
-    frame_arduino_port_label: tk.Label
-        The tkinter label object that displays what
-        the frame arduino is doing at the moment
     stop_button: tk.Button
         The button that stops the transplanting
         thread
@@ -29,15 +27,6 @@ class GUI:
         The button that spawns the transplanting
         thread and continues the transplant after
         the process is paused
-    previous_state: Enum():
-        The process state that the transplanter robot
-        was in last frame
-    transplanter_robot: TransplanterRobot
-        An instance of the class representing
-        the entire robot
-    state: Enum()
-        The state that the transplanter robot
-        was in previously
 
     Methods
     -------
@@ -67,20 +56,21 @@ class GUI:
     toolhead_location_label = None
     stop_button = None
     start_button = None
-    previous_state = None
-    transplanter = None
-    state = None
     previous_toolhead_location = None
     turtle = None
+    transplanting_thread = None
+    continue_transplant = None
+    end_transplant = None
 
-    def __init__(self, transplanter:TransplanterRobot):
+
+    def __init__(self, transplant_function:Callable, end:Callable, continue_transplant:Callable):
         '''
             Initializes the main window, the start and stop
-            buttons in the PRE_TRANSPLANT state, the toolhead
-            and frame lables, and the toolhead and frame port lables
+            buttons, the toolhead and frame lables, and the turtle canvas
         '''
-        self.transplanter = transplanter
-        self.state = transplanter.button_stages
+        self.transplanting_thread = threading.Thread(target=transplant_function)
+        self.continue_transplant = continue_transplant
+        self.end_transplant = end
         self.window.title("Lettuce Transplanter")
         self.window.configure(bg= 'green', height=800, width=1400)
 
@@ -88,22 +78,12 @@ class GUI:
         self.toolhead_location_label.place(relx = 0.5, rely = 0.3, anchor=tk.CENTER)
 
         self.stop_button = tk.Button(self.window,
-                                    text="End Transplanting",
-                                    command=self.stop_transplanting,
-                                    state=tk.DISABLED)
+                                     text="End Transplanting",
+                                     command=self.restart_transplanter,
+                                     state=tk.DISABLED)
         self.stop_button.place(relx = 0.5, rely = 0.25, anchor=tk.CENTER)
-        self.start_button = tk.Button(self.window,
-                                      text="Start Transplanting",
-                                      command=lambda:threading.Thread(target=self.transplanter.transplant).start(),
-                                      state=tk.NORMAL)
+        self.start_button = tk.Button(self.window, text="Start Transplanting", state=tk.NORMAL)
         self.start_button.place(relx = 0.5, rely = 0.2, anchor=tk.CENTER)
-
-        frame_arduino_port_label = tk.Label(self.window,text = "Frame arduino port: " + self.transplanter.frame_arduino.port_name, bg="green")
-        frame_arduino_port_label.place(relx = 0.0, rely = 1.0, anchor ='sw')
-
-
-        toolhead_arduino_port_label = tk.Label(self.window,text = "Toolhead arduino port: " + self.transplanter.toolhead_arduino.port_name, bg="green")
-        toolhead_arduino_port_label.place(relx = 1.0, rely = 1.0, anchor ='se')
 
         instructions_label = tk.Label(text="Welcome to the LettuCSE Lettuce Transplanter\n\n\n"
                                             "It was designed and implemented by Martin Orosa,"
@@ -111,77 +91,93 @@ class GUI:
                                             "under the supervision of Dr. Lieth",
                                         bg='green')
         instructions_label.place(relx = 0.5, rely = 0.05, anchor=tk.CENTER)
+        self.set_up_turtle()
 
+
+    def set_up_turtle(self) -> None:
+        """Create the canvas and the 'turtle' object
+        which will show visually how the toolhead will move"""
         self.turtle_canvas = tk.Canvas(master=None,width=550,height=375)
-
         self.turtle_canvas.place(relx = 0.5, rely = 0.7, anchor=tk.CENTER)
         self.turtle = turtle.RawTurtle(self.turtle_canvas)
-        #create sparse board
         self.turtle_canvas.create_rectangle(-265, -180, -10, 180, fill='white')
         self.turtle_canvas.create_rectangle(10, -180, 265, 180, fill='white')
-
         self.turtle.shape("circle")
         self.turtle.turtlesize(0.4)
         self.turtle.penup()
         self.turtle.hideturtle()
         self.turtle.setx(-265)
         self.turtle.sety(-180)
+        self.restart_transplanter()
 
 
-    def stop_transplanting(self) -> None:
-        """Signals to the transplant function in main that the transplanting should finish"""
-        self.transplanter.current_state = self.state.PRE_TRANSPLANT
+    def label_ports(self, toolhead_port:str, frame_port:str):
+        """Show what ports the arduinos are connected to, or if they are connected at all"""
+        frame_arduino_port_label = tk.Label(self.window,
+                                            text = "Frame arduino port: " + frame_port,
+                                            bg="green")
+        frame_arduino_port_label.place(relx = 0.0, rely = 1.0, anchor ='sw')
+        toolhead_arduino_port_label = tk.Label(self.window,
+                                               text = "Toolhead arduino port: " + toolhead_port,
+                                               bg="green")
+        toolhead_arduino_port_label.place(relx = 1.0, rely = 1.0, anchor ='se')
 
 
-    def continue_transplanting(self) -> None:
-        """The main button is given this command when it is pressed
-        after the first time. This spawns no new threads and simply continues
-        the transplanting process"""
-        self.transplanter.current_state = self.state.IN_TRANSPLANT
-
-    def move_turtle(self, parameters) -> None:
+    def move_turtle(self, parameters:tuple) -> None:
+        """Move the turtle to given parameters"""
         self.turtle.showturtle()
         location_on_canvas = (round(parameters[0]/16 - 270), round(parameters[1]/20-160))
         self.turtle.goto(location_on_canvas)
 
-    def set_buttons_to_pre_transplant_stage(self) -> None:
+
+
+
+
+    def restart_transplanter(self) -> None:
         """Configures the buttons such that the user can only begin transplanting"""
+        if self.transplanting_thread.is_alive():
+            self.end_transplant()
+            #self.transplanting_thread.join()
+
         self.stop_button.config(state=tk.DISABLED)
         self.start_button.config(text="Start Transplanting",
-                                 command=lambda:threading.Thread(target=self.transplanter.transplant).start(),
+                                 command=self.begin_transplanting,
                                  state=tk.NORMAL)
 
-    def set_buttons_to_in_transplant_stage(self) -> None:
+    def begin_transplanting(self) -> None:
         """Configures the buttons such that the user can only stop transplanting"""
+        self.transplanting_thread.start()
+
         self.stop_button.config(state=tk.NORMAL)
         self.start_button.config(text="Start Transplanting",
-                                 command=lambda:threading.Thread(target=self.transplanter.transplant).start(),
                                  state=tk.DISABLED)
 
-    def set_buttons_to_waiting_for_tray_replacement(self) -> None:
+    def pause_transplant(self) -> None:
         """Configures the buttons such that the user can start or stop while replacing the tray"""
         self.stop_button.config(state=tk.NORMAL)
         self.start_button.config(text="Trays have been replaced manually - continue transplanting",
-                                 command=self.continue_transplanting,
+                                 command=self.resume_transplant,
                                  state=tk.NORMAL)
 
 
-    def display_window_frame(self)-> None:
+    def resume_transplant(self) -> None:
+        """Configures the buttons such that the user can start or stop while replacing the tray"""
+        self.continue_transplant()
+        self.stop_button.config(state=tk.NORMAL)
+        self.start_button.config(text="Start Transplanting",
+                                 state=tk.DISABLED)
+
+
+    def update_window(self, status:tuple, trays_need_replacing:bool)-> None:
         """Displays the GUI window - while this is running, everything in the thread stops"""
-        if self.transplanter.current_state is not self.previous_state:
-            if self.transplanter.current_state is self.state.PRE_TRANSPLANT:
-                self.set_buttons_to_pre_transplant_stage()
-            elif self.transplanter.current_state is self.state.IN_TRANSPLANT:
-                self.set_buttons_to_in_transplant_stage()
-            elif self.transplanter.current_state is self.state.WAIT:
-                self.set_buttons_to_waiting_for_tray_replacement()
-            self.previous_state = self.transplanter.current_state
-        
-        if self.previous_toolhead_location != self.transplanter.frame_arduino.status and self.transplanter.frame_arduino.status:
-            self.move_turtle(self.transplanter.frame_arduino.status)
-            self.previous_toolhead_location = self.transplanter.frame_arduino.status
-            self.toolhead_location_label.config(text="Frame arduino moving toolhead to " 
-                                      + str(self.transplanter.frame_arduino.status))
+        if trays_need_replacing:
+            self.pause_transplant()
+
+
+        if self.previous_toolhead_location != status and status:
+            self.move_turtle(status)
+            self.toolhead_location_label.config(text="Toolhead at " + str(status))
+            self.previous_toolhead_location = status
 
         self.window.update_idletasks()
         self.window.update()

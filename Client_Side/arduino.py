@@ -67,13 +67,14 @@ class Arduino:
 
     def send_string_to_arduino(self, string_to_send:str) -> None:
         """Convert input to bytes, send it to arduino, wait until
-        the command is "Done" before continuing"""
+        the command is "Done" before continuing if an arduino is connected,
+        othewise sleep because it is on 'test mode'"""
         if self.arduino_connection:
             self.arduino_connection.write(bytes(string_to_send, 'utf-8'))
             self.arduino_connection.readline()
-            #while(True):
-                #value = self.arduino_connection.readline().decode("utf-8")
-                #if "Done" in value:
-                #    break
+            while True:
+                value = self.arduino_connection.readline().decode("utf-8")
+                if "Done" in value:
+                    break
         else:
-            sleep(0.5)
+            sleep(0.1)
