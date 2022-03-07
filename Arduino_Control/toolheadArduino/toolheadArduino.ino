@@ -1,13 +1,15 @@
 // Global vars (NOTE: Pin values in particular may need changing based on arduino wiring in lab)
 
 const int Y_STOP_PIN = 9;
-const int Y_STEP_PIN = 2;
-const int Y_DIR_PIN = 5;
+const int Y_STEP_PIN = 3;
+const int Y_DIR_PIN = 6;
 
 const int half_period = 1100; // Unsure what this does but is called for calibrating
 
-const int RAISED_MOVEMENT   = 1000;  // Number of motor steps to go from lowered to raised position
-const int LOWERED_MOVEMENT  = -1000; // Number of motor steps to go from raised to lowered position
+const int TOOLHEAD_TRAVEL = 2000; // 2000 motor steps ~ 80 mm
+
+//const int RAISED_MOVEMENT   = 1000;  // Number of motor steps to go from lowered to raised position
+//const int LOWERED_MOVEMENT  = -1000; // Number of motor steps to go from raised to lowered position
 
 // If true (1), toolhead is extended downward. False (0) means toolhead is raised. Toolhead assumed to start raised.
 bool positionDown = false;
@@ -21,7 +23,8 @@ void setup() {
   pinMode(Y_DIR_PIN, OUTPUT);
 
   //TODO: unsure if stop pins are being used for toolhead
-  pinMode(Y_STOP_PIN, INPUT_PULLUP);
+  // ^ they're not yet -Scott
+//  pinMode(Y_STOP_PIN, INPUT_PULLUP);
   
   // Start the connection with baudrate = 115200 and a minor delay
   Serial.begin(115200);
@@ -29,7 +32,7 @@ void setup() {
 
   //TODO: Call calibration (or autocalibrate) function if needed
   //calibrate();
-  auto_calibrate(Y_STEP_PIN, Y_DIR_PIN, Y_STOP_PIN);
+//  auto_calibrate(Y_STEP_PIN, Y_DIR_PIN, Y_STOP_PIN);
 }
 
 void loop() {
@@ -39,10 +42,12 @@ void loop() {
   // Call the relevant movement commands based on input
   switch(input) {
     case 0: // release_plant: raise toolhead
-      toolhead_move(false); // Should only be two binary positions, no specified coordinates needed
+//      toolhead_move(false); // Should only be two binary positions, no specified coordinates needed
+      toolhead_down();
       break;
     case 1: // grab_plant: lower toolhead
-      toolhead_move(true);
+//      toolhead_move(true);
+      toolhead_up();
       break;
     default: // unrecognized command
       Serial.println("Error");
