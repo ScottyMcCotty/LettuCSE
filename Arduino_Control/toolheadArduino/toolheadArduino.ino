@@ -4,7 +4,7 @@ const int Y_STOP_PIN = 9;
 const int Y_STEP_PIN = 3;
 const int Y_DIR_PIN = 6;
 
-const int half_period = 1100; // Unsure what this does but is called for calibrating
+const int half_period = 1100;
 
 const int TOOLHEAD_TRAVEL = 2000; // 2000 motor steps ~ 80 mm
 
@@ -76,19 +76,19 @@ void calibrate() {
 }
 
 // AUTO Calibrate (requires limit switches installed):
-// Set the "up" position by moving until a limit switch is hit.
+// Set the "up" position by moving up until a limit switch is hit.
 // Note this function is currently not called at all. Revisit when limit switches installed.
 
 //TODO: Unsure if this code calibrates by moving up into the raised position, or if it moves down.
 //      Needs testing in lab once limit switches are installed
 void auto_calibrate(int motor_pin, int dir_pin, int stop_pin) {
-  Serial.print("Auto-calibrating pin "); Serial.println(motor_pin);
+  //Serial.print("Auto-calibrating pin "); Serial.println(motor_pin);
   // Serial.println("Enter integer, or 'save'");
 
-  // set direction negative
-  digitalWrite(dir_pin, LOW);
+  // set direction positive
+  digitalWrite(dir_pin, HIGH);
   while (digitalRead(stop_pin) == HIGH) {
-    // motor hasn't been triggered yet, keep rolling in negative direction
+    // motor hasn't been triggered yet, keep rolling in positive direction
     digitalWrite(motor_pin, HIGH);
     delayMicroseconds(half_period);
     digitalWrite(motor_pin, LOW);
@@ -100,7 +100,7 @@ void auto_calibrate(int motor_pin, int dir_pin, int stop_pin) {
   delay(500);
 
   // we ran into the limit switch, now we want to back off a bit until it's not being touched
-  digitalWrite(dir_pin, HIGH);
+  digitalWrite(dir_pin, LOW);
   while(digitalRead(stop_pin) == LOW) {
     // move it slowly away from the limit switch
     digitalWrite(motor_pin, HIGH);
@@ -111,7 +111,7 @@ void auto_calibrate(int motor_pin, int dir_pin, int stop_pin) {
 //    delay(200);
   }
 
-  Serial.println("Calibrated.");
+  //Serial.println("Calibrated.");
   // we can say this is the home position. Barely just in front of triggering the limit switch
 }
 
@@ -189,13 +189,7 @@ String wait_for_input(String prompt) {
 }
 
 // TOOLHEAD MOVEMENT FUNCTION: true input means move to low position, false moves to raised
-void toolhead_move(bool movePos) {
-
-  // Shouldn't ever try to move to the position it is already at
-  /*if (movePos == positionDown) {
-    Serial.println("Error");
-    return;
-  }*/
+/*void toolhead_move(bool movePos) {
 
   // Move the motor based on the input direction
   if (movePos) { // move to lowered position
@@ -208,6 +202,32 @@ void toolhead_move(bool movePos) {
     positionDown = false;
     //Serial.println("Done");
   }
+
+  Serial.println("Done");
+}*/
+
+// Move toolhead up by TOOLHEAD_TRAVEL motor steps.
+void toolhead_up() {
+  move_not_blocking(Y_STEP_PIN, Y_DIR_PIN, TOOLHEAD_TRAVEL, dir(TOOLHEAD_TRAVEL), half_period);
+  positionDown = false;
+  Serial.println("Done");
+}
+
+// Move toolhead down until it hits the limit switch.
+void toolhead_down() {
+  // set direction negative
+  digitalWrite(Y_DIR_PIN, LOW);
+  while (digitalRead(Y_STOP_PIN) == HIGH) {
+    // motor hasn't been triggered yet, keep rolling in negative direction
+    digitalWrite(Y_STEP_PIN, HIGH);
+    delayMicroseconds(half_period);
+    digitalWrite(Y_STEP_PIN, LOW);
+    delayMicroseconds(half_period);
+//    Serial.println("Moving negative");
+//    delay(200);
+  }
+
+  //TODO: Should there be a failsafe if the limit switch is never hit?
 
   Serial.println("Done");
 }
