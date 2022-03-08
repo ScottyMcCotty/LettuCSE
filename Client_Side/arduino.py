@@ -65,6 +65,11 @@ class Arduino:
         """signals the arduino to wake it up"""
         self.arduino_connection.write(bytes("0 0", 'utf-8'))
 
+        # wait for the first message from the arduino
+        # while True:
+
+
+
     def send_string_to_arduino(self, string_to_send:str) -> None:
         """Convert input to bytes, send it to arduino, wait until
         the command is "Done" before continuing if an arduino is connected,
