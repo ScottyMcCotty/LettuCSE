@@ -54,7 +54,7 @@ class Arduino:
         for port in list_ports.comports():
             if str(self.serial_number) == str(port.serial_number):
                 try:
-                    self.arduino_connection = Serial(port.device, baudrate=9600, timeout=.1)
+                    self.arduino_connection = Serial(port.device, baudrate=115200, timeout=.1)
                     self.port_name = port.device
                     self.wake_up()
                 except SerialException:
@@ -63,7 +63,7 @@ class Arduino:
 
     def wake_up(self) -> None:
         """signals the arduino to wake it up"""
-        self.arduino_connection.write(bytes("0 0", 'utf-8'))
+        self.arduino_connection.write(bytes("0 0" + "\n", 'utf8'))
 
         # wait for the first message from the arduino
         # while True:
@@ -75,11 +75,16 @@ class Arduino:
         the command is "Done" before continuing if an arduino is connected,
         othewise sleep because it is on 'test mode'"""
         if self.arduino_connection:
-            self.arduino_connection.write(bytes(string_to_send, 'utf-8'))
-            self.arduino_connection.readline()
+            self.arduino_connection.write(bytes(string_to_send + "\n", 'utf8'))
+
             while True:
-                value = self.arduino_connection.readline().decode("utf-8")
-                if "Done" in value:
-                    break
+                value = self.arduino_connection.readline()#.decode("utf8")
+                print(value)
+                sleep(1)
+                    #print(self.serial_number)
+                    #print(string_to_send)
+                    #print(value)
+                #if "Done" in value:
+                   # break
         else:
             sleep(0.1)
