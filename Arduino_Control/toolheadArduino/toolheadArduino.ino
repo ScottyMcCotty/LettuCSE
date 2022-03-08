@@ -53,6 +53,19 @@ void loop() {
       Serial.println("Error");
       break;
   }
+
+  // FOR TESTING PURPOSES ONLY
+  // if input is between -1000 and 1000, call test movement function
+  if ((input <= 1000 || input >= -1000) && (input != 0 && input != 1)) {
+    test_custom_move(input);
+  }
+}
+
+// TEST FUNCTION ONLY
+// Send a custom amount of motor steps to the toolhead.
+void test_custom_move(int steps) {
+  move_not_blocking(Y_STEP_PIN, Y_DIR_PIN, steps, dir(steps), half_period);
+  Serial.println("Done");
 }
 
 // MANUAL Calibrate:  Set the "up" position for the toolhead manually by
