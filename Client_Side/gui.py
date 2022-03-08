@@ -58,7 +58,8 @@ class GUI:
     start_button = None
     previous_toolhead_location = None
     turtle = None
-    transplanting_thread = None
+    transplant_thread = None
+    transplant_function = None
     continue_transplant = None
     end_transplant = None
 
@@ -68,7 +69,7 @@ class GUI:
             Initializes the main window, the start and stop
             buttons, the toolhead and frame lables, and the turtle canvas
         '''
-        self.transplanting_thread = threading.Thread(target=transplant_function)
+        self.transplant_function = transplant_function
         self.continue_transplant = continue_transplant
         self.end_transplant = end
         self.window.title("Lettuce Transplanter")
@@ -126,7 +127,7 @@ class GUI:
     def move_turtle(self, parameters:tuple) -> None:
         """Move the turtle to given parameters"""
         self.turtle.showturtle()
-        location_on_canvas = (round(parameters[0]/16 - 270), round(parameters[1]/20-160))
+        location_on_canvas = (round(parameters[0]/16 - 260), round(parameters[1]/20-160))
         self.turtle.goto(location_on_canvas)
 
 
@@ -135,10 +136,9 @@ class GUI:
 
     def restart_transplanter(self) -> None:
         """Configures the buttons such that the user can only begin transplanting"""
-        if self.transplanting_thread.is_alive():
+        if self.transplant_thread and self.transplant_thread.is_alive():
             self.end_transplant()
-            #self.transplanting_thread.join()
-
+            self.transplant_thread.join()
         self.stop_button.config(state=tk.DISABLED)
         self.start_button.config(text="Start Transplanting",
                                  command=self.begin_transplanting,
@@ -146,7 +146,8 @@ class GUI:
 
     def begin_transplanting(self) -> None:
         """Configures the buttons such that the user can only stop transplanting"""
-        self.transplanting_thread.start()
+        self.transplant_thread = threading.Thread(target=self.transplant_function)
+        self.transplant_thread.start()
 
         self.stop_button.config(state=tk.NORMAL)
         self.start_button.config(text="Start Transplanting",

@@ -63,12 +63,14 @@ class TransplanterRobot:
         '''Returns arm to the origin' and retracts it in order
             to prepare the robot for shutdown'''
         self.transplanting_over = True
-        self.frame_arduino.move_toolhead_to_coords((0,0))
-        self.toolhead_arduino.raise_toolhead()
+        self.frame_arduino.move_toolhead_to_coords((0,0), self.transplanting_over)
+        self.toolhead_arduino.raise_toolhead(self.transplanting_over)
 
     def repot_single_plant(self, source:tuple, destination: tuple) -> None:
         '''
         Sends the arduino commands to move the plant from the source tray to the destination tray
+        the 'transplanting over' variable is included because these actions take a long time
+        and if the user presses the stop button it must stop instantly
 
                 Parameters:
                         source (float tuple): The X and Y values of the plant to be repotted
@@ -77,14 +79,14 @@ class TransplanterRobot:
                 Returns:
                         None
         '''
-        self.frame_arduino.move_toolhead_behind_coords(source)
-        self.toolhead_arduino.lower_toolhead()
-        self.frame_arduino.move_toolhead_forward()
-        self.toolhead_arduino.raise_toolhead()
-        self.frame_arduino.move_toolhead_to_coords(destination)
-        self.toolhead_arduino.lower_toolhead()
-        self.frame_arduino.move_toolhead_back()
-        self.toolhead_arduino.raise_toolhead()
+        self.frame_arduino.move_toolhead_behind_coords(source, self.transplanting_over)
+        self.toolhead_arduino.lower_toolhead(self.transplanting_over)
+        self.frame_arduino.move_toolhead_forward(self.transplanting_over)
+        self.toolhead_arduino.raise_toolhead(self.transplanting_over)
+        self.frame_arduino.move_toolhead_to_coords(destination, self.transplanting_over)
+        self.toolhead_arduino.lower_toolhead(self.transplanting_over)
+        self.frame_arduino.move_toolhead_back(self.transplanting_over)
+        self.toolhead_arduino.raise_toolhead(self.transplanting_over)
 
     def pause(self) -> None:
         """Pause transplanting while waiting for the human to replace the tray
@@ -111,6 +113,7 @@ class TransplanterRobot:
                 Returns:
                         None
         '''
+        self.transplanting_over = False
         source_hole_itt = destination_hole_itt = 0
         while not self.transplanting_over:
             if source_hole_itt == self.source_tray.get_number_of_holes():

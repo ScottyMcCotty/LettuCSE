@@ -29,13 +29,15 @@ class ToolheadArduino(Arduino):
     serial_number = "957363235323515012A2"
 
 
-    def raise_toolhead(self):
+    def raise_toolhead(self, transplanting_over:int) -> None:
         """Sends a '0' signal to the toolhead arduino,
         which instructs the toolhead to go up"""
-        super().send_string_to_arduino(str(0))
+        if not transplanting_over:
+            super().send_string_to_arduino(str(0))
 
 
-    def lower_toolhead(self):
+    def lower_toolhead(self, transplanting_over:int) -> None:
         """Sends a '1' signal to the toolhead arduino,
         which instructs the toolhead to go down"""
-        super().send_string_to_arduino(str(1))
+        if not transplanting_over:
+            super().send_string_to_arduino(str(1))

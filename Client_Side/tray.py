@@ -103,7 +103,7 @@ class Tray:
         total_hole_distance = self.hole_side_length*row_number + row_number/2
         return total_gap + total_hole_distance + self.long_axis_distance_to_edge*2
 
-    def ith_hole_location(self, i:int) -> tuple[float,float]:
+    def ith_hole_location(self, i:int) -> tuple:
         '''
             Finds the (x,y) location of the ith hole of the given tray in mm.
             Holes in the tray are numbered right to left, then top to bottom.
@@ -120,16 +120,17 @@ class Tray:
     def get_width(self) -> float:
         '''
             Finds the width of the tray from the given JSON file
-            Parameters:
+            Parameters, plus an extra 6 milimeters for the gap from tray slots:
                     None
 
             Returns:
                     (int): tray width in milimeters
         '''
+        #TODO the +6 is attrociouis, put it in a config file or something dear lord
         edges = self.short_axis_distance_to_edge*2
         holes = self.hole_side_length*self.columns
         distances = self.short_axis_distance*(self.columns-1)
-        return edges + holes + distances
+        return edges + holes + distances + 6
 
     def get_number_of_holes(self) -> int:
         """Returns total number of holes in tray"""
