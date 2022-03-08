@@ -80,26 +80,30 @@ while True:
 # move_arduino(frame_connection, "0 0\n")
 
 
-move_arduino(toolhead_connection, "1\n")
+# move_arduino(toolhead_connection, "1\n")
 
-move_arduino(frame_connection, "-175, 0\n")
-
-sleep(2)
-
-move_arduino(toolhead_connection, "0\n")
-
-move_arduino(frame_connection, "-175, 380\n")
-
-move_arduino(toolhead_connection, "1\n")
+# move_arduino(frame_connection, "-175, 0\n")
 
 # sleep(2)
 
-move_arduino(frame_connection, "20, 380\n")
+# move_arduino(toolhead_connection, "0\n")
 
-move_arduino(toolhead_connection, "0\n")
+# move_arduino(frame_connection, "-175, 380\n")
 
-move_arduino(frame_connection, "0, 0\n")
+# move_arduino(toolhead_connection, "1\n")
 
+# # sleep(2)
+
+# move_arduino(frame_connection, "20, 380\n")
+
+# move_arduino(toolhead_connection, "0\n")
+
+# move_arduino(frame_connection, "0, 0\n")
+
+# move_arduino(toolhead_connection, "0\n")
+# move_arduino(toolhead_connection, "1\n")
+# move_arduino(toolhead_connection, "0\n")
+# move_arduino(toolhead_connection, "1\n")
 
 
 frame_connection.close()
