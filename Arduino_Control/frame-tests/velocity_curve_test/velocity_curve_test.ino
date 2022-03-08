@@ -12,6 +12,9 @@ const int STEPS_TO_MAX_SPEED = 400;
 const int STEP_PIN = 2;
 const int DIR_PIN = 5;
 
+//const int STEP_PIN = 3;
+//const int DIR_PIN = 6;
+
 //const int STEP_PIN = 4;
 //const int DIR_PIN = 7;
 
@@ -104,9 +107,11 @@ void move_there_and_back() {
 
 void populate_delay_array() {
 
-  const double START = 2000.0; // delay at lowest (starting) speed
-//  const double TARGET = 300.0; // delay at highest (target) speed
+//  const double START = 2000.0; // delay at lowest (starting) speed
   const double TARGET = 250.0; // delay at highest (target) speed
+//  const double START = 1200.0; // delay at lowest (starting) speed
+  const double START = 900.0;
+//  const double TARGET = 1200.0; // delay at highest (target) speed
   const int STEPS = STEPS_TO_MAX_SPEED; // number of steps to reach top speed
 
   const double m = (1.0 - (TARGET / START)) / (TARGET * STEPS);
