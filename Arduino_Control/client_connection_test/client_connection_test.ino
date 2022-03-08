@@ -33,11 +33,12 @@ void setup() {
   pinMode(X_STOP_PIN, INPUT_PULLUP);
   pinMode(Z_STOP_PIN, INPUT_PULLUP);
 
-//  Serial.begin(9600);
-  Serial.begin(115200);
+  Serial.begin(9600);
+//  Serial.begin(115200);
 
   delay(500); // feels right
 
+  Serial.println("Hello, world!");
   
 //  wait_for_input("Waiting to start (any keys)");
 
@@ -63,6 +64,8 @@ void setup() {
 void loop() {
   
   String input = wait_for_input("Absolute move coordinates? ");
+
+//  Serial.println("this is the frame. I received: " + input);
 
   int space = input.indexOf(" ");
   int x = input.substring(0, space).toInt();
