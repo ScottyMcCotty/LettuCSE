@@ -50,7 +50,7 @@ void loop() {
       toolhead_up();
       break;
     default: // unrecognized command
-      Serial.println("Error");
+      //Serial.println("Error");
       break;
   }
 
