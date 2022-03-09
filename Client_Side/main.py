@@ -19,8 +19,8 @@ def main():
     """Run the transplanter based on data from the config file"""
     config_file = load_config_file()
 
-    source_tray = Tray(config_file["LINK_TO_DENSE_TRAY_JSON"])
-    destination_tray = Tray(config_file["LINK_TO_SPARSE_TRAY_JSON"], source_tray.get_width())
+    source_tray = Tray(config_file["LINK_TO_DENSE_TRAY_JSON"], config_file["CALIBRATION"])
+    destination_tray = Tray(config_file["LINK_TO_SPARSE_TRAY_JSON"], config_file["CALIBRATION"], source_tray.get_width())
 
     frame_arduino = FrameArduino(config_file["FRAME_ARDUINO_ID"], config_file["MM_PER_MOTOR_STEP"])
     toolhead_arduino = ToolheadArduino(config_file["TOOLHEAD_ARDUINO_ID"], config_file["MM_PER_MOTOR_STEP"])

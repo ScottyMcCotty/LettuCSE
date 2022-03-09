@@ -48,8 +48,9 @@ class Tray:
     extra_gap = 0
     columns = 0
     shift_right = 0
+    calibration_data = 0
 
-    def __init__(self, json_link, shift_right=0):
+    def __init__(self, json_link, calibration_data, shift_right=0):
         self.json_link = json_link
         tray_data = open(json_link, encoding='UTF-8')
         tray_values = json.load(tray_data)
@@ -65,6 +66,7 @@ class Tray:
         self.rows = tray_values['rows']
         self.rows_between_gap = tray_values['rows_between_gap']
         self.shift_right = shift_right
+        self.calibration_data = calibration_data
 
 
     def ith_hole_x(self, i:int) -> float:
@@ -82,7 +84,7 @@ class Tray:
         column_number = i% self.columns
         total_gap = self.short_axis_distance*column_number
         total_hole_width = self.hole_side_length*column_number + column_number/2
-        return total_gap + total_hole_width + self.short_axis_distance_to_edge*2 + self.shift_right
+        return total_gap + total_hole_width + self.short_axis_distance_to_edge*2 + self.shift_right + self.calibration_data["DISTANCE_BETWEEN_STARTING_LOCATION_AND_TRAY_CORNER_X"]
 
     def ith_hole_y(self, i:int) -> float:
         '''
@@ -101,7 +103,7 @@ class Tray:
 
         total_gap = self.long_axis_distance*(row_number-thicker_rows)+self.extra_gap*(thicker_rows)
         total_hole_distance = self.hole_side_length*row_number + row_number/2
-        return total_gap + total_hole_distance + self.long_axis_distance_to_edge*2
+        return total_gap + total_hole_distance + self.long_axis_distance_to_edge*2 + self.calibration_data["DISTANCE_BETWEEN_STARTING_LOCATION_AND_TRAY_CORNER_Y"]
 
     def ith_hole_location(self, i:int) -> tuple:
         '''
