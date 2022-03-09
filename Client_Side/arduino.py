@@ -65,7 +65,9 @@ class Arduino:
                     self.wake_up()
                 except SerialException:
                     self.port_name = "ERROR CHANGE PORT PERMISSIONS TO ACCESS PORT"
-        self.mm_per_motor_step = mm_per_motor_step
+        self.mm_per_motor_step = mm_per_motor_step   
+        self.send_string_to_arduino("calibrate")
+     
 
     def wake_up(self) -> None:
         """signals the arduino to wake it up"""
