@@ -73,6 +73,9 @@ while True:
         print(msg)
         break
 
+move_arduino(frame_connection, "calibrate\n")
+# move_arduino(toolhead_connection, "calibrate\n")
+
 
 # move_arduino(frame_connection, "300 300\n")
 # move_arduino(toolhead_connection, "1\n")
