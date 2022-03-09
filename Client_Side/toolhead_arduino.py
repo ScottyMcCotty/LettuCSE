@@ -13,9 +13,8 @@ class ToolheadArduino(Arduino):
 
     Attributes
     ----------
-    serial_number : int
-        the serial number of the arduino that is being used for the toolhead
-        if you change the toolhead arduino you will have to change this number
+    name : string
+         The name, used for debugging purposes
 
     Methods
     -------
@@ -25,9 +24,7 @@ class ToolheadArduino(Arduino):
         signals the arduino to lower the toolhead
     """
 
-
-    serial_number = "957363235323515012A2"
-
+    name = "Toolhead Arduino :)"
 
     def raise_toolhead(self, transplanting_over:int) -> None:
         """Sends a '0' signal to the toolhead arduino,

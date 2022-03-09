@@ -17,6 +17,8 @@ class FrameArduino(Arduino):
     status : tuple(int)
         the location of the toolhead which is reported to the GUI so it can
         be displayed
+    name : string
+         The name, used for debugging purposes
 
     Methods
     -------
@@ -24,10 +26,9 @@ class FrameArduino(Arduino):
         moves the arm to the given coordinates, where a tray hole should be found
     """
 
-
-    serial_number = "957363235323514040C0"
     status = ""
     distance_for_picking_up_cup = 25
+    name = "Frame Arduino :)"
 
     def move_toolhead_to_coords(self, coords:tuple, transplanting_over:int) -> None:
         '''
@@ -41,7 +42,6 @@ class FrameArduino(Arduino):
                     None
         '''
         if not transplanting_over:
-            print("HERE")
             x_coord = round(coords[0]/self.mm_per_motor_step)
             y_coord = round(coords[1]/self.mm_per_motor_step)
             super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))
@@ -59,7 +59,6 @@ class FrameArduino(Arduino):
                     None
         '''
         if not transplanting_over:
-            print("HERE")
             x_coord = round(coords[0]/self.mm_per_motor_step)
             y_coord = round((coords[1]-self.distance_for_picking_up_cup)/self.mm_per_motor_step)
             super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))
@@ -69,7 +68,6 @@ class FrameArduino(Arduino):
         """Move the toolhead slightly forward so the toolhead
         can pick up the cup"""
         if not transplanting_over:
-            print("HERE")
             x_coord = self.status[0]
             y_coord = round(self.status[1] + self.distance_for_picking_up_cup/self.mm_per_motor_step)
             super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))
@@ -79,7 +77,6 @@ class FrameArduino(Arduino):
         """Move the toolhead slightly
         backward to drop the cup"""
         if not transplanting_over:
-            print("HERE")
             x_coord = self.status[0]
             y_coord = round(self.status[1] - self.distance_for_picking_up_cup/self.mm_per_motor_step)
             super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))

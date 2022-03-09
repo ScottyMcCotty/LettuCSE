@@ -22,8 +22,8 @@ def main():
     source_tray = Tray(config_file["LINK_TO_DENSE_TRAY_JSON"])
     destination_tray = Tray(config_file["LINK_TO_SPARSE_TRAY_JSON"], source_tray.get_width())
 
-    frame_arduino = FrameArduino(config_file["MM_PER_MOTOR_STEP"], config_file["FRAME_ARDUINO_ID"])
-    toolhead_arduino = ToolheadArduino(config_file["MM_PER_MOTOR_STEP"], config_file["TOOLHEAD_ARDUINO_ID"])
+    frame_arduino = FrameArduino(config_file["FRAME_ARDUINO_ID"], config_file["MM_PER_MOTOR_STEP"])
+    toolhead_arduino = ToolheadArduino(config_file["TOOLHEAD_ARDUINO_ID"], config_file["MM_PER_MOTOR_STEP"])
 
     transplanter = TransplanterRobot(source_tray, destination_tray, frame_arduino, toolhead_arduino)
     gui = GUI(transplanter.transplant, transplanter.end, transplanter.continue_transplant)
