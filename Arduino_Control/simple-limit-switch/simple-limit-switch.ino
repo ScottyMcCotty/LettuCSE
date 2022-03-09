@@ -1,5 +1,5 @@
 // https://forum.arduino.cc/t/using-end-stops-on-cnc-shield-design-for-gbrl/510231/2
-int x_limit_switch_pin = 9;
+int x_limit_switch_pin = 11;
 int count = 0;
 
 void setup() {

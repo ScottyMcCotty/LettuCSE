@@ -14,6 +14,7 @@ int current_x = -1;
 int current_y = -1;
 
 const int half_period = 1100;
+const String CALIBRATION_STRING = "calibrate";
 
 //String buf = "";
 bool string_complete = false;
@@ -50,7 +51,6 @@ void setup() {
 //   calibrate_axis(Z_STEP_PIN, Z_DIR_PIN);
 
   // auto calibration routine
-//  auto_calibrate_axis(X_STEP_PIN, X_DIR_PIN, X_STOP_PIN);
 //  auto_calibrate_axis(Z_STEP_PIN, Z_DIR_PIN, Z_STOP_PIN);
 
 //  calibrate_axis(Z_STEP_PIN, Z_DIR_PIN);
@@ -66,24 +66,33 @@ void loop() {
   String input = wait_for_input("Absolute move coordinates? ");
 
 //  Serial.println("this is the frame. I received: " + input);
+  
+  if (input == CALIBRATION_STRING) {
 
-  int space = input.indexOf(" ");
-  int x = input.substring(0, space).toInt();
-  int y = input.substring(space+1).toInt();
+//    Serial.println("I'm calibrating");
+    auto_calibrate_axis(X_STEP_PIN, X_DIR_PIN, X_STOP_PIN);
+    auto_calibrate_axis(Z_STEP_PIN, Z_DIR_PIN, Z_STOP_PIN);
+    
+  }
+  else {
 
-//  Serial.print("Split into '"); Serial.print(x); Serial.print("' and '"); Serial.print(y); Serial.println("'");
-
-  move_coordinates(x, y);
+//    Serial.println("I'm moving");
+    int space = input.indexOf(" ");
+    int x = input.substring(0, space).toInt();
+    int y = input.substring(space+1).toInt();
+  
+//    Serial.print("Split into '"); Serial.print(x); Serial.print("' and '"); Serial.print(y); Serial.println("'");
+  
+    move_coordinates(x, y);
+  }
 
   Serial.println("Done");
 
-//  move_double(x, y, half_period);
-  
+
+//  move_double(x, y, half_period);  
 //  move_not_blocking(X_STEP_PIN, X_DIR_PIN, abs(x), dir(x), half_period);
 //  delay(500);
 //  move_not_blocking(Z_STEP_PIN, Z_DIR_PIN, abs(y), dir(y), half_period);
-
-  
 //  Serial.println(x);
 //  Serial.println(y);
   
