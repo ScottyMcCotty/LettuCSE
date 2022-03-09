@@ -44,22 +44,28 @@ class Arduino:
     port_name = "Arduino not connected"
 
 
-    def __init__(self) -> None:
+    def __init__(self, serial_number:str, mm_per_motor_step:int) -> None:
         """
             Search through all possible ports to find one with the correct
-            serial number, if such an arduino can be found (serial number
-            specified in child class). Sets the mm to motor step constant as
-            0.14, this must be changed if the motor is changed.
+            serial number, if such an arduino can be found
+                Parameters:
+                        serial_number (str): Every arduino has a unique serial number which can
+                                             be used to connect the arduino, these are defined
+                                             in the config file
+                        mm_per_motor_step (int): the number of mm the toolhead is moved
+                                                 every step of the stepper motor
+                Returns:
+                        None
         """
         for port in list_ports.comports():
-            if str(self.serial_number) == str(port.serial_number):
+            if str(self.serial_number) == str(serial_number):
                 try:
                     self.arduino_connection = Serial(port.device, baudrate=9600, timeout=.1)
                     self.port_name = port.device
                     self.wake_up()
                 except SerialException:
                     self.port_name = "ERROR CHANGE PORT PERMISSIONS TO ACCESS PORT"
-        self.mm_per_motor_step = 0.14
+        self.mm_per_motor_step = mm_per_motor_step
 
     def wake_up(self) -> None:
         """signals the arduino to wake it up"""
