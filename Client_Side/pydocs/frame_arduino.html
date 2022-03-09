@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module frame_arduino</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>frame_arduino</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/punky/Documents/school/ECS193/LettuCSE/Client_Side/frame_arduino.py">/home/punky/Documents/school/ECS193/LettuCSE/Client_Side/frame_arduino.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;module&nbsp;contains&nbsp;the&nbsp;Frame&nbsp;<a href="arduino.html#Arduino">Arduino</a>&nbsp;class&nbsp;which&nbsp;is&nbsp;a&nbsp;child&nbsp;of&nbsp;the&nbsp;<a href="arduino.html#Arduino">Arduino</a>&nbsp;class</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="arduino.html#Arduino">arduino.Arduino</a>(<a href="builtins.html#object">builtins.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="frame_arduino.html#FrameArduino">FrameArduino</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FrameArduino">class <strong>FrameArduino</strong></a>(<a href="arduino.html#Arduino">arduino.Arduino</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#FrameArduino">FrameArduino</a>()&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+A&nbsp;class&nbsp;to&nbsp;represent&nbsp;the&nbsp;<a href="arduino.html#Arduino">Arduino</a>&nbsp;being&nbsp;used&nbsp;to&nbsp;move&nbsp;the&nbsp;arm&nbsp;to&nbsp;a&nbsp;certain<br>
+(x,y)&nbsp;location<br>
+&nbsp;<br>
+...<br>
+&nbsp;<br>
+Attributes<br>
+----------<br>
+serial_number&nbsp;:&nbsp;int<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;serial&nbsp;number&nbsp;of&nbsp;the&nbsp;arduino&nbsp;that&nbsp;is&nbsp;being&nbsp;used&nbsp;for&nbsp;the&nbsp;frame<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;you&nbsp;change&nbsp;the&nbsp;toolhead&nbsp;arduino&nbsp;you&nbsp;will&nbsp;have&nbsp;to&nbsp;change&nbsp;this&nbsp;number<br>
+status&nbsp;:&nbsp;tuple(int)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;location&nbsp;of&nbsp;the&nbsp;toolhead&nbsp;which&nbsp;is&nbsp;reported&nbsp;to&nbsp;the&nbsp;GUI&nbsp;so&nbsp;it&nbsp;can<br>
+&nbsp;&nbsp;&nbsp;&nbsp;be&nbsp;displayed<br>
+&nbsp;<br>
+Methods<br>
+-------<br>
+<a href="#FrameArduino-move_toolhead">move_toolhead</a>(coords):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;moves&nbsp;the&nbsp;arm&nbsp;to&nbsp;the&nbsp;given&nbsp;coordinates,&nbsp;where&nbsp;a&nbsp;tray&nbsp;hole&nbsp;should&nbsp;be&nbsp;found<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="frame_arduino.html#FrameArduino">FrameArduino</a></dd>
+<dd><a href="arduino.html#Arduino">arduino.Arduino</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="FrameArduino-move_toolhead"><strong>move_toolhead</strong></a>(self, coords)</dt><dd><tt>Moves&nbsp;the&nbsp;arm&nbsp;to&nbsp;the&nbsp;given&nbsp;coordinates<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coords&nbsp;:&nbsp;tuple(int)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;2D&nbsp;coords&nbsp;that&nbsp;the&nbsp;arm&nbsp;is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intending&nbsp;to&nbsp;move&nbsp;to,&nbsp;in&nbsp;milimeters<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>serial_number</strong> = 55838343733351510170</dl>
+
+<dl><dt><strong>status</strong> = ''</dl>
+
+<hr>
+Methods inherited from <a href="arduino.html#Arduino">arduino.Arduino</a>:<br>
+<dl><dt><a name="FrameArduino-__init__"><strong>__init__</strong></a>(self) -&gt; None</dt><dd><tt>Search&nbsp;through&nbsp;all&nbsp;possible&nbsp;ports&nbsp;to&nbsp;find&nbsp;one&nbsp;with&nbsp;the&nbsp;correct<br>
+serial&nbsp;number,&nbsp;if&nbsp;such&nbsp;an&nbsp;arduino&nbsp;can&nbsp;be&nbsp;found&nbsp;(serial&nbsp;number<br>
+specified&nbsp;in&nbsp;child&nbsp;class).&nbsp;Sets&nbsp;the&nbsp;mm&nbsp;to&nbsp;motor&nbsp;step&nbsp;constant&nbsp;as<br>
+0.14,&nbsp;this&nbsp;must&nbsp;be&nbsp;changed&nbsp;if&nbsp;the&nbsp;motor&nbsp;is&nbsp;changed.</tt></dd></dl>
+
+<dl><dt><a name="FrameArduino-send_string_to_arduino"><strong>send_string_to_arduino</strong></a>(self, string_to_send: str) -&gt; None</dt><dd><tt>Convert&nbsp;input&nbsp;to&nbsp;bytes,&nbsp;send&nbsp;it&nbsp;to&nbsp;arduino,&nbsp;wait&nbsp;until<br>
+the&nbsp;command&nbsp;is&nbsp;"Done"&nbsp;before&nbsp;continuing</tt></dd></dl>
+
+<dl><dt><a name="FrameArduino-wake_up"><strong>wake_up</strong></a>(self) -&gt; None</dt><dd><tt>signals&nbsp;the&nbsp;arduino&nbsp;to&nbsp;wake&nbsp;it&nbsp;up</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="arduino.html#Arduino">arduino.Arduino</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="arduino.html#Arduino">arduino.Arduino</a>:<br>
+<dl><dt><strong>arduino_connection</strong> = None</dl>
+
+<dl><dt><strong>port_name</strong> = 'Arduino not connected'</dl>
+
+</td></tr></table></td></tr></table>
+</body></html>

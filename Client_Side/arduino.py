@@ -1,58 +1,110 @@
-from arduino_error import ArduinoError
+"""Module contains the arduino class"""
+from time import sleep
+from serial import Serial, SerialException
+from serial.tools import list_ports
 
 # Necessary imports for the Arduino to work (Liam)
 import serial
 import time
 
 class Arduino:
-    mm_per_motor_step = 1
-    arduinoConnection = None
-    def __init__(self, mm_per_motor_step, comPort):
-        self.mm_per_motor_step = mm_per_motor_step
-        # Attempt to connect to the Arduino using provided COM port (Liam)
-        print("Attempting to establish a connection on port '" + comPort + "'\n")
-        self.arduinoConnection = serial.Serial(port=comPort, baudrate=9600, timeout=.1)
-        # NOTE: Arduino seems to ignore the first pair of coordinates it is sent.
-        #       Followup commands work normally. Consider sending a dummy (0, 0)
-        #       write here on initialization? (Liam)
-        dummyInput = "0 0"
-        if dummyInput[-1] != '\n':
-            dummyInput += '\n'
-        self.arduinoConnection.write(bytes(dummyInput, 'utf-8'))
 
-    def move_toolhead(self, coords):
-        x = round(coords[0]*self.mm_per_motor_step)
-        y = round(coords[1]*self.mm_per_motor_step)
-        print("Toolhead moving to (" + str(x) + ", " + str(y) + ")")
+    """
+    A parent class that represents all arduinos in the robot
 
-        # Put coordinates into "X Y" format expected by arduino (Liam)
-        # NOTE: This is assuming coords[] is in motor steps, not mm
-        input = str(coords[0]) + " " + str(coords[1])
-        
-        # If the final char isn't a newline, add one (Liam)
-        if input[-1] != '\n':
-            input += '\n'
-        self.arduinoConnection.write(bytes(input, 'utf-8'))
-        # NOTE: Unsure if this sleep & readline are needed. They may cause problems (Liam)
-        # Comment from Scott's example code: "We may need to write and immediately read
-        #                                     a response, depending on the application"
-        time.sleep(0.05)
-        value = self.arduinoConnection.readline()
+    ...
+
+    Attributes
+    ----------
+    arduino_connection : Serial connection object
+        connection to one of the arduinos, or a None object
+        if there is no connection
+    serial number : int
+        The unique serial number on the arduino.
+        It is a 'None' here since the serial number
+        is different for child classes
+    port_name : string
+        The port that the arduino is on with,
+        or a string indicating that no port
+        was found for the arduino's serial number
+
+    Methods
+    -------
+    __init__(mm_per_motor_step, gui):
+        calls the parent init, and then lists the connected port in
+        the frame arduino section of the GUI
+    wake_up():
+        moves the arm to the given coordinates, where a tray hole should be found
+
+    send_string_to_arduino():
+        Turns the string into bytes and
+        sends it along to the arduino, waits
+        until the task is done to continue
+
+    """
+
+    arduino_connection = None
+    serial_number = None
+    port_name = "Arduino not connected"
 
 
+    def __init__(self, serial_number:str, mm_per_motor_step:int) -> None:
+        """
+            Search through all possible ports to find one with the correct
+            serial number, if such an arduino can be found
+                Parameters:
+                        serial_number (str): Every arduino has a unique serial number which can
+                                             be used to connect the arduino, these are defined
+                                             in the config file
+                        mm_per_motor_step (int): the number of mm the toolhead is moved
+                                                 every step of the stepper motor
+                Returns:
+                        None
+        """
+        for port in list_ports.comports():
+            if str(self.serial_number) == str(serial_number):
+                try:
+                    self.arduino_connection = Serial(port.device, baudrate=9600, timeout=.1)
+                    self.port_name = port.device
+                    self.wake_up()
+                except SerialException:
+                    self.port_name = "ERROR CHANGE PORT PERMISSIONS TO ACCESS PORT"
+        self.mm_per_motor_step = mm_per_motor_step   
+        self.send_string_to_arduino("calibrate")
+     
 
-    def lower_toolhead(self):
-        #TODO actually signal arduino
-        print("Toolhead lowering")
+    def wake_up(self) -> None:
+        """signals the arduino to wake it up"""
+        # self.arduino_connection.write(bytes("0 0" + "\n", 'utf8'))
 
-    def raise_toolhead(self):
-        #TODO actually signal arduino
-        print("Toolhead raising")
+        # wait for the first message from the arduino
+        while True:
+            msg = self.arduino_connection.readline().decode("utf-8")
+            if msg == "":
+                print(f"Waiting for {self.serial_number}'s initial message")
+            else:
+                print(f"{self.serial_number}'s initial message:")
+                print(f"'{msg}'")
+                break
 
-    def release_plant(self):
-        #TODO actually signal arduino
-        print("Toolhead raising")
 
-    def grab_plant(self):
-        #TODO actually signal arduino
-        print("Toolhead closing")
+    def send_string_to_arduino(self, string_to_send:str) -> None:
+        """Convert input to bytes, send it to arduino, wait until
+        the command is "Done" before continuing if an arduino is connected,
+        othewise sleep because it is on 'test mode'"""
+        if self.arduino_connection:
+            self.arduino_connection.write(bytes(string_to_send + "\n", 'utf8'))
+
+            while True:
+
+                response = self.arduino_connection.readline().decode("utf-8")
+
+                if response == "":
+                    print(f"Waiting for response from {self.serial_number}...")
+                    sleep(.5)
+                else:
+                    print(f"Response: '{response}'!")
+                    break
+
+        else:
+            sleep(0.1)

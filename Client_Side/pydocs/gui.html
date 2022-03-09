@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module gui</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>gui</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/punky/Documents/school/ECS193/LettuCSE/Client_Side/gui.py">/home/punky/Documents/school/ECS193/LettuCSE/Client_Side/gui.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;module&nbsp;contains&nbsp;the&nbsp;<a href="#GUI">GUI</a>&nbsp;class</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="threading.html">threading</a><br>
+</td><td width="25%" valign=top><a href="tkinter.html">tkinter</a><br>
+</td><td width="25%" valign=top><a href="turtle.html">turtle</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="gui.html#GUI">GUI</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="GUI">class <strong>GUI</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#GUI">GUI</a>(transplanter:&nbsp;transplanter_robot.TransplanterRobot)<br>
+&nbsp;<br>
+A&nbsp;class&nbsp;to&nbsp;handle&nbsp;the&nbsp;graphical&nbsp;user&nbsp;interface<br>
+&nbsp;<br>
+...<br>
+&nbsp;<br>
+Attributes<br>
+----------<br>
+window:Tkinter&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;main&nbsp;gui&nbsp;window<br>
+toolhead_arduino_port_label:&nbsp;tk.Label<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;tkinter&nbsp;label&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;displays&nbsp;what<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;toolhead&nbsp;arduino&nbsp;is&nbsp;doing&nbsp;at&nbsp;the&nbsp;moment<br>
+frame_arduino_port_label:&nbsp;tk.Label<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;tkinter&nbsp;label&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;displays&nbsp;what<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;frame&nbsp;arduino&nbsp;is&nbsp;doing&nbsp;at&nbsp;the&nbsp;moment<br>
+stop_button:&nbsp;tk.Button<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;button&nbsp;that&nbsp;stops&nbsp;the&nbsp;transplanting<br>
+&nbsp;&nbsp;&nbsp;&nbsp;thread<br>
+start_button:&nbsp;tk.Buttion<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;button&nbsp;that&nbsp;spawns&nbsp;the&nbsp;transplanting<br>
+&nbsp;&nbsp;&nbsp;&nbsp;thread&nbsp;and&nbsp;continues&nbsp;the&nbsp;transplant&nbsp;after<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;process&nbsp;is&nbsp;paused<br>
+previous_state:&nbsp;Enum():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;process&nbsp;state&nbsp;that&nbsp;the&nbsp;transplanter&nbsp;robot<br>
+&nbsp;&nbsp;&nbsp;&nbsp;was&nbsp;in&nbsp;last&nbsp;frame<br>
+transplanter_robot:&nbsp;TransplanterRobot<br>
+&nbsp;&nbsp;&nbsp;&nbsp;An&nbsp;instance&nbsp;of&nbsp;the&nbsp;class&nbsp;representing<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;entire&nbsp;robot<br>
+state:&nbsp;Enum()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;state&nbsp;that&nbsp;the&nbsp;transplanter&nbsp;robot<br>
+&nbsp;&nbsp;&nbsp;&nbsp;was&nbsp;in&nbsp;previously<br>
+&nbsp;<br>
+Methods<br>
+-------<br>
+<a href="#GUI-__init__">__init__</a>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Creates&nbsp;the&nbsp;<a href="#GUI">GUI</a>&nbsp;window,&nbsp;the&nbsp;start&nbsp;and&nbsp;stop&nbsp;buttons,&nbsp;and&nbsp;all&nbsp;the&nbsp;lables<br>
+update_frame_status():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Updates&nbsp;the&nbsp;location&nbsp;of&nbsp;the&nbsp;frame&nbsp;based&nbsp;on&nbsp;input&nbsp;from&nbsp;the&nbsp;transplanter_robot<br>
+update_toolhead_status():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Updates&nbsp;the&nbsp;location&nbsp;of&nbsp;the&nbsp;frame&nbsp;based&nbsp;on&nbsp;input&nbsp;from&nbsp;the&nbsp;transplanter_robot<br>
+<a href="#GUI-toolhead_location_label">toolhead_location_label</a>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Displays&nbsp;the&nbsp;x&nbsp;and&nbsp;y&nbsp;coords&nbsp;of&nbsp;the&nbsp;frame<br>
+<a href="#GUI-stop_transplanting">stop_transplanting</a>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;stop&nbsp;the&nbsp;transplanting&nbsp;procccess&nbsp;and&nbsp;start&nbsp;over&nbsp;afterwards.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;is&nbsp;NOT&nbsp;the&nbsp;pause&nbsp;that&nbsp;happens&nbsp;when&nbsp;a&nbsp;tray&nbsp;is&nbsp;being&nbsp;replaced<br>
+<a href="#GUI-continue_transplanting">continue_transplanting</a>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;continue&nbsp;transplant&nbsp;from&nbsp;where&nbsp;it&nbsp;left&nbsp;off<br>
+<a href="#GUI-set_buttons_to_pre_transplant_stage">set_buttons_to_pre_transplant_stage</a>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;start&nbsp;button&nbsp;can&nbsp;be&nbsp;clicked,&nbsp;stop&nbsp;button&nbsp;cannot<br>
+<a href="#GUI-set_buttons_to_in_transplant_stage">set_buttons_to_in_transplant_stage</a>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;stop&nbsp;button&nbsp;can&nbsp;be&nbsp;clicked,&nbsp;start&nbsp;button&nbsp;cannot<br>
+<a href="#GUI-set_buttons_to_waiting_for_tray_replacement">set_buttons_to_waiting_for_tray_replacement</a>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;either&nbsp;button&nbsp;can&nbsp;be&nbsp;clicked<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="GUI-__init__"><strong>__init__</strong></a>(self, transplanter: transplanter_robot.TransplanterRobot)</dt><dd><tt>Initializes&nbsp;the&nbsp;main&nbsp;window,&nbsp;the&nbsp;start&nbsp;and&nbsp;stop<br>
+buttons&nbsp;in&nbsp;the&nbsp;PRE_TRANSPLANT&nbsp;state,&nbsp;the&nbsp;toolhead<br>
+and&nbsp;frame&nbsp;lables,&nbsp;and&nbsp;the&nbsp;toolhead&nbsp;and&nbsp;frame&nbsp;port&nbsp;lables</tt></dd></dl>
+
+<dl><dt><a name="GUI-continue_transplanting"><strong>continue_transplanting</strong></a>(self) -&gt; None</dt><dd><tt>The&nbsp;main&nbsp;button&nbsp;is&nbsp;given&nbsp;this&nbsp;command&nbsp;when&nbsp;it&nbsp;is&nbsp;pressed<br>
+after&nbsp;the&nbsp;first&nbsp;time.&nbsp;This&nbsp;spawns&nbsp;no&nbsp;new&nbsp;threads&nbsp;and&nbsp;simply&nbsp;continues<br>
+the&nbsp;transplanting&nbsp;process</tt></dd></dl>
+
+<dl><dt><a name="GUI-display_window_frame"><strong>display_window_frame</strong></a>(self) -&gt; None</dt><dd><tt>Displays&nbsp;the&nbsp;<a href="#GUI">GUI</a>&nbsp;window&nbsp;-&nbsp;while&nbsp;this&nbsp;is&nbsp;running,&nbsp;everything&nbsp;in&nbsp;the&nbsp;thread&nbsp;stops</tt></dd></dl>
+
+<dl><dt><a name="GUI-move_turtle"><strong>move_turtle</strong></a>(self, parameters) -&gt; None</dt></dl>
+
+<dl><dt><a name="GUI-set_buttons_to_in_transplant_stage"><strong>set_buttons_to_in_transplant_stage</strong></a>(self) -&gt; None</dt><dd><tt>Configures&nbsp;the&nbsp;buttons&nbsp;such&nbsp;that&nbsp;the&nbsp;user&nbsp;can&nbsp;only&nbsp;stop&nbsp;transplanting</tt></dd></dl>
+
+<dl><dt><a name="GUI-set_buttons_to_pre_transplant_stage"><strong>set_buttons_to_pre_transplant_stage</strong></a>(self) -&gt; None</dt><dd><tt>Configures&nbsp;the&nbsp;buttons&nbsp;such&nbsp;that&nbsp;the&nbsp;user&nbsp;can&nbsp;only&nbsp;begin&nbsp;transplanting</tt></dd></dl>
+
+<dl><dt><a name="GUI-set_buttons_to_waiting_for_tray_replacement"><strong>set_buttons_to_waiting_for_tray_replacement</strong></a>(self) -&gt; None</dt><dd><tt>Configures&nbsp;the&nbsp;buttons&nbsp;such&nbsp;that&nbsp;the&nbsp;user&nbsp;can&nbsp;start&nbsp;or&nbsp;stop&nbsp;while&nbsp;replacing&nbsp;the&nbsp;tray</tt></dd></dl>
+
+<dl><dt><a name="GUI-stop_transplanting"><strong>stop_transplanting</strong></a>(self) -&gt; None</dt><dd><tt>Signals&nbsp;to&nbsp;the&nbsp;transplant&nbsp;function&nbsp;in&nbsp;main&nbsp;that&nbsp;the&nbsp;transplanting&nbsp;should&nbsp;finish</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>previous_state</strong> = None</dl>
+
+<dl><dt><strong>previous_toolhead_location</strong> = None</dl>
+
+<dl><dt><strong>start_button</strong> = None</dl>
+
+<dl><dt><strong>state</strong> = None</dl>
+
+<dl><dt><strong>stop_button</strong> = None</dl>
+
+<dl><dt><strong>toolhead_location_label</strong> = None</dl>
+
+<dl><dt><strong>transplanter</strong> = None</dl>
+
+<dl><dt><strong>turtle</strong> = None</dl>
+
+<dl><dt><strong>turtle_canvas</strong> = None</dl>
+
+<dl><dt><strong>window</strong> = &lt;tkinter.Tk object .&gt;</dl>
+
+</td></tr></table></td></tr></table>
+</body></html>
