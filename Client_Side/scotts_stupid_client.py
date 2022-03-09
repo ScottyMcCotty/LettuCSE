@@ -24,7 +24,6 @@ def move_arduino(arduino: Serial, command: str) -> str:
             return response
 
 
-
 #* Frame serial number
 frame_serial = "957363235323514040C0"
 frame_connection = None
@@ -73,40 +72,67 @@ while True:
         print(msg)
         break
 
-move_arduino(frame_connection, "calibrate\n")
-# move_arduino(toolhead_connection, "calibrate\n")
+# move_arduino(toolhead_connection, "calibrate")
+# move_arduino(frame_connection, "calibrate")
+
+# move_arduino(frame_connection, "900 1300")
+# sleep(1)
+# move_arduino(toolhead_connection, "1")
+# sleep(1)
+
+# move_arduino(frame_connection, "725 1300")
+# sleep(1)
+# move_arduino(toolhead_connection, "0")
+# move_arduino(toolhead_connection, "0")
+# sleep(1)
+
+# move_arduino(frame_connection, "5000 3100")
+# exit()
 
 
-# move_arduino(frame_connection, "300 300\n")
-# move_arduino(toolhead_connection, "1\n")
-# move_arduino(toolhead_connection, "0\n")
-# move_arduino(frame_connection, "0 0\n")
+move_arduino(frame_connection, "725 1300")
+sleep(1)
+move_arduino(toolhead_connection, "1")
+
+move_arduino(frame_connection, "900 1300")
+sleep(1)
+move_arduino(toolhead_connection, "0")
 
 
-# move_arduino(toolhead_connection, "1\n")
 
-# move_arduino(frame_connection, "-175, 0\n")
+
+
+# move_arduino(frame_connection, "675 1100")
+# move_arduino(toolhead_connection, "0")
+
+# move_arduino(toolhead_connection, "0")
+# move_arduino(frame_connection, "0 0")
+
+
+# move_arduino(toolhead_connection, "1")
+
+# move_arduino(frame_connection, "-175, 0")
 
 # sleep(2)
 
-# move_arduino(toolhead_connection, "0\n")
+# move_arduino(toolhead_connection, "0")
 
-# move_arduino(frame_connection, "-175, 380\n")
+# move_arduino(frame_connection, "-175, 380")
 
-# move_arduino(toolhead_connection, "1\n")
+# move_arduino(toolhead_connection, "1")
 
 # # sleep(2)
 
-# move_arduino(frame_connection, "20, 380\n")
+# move_arduino(frame_connection, "20, 380")
 
-# move_arduino(toolhead_connection, "0\n")
+# move_arduino(toolhead_connection, "0")
 
-# move_arduino(frame_connection, "0, 0\n")
+# move_arduino(frame_connection, "0, 0")
 
-# move_arduino(toolhead_connection, "0\n")
-# move_arduino(toolhead_connection, "1\n")
-# move_arduino(toolhead_connection, "0\n")
-# move_arduino(toolhead_connection, "1\n")
+# move_arduino(toolhead_connection, "0")
+# move_arduino(toolhead_connection, "1")
+# move_arduino(toolhead_connection, "0")
+# move_arduino(toolhead_connection, "1")
 
 
 frame_connection.close()
