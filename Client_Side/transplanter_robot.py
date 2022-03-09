@@ -58,7 +58,6 @@ class TransplanterRobot:
         self.frame_arduino = frame_arduino
         self.toolhead_arduino = toolhead_arduino
 
-
     def end(self) -> None:
         '''Returns arm to the origin' and retracts it in order
             to prepare the robot for shutdown'''

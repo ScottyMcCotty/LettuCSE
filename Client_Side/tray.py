@@ -84,7 +84,7 @@ class Tray:
         column_number = i% self.columns
         total_gap = self.short_axis_distance*column_number
         total_hole_width = self.hole_side_length*column_number + column_number/2
-        return total_gap + total_hole_width + self.short_axis_distance_to_edge*2 + self.shift_right + self.calibration_data["DISTANCE_BETWEEN_STARTING_LOCATION_AND_TRAY_CORNER_X"]
+        return total_gap + total_hole_width + self.short_axis_distance_to_edge*2 + self.shift_right - self.calibration_data["DISTANCE_BETWEEN_STARTING_LOCATION_AND_TRAY_CORNER_X"]
 
     def ith_hole_y(self, i:int) -> float:
         '''
@@ -103,7 +103,7 @@ class Tray:
 
         total_gap = self.long_axis_distance*(row_number-thicker_rows)+self.extra_gap*(thicker_rows)
         total_hole_distance = self.hole_side_length*row_number + row_number/2
-        return total_gap + total_hole_distance + self.long_axis_distance_to_edge*2 + self.calibration_data["DISTANCE_BETWEEN_STARTING_LOCATION_AND_TRAY_CORNER_Y"]
+        return total_gap + total_hole_distance + self.long_axis_distance_to_edge*2 - self.calibration_data["DISTANCE_BETWEEN_STARTING_LOCATION_AND_TRAY_CORNER_Y"]
 
     def ith_hole_location(self, i:int) -> tuple:
         '''
@@ -128,7 +128,7 @@ class Tray:
             Returns:
                     (int): tray width in milimeters
         '''
-        #TODO the +6 is attrociouis, put it in a config file or something dear lord
+        #TODO the +6 is atrocious, put it in a config file or something dear lord
         edges = self.short_axis_distance_to_edge*2
         holes = self.hole_side_length*self.columns
         distances = self.short_axis_distance*(self.columns-1)

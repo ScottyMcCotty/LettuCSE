@@ -59,8 +59,8 @@ class FrameArduino(Arduino):
                     None
         '''
         if not transplanting_over:
-            x_coord = round(coords[0]/self.mm_per_motor_step)
-            y_coord = round((coords[1]-self.distance_for_picking_up_cup)/self.mm_per_motor_step)
+            x_coord = round((coords[0]-self.distance_for_picking_up_cup)/self.mm_per_motor_step)
+            y_coord = round(coords[1]/self.mm_per_motor_step)
             super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))
             self.status = (x_coord, y_coord)
 
@@ -68,8 +68,8 @@ class FrameArduino(Arduino):
         """Move the toolhead slightly forward so the toolhead
         can pick up the cup"""
         if not transplanting_over:
-            x_coord = self.status[0]
-            y_coord = round(self.status[1] + self.distance_for_picking_up_cup/self.mm_per_motor_step)
+            x_coord = round(self.status[0] + self.distance_for_picking_up_cup/self.mm_per_motor_step)
+            y_coord = self.status[1]
             super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))
             self.status = (x_coord, y_coord)
 
@@ -77,7 +77,7 @@ class FrameArduino(Arduino):
         """Move the toolhead slightly
         backward to drop the cup"""
         if not transplanting_over:
-            x_coord = self.status[0]
-            y_coord = round(self.status[1] - self.distance_for_picking_up_cup/self.mm_per_motor_step)
+            x_coord = round(self.status[0] - self.distance_for_picking_up_cup/self.mm_per_motor_step)
+            y_coord = self.status[1]
             super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))
             self.status = (x_coord, y_coord)
