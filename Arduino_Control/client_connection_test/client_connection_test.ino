@@ -64,6 +64,8 @@ void loop() {
   
   String input = wait_for_input("Absolute move coordinates? ");
 
+  Serial.println("this is the frame. I received: " + input);
+
   int space = input.indexOf(" ");
   int x = input.substring(0, space).toInt();
   int y = input.substring(space+1).toInt();

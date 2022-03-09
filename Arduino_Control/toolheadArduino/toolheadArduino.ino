@@ -1,12 +1,18 @@
 // Global vars (NOTE: Pin values in particular may need changing based on arduino wiring in lab)
 
 const int Y_STOP_PIN = 9;
-const int Y_STEP_PIN = 3;
-const int Y_DIR_PIN = 6;
+
+//const int Y_STEP_PIN = 3;
+//const int Y_DIR_PIN = 6;
+
+// Keeping it called Y_STEP_PIN even though
+// it ain't plugged into the 
+const int Y_STEP_PIN = 2;
+const int Y_DIR_PIN = 5;
 
 const int half_period = 1100;
 
-const int TOOLHEAD_TRAVEL = 2000; // 2000 motor steps ~ 80 mm
+const int TOOLHEAD_TRAVEL = 1000; // 2000 motor steps ~ 80 mm
 
 //const int RAISED_MOVEMENT   = 1000;  // Number of motor steps to go from lowered to raised position
 //const int LOWERED_MOVEMENT  = -1000; // Number of motor steps to go from raised to lowered position
@@ -50,23 +56,26 @@ void loop() {
       toolhead_up();
       break;
     default: // unrecognized command
-      //Serial.println("Error");
+      Serial.println("Error");
+      while(1){}
       break;
   }
 
   // FOR TESTING PURPOSES ONLY
   // if input is between -1000 and 1000, call test movement function
-  if ((input <= 1000 || input >= -1000) && (input != 0 && input != 1)) {
-    test_custom_move(input);
-  }
+//  if ((input <= 1000 || input >= -1000) && (input != 0 && input != 1)) {
+//    test_custom_move(input);
+//  }
+
+  Serial.println("Done");
 }
 
 // TEST FUNCTION ONLY
 // Send a custom amount of motor steps to the toolhead.
-void test_custom_move(int steps) {
-  move_not_blocking(Y_STEP_PIN, Y_DIR_PIN, steps, dir(steps), half_period);
-  Serial.println("Done");
-}
+//void test_custom_move(int steps) {
+//  move_not_blocking(Y_STEP_PIN, Y_DIR_PIN, steps, dir(steps), half_period);
+//  Serial.println("Done");
+//}
 
 // MANUAL Calibrate:  Set the "up" position for the toolhead manually by
 //                    inputting motor movements until position is satisfactory
@@ -221,26 +230,33 @@ String wait_for_input(String prompt) {
 
 // Move toolhead up by TOOLHEAD_TRAVEL motor steps.
 void toolhead_up() {
-  move_not_blocking(Y_STEP_PIN, Y_DIR_PIN, TOOLHEAD_TRAVEL, dir(TOOLHEAD_TRAVEL), half_period);
+  move_not_blocking(Y_STEP_PIN, Y_DIR_PIN, TOOLHEAD_TRAVEL, dir(1), half_period);
   positionDown = false;
-  Serial.println("Done");
+//  Serial.println("Done");
+}
+
+// Move toolhead down by TOOLHEAD_TRAVEL motor steps.
+void toolhead_down() {
+  move_not_blocking(Y_STEP_PIN, Y_DIR_PIN, TOOLHEAD_TRAVEL, dir(-1), half_period);
+  positionDown = false;
+//  Serial.println("Done");
 }
 
 // Move toolhead down until it hits the limit switch.
-void toolhead_down() {
-  // set direction negative
-  digitalWrite(Y_DIR_PIN, LOW);
-  while (digitalRead(Y_STOP_PIN) == HIGH) {
-    // motor hasn't been triggered yet, keep rolling in negative direction
-    digitalWrite(Y_STEP_PIN, HIGH);
-    delayMicroseconds(half_period);
-    digitalWrite(Y_STEP_PIN, LOW);
-    delayMicroseconds(half_period);
-//    Serial.println("Moving negative");
-//    delay(200);
-  }
-
-  //TODO: Should there be a failsafe if the limit switch is never hit?
-
-  Serial.println("Done");
-}
+//void toolhead_down() {
+//  // set direction negative
+//  digitalWrite(Y_DIR_PIN, LOW);
+//  while (digitalRead(Y_STOP_PIN) == HIGH) {
+//    // motor hasn't been triggered yet, keep rolling in negative direction
+//    digitalWrite(Y_STEP_PIN, HIGH);
+//    delayMicroseconds(half_period);
+//    digitalWrite(Y_STEP_PIN, LOW);
+//    delayMicroseconds(half_period);
+////    Serial.println("Moving negative");
+////    delay(200);
+//  }
+//
+//  //TODO: Should there be a failsafe if the limit switch is never hit?
+//
+//  Serial.println("Done");
+//}
