@@ -4,6 +4,8 @@
 
 const int X_STEP_PIN = 2;
 const int X_DIR_PIN = 5;
+const int Y_STEP_PIN = 3;
+const int Y_DIR_PIN = 6;
 const int Z_STEP_PIN = 4;
 const int Z_DIR_PIN = 7;
 
@@ -21,10 +23,12 @@ void setup() {
 
   pinMode(X_STEP_PIN, OUTPUT);
   pinMode(X_DIR_PIN, OUTPUT);
+  pinMode(Y_STEP_PIN, OUTPUT);
+  pinMode(Y_DIR_PIN, OUTPUT);
   pinMode(Z_STEP_PIN, OUTPUT);
   pinMode(Z_DIR_PIN, OUTPUT);
 
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   delay(500); // feels right
 
@@ -37,6 +41,7 @@ void setup() {
 
   // calibration routine
   calibrate_axis(X_STEP_PIN, X_DIR_PIN);
+//  calibrate_axis(Y_STEP_PIN, Y_DIR_PIN);
   calibrate_axis(Z_STEP_PIN, Z_DIR_PIN);
 
   current_x = 0;
