@@ -35,14 +35,14 @@ void loop() {
   inX = doScaling(xPosition, xBias);
   inY = doScaling(yPosition, yBias);
   
-//  Serial.print("X: ");
-//  Serial.print(inX);
-//  Serial.print(" | Y: ");
-//  Serial.print(inY);
-//  Serial.print(" | Button: ");
-//  Serial.println(SW_state);
+  Serial.print("X: ");
+  Serial.print(inX);
+  Serial.print(" | Y: ");
+  Serial.print(inY);
+  Serial.print(" | Button: ");
+  Serial.println(SW_state);
 
-  Serial.println(inX);
+//  Serial.println(inX);
 
   delay(30);
   
