@@ -22,9 +22,9 @@ int yBias;
 const int MAX_NUM_STEPS = 10;
 //const int MIN_PULSE_DURATION = 600;
 //const int FULL_DURATION = NUM_JOYSTICK_STEPS * MIN_PULSE_DURATION * 2;
-const int RANGES[] =    {10,  200,  400, 480, 999};
-const int STEPS[] =     { 0,    3,    5,   8,  10};
-const int DURATIONS[] = { 0, 2000, 1200, 750, 300};
+const int RANGES[] =              {10,  200,  400, 480, 999};
+const int STEPS[] =               { 0,    3,    5,   8,  10};
+const unsigned long DURATIONS[] = { 0, 2000, 1200, 750, 500};
 const int ARRAY_SIZE = 5;
 
 #define dir(x) ((x) < 0 ? LOW : HIGH)
@@ -79,7 +79,7 @@ void loop() {
 
 //  unsigned long then = micros();
   
-  int ax = doScaling(analogRead(VRx), xBias);
+  int ax = -1 * doScaling(analogRead(VRx), xBias);
   int ay = -1 * doScaling(analogRead(VRy), yBias);
 
 //  unsigned long now = micros();
@@ -88,7 +88,7 @@ void loop() {
 
   double_joystick_movement(ax, ay);
 
-  delay(200);
+//  delay(200);
 
 }
 
@@ -291,8 +291,8 @@ void double_joystick_movement(int ax, int ay) {
   int x_i = calculateIndex(ax);
   int y_i = calculateIndex(ay);
 
-  int x_period = DURATIONS[x_i];
-  int y_period = DURATIONS[y_i];
+  unsigned long x_period = DURATIONS[x_i];
+  unsigned long y_period = DURATIONS[y_i];
   int x_steps = STEPS[x_i];
   int y_steps = STEPS[y_i];
   int x_dir = dir(ax);
@@ -313,12 +313,12 @@ void double_joystick_movement(int ax, int ay) {
 //    return;
 //  }
 
-  Serial.println(x_period);
-  Serial.println(y_period);
-  Serial.println(x_steps);
-  Serial.println(y_steps);
-  Serial.println(x_dir);
-  Serial.println(y_dir);
+//  Serial.println(x_period);
+//  Serial.println(y_period);
+//  Serial.println(x_steps);
+//  Serial.println(y_steps);
+//  Serial.println(x_dir);
+//  Serial.println(y_dir);
   
   digitalWrite(X_DIR_PIN, x_dir);
   digitalWrite(Z_DIR_PIN, y_dir);
@@ -326,8 +326,8 @@ void double_joystick_movement(int ax, int ay) {
   int x_counter = 0;
   int y_counter = 0;
 
-  int x_previous = 0;
-  int y_previous = 0;
+  unsigned long x_previous = 0;
+  unsigned long y_previous = 0;
 
   int x_pulse = HIGH;
   int y_pulse = HIGH;
@@ -338,6 +338,7 @@ void double_joystick_movement(int ax, int ay) {
     unsigned long current_time = micros();
 
     if (current_time - x_previous > x_period && x_counter < x_steps) {
+//      Serial.print("x pulse"); Serial.print(x_pulse); Serial.print(" at "); Serial.println(current_time);
       digitalWrite(X_STEP_PIN, x_pulse);
       x_pulse = (x_pulse + 1) % 2;
       x_previous = current_time;
@@ -345,6 +346,7 @@ void double_joystick_movement(int ax, int ay) {
     }
 
     if (current_time - y_previous > y_period && y_counter < y_steps) {
+//      Serial.print("y pulse "); Serial.println(y_pulse);
       digitalWrite(Z_STEP_PIN, y_pulse);
       y_pulse = (y_pulse + 1) % 2;
       y_previous = current_time;
@@ -352,8 +354,8 @@ void double_joystick_movement(int ax, int ay) {
     }
   }
 
-  Serial.print("X moved: "); Serial.print(x_counter); Serial.print(" | X input: "); Serial.print(ax);
-  Serial.print(" | Y moved: "); Serial.print(y_counter); Serial.print(" | Y input: "); Serial.println(ay);
+//  Serial.print("X moved: "); Serial.print(x_counter); Serial.print(" | X input: "); Serial.print(ax);
+//  Serial.print(" | Y moved: "); Serial.print(y_counter); Serial.print(" | Y input: "); Serial.println(ay);
 }
 
 void calculateBias() {
