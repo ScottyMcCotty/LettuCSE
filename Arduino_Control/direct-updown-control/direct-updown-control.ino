@@ -28,6 +28,7 @@ const int LIMIT_TRAY_PIN = 10;     // Y axis limit
 const int LIMIT_LIFT_MAX_PIN = 11; // Z axis limit
 
 const int HALF_PERIOD = 600; // microseconds
+const int QUARTER_PERIOD = HALF_PERIOD / 2;
 
 
 //
@@ -48,19 +49,13 @@ void setup() {
 
 
 void loop() {
-  if (debug) {
-    if (digitalRead(BUTTON_UP) == LOW)
-      Serial.println("Up button is pressed");
-    else
-      Serial.println("Up button is released");
-
-    if (digitalRead(BUTTON_DOWN) == LOW)
-      Serial.println("Down button is pressed");
-    else
-      Serial.println("Down button is released");
+  if (up_button_pressed()) {
+    if (debug) Serial.println("Up button pressed");
+    send_up_pulse();
+  } else if (down_button_pressed()) {
+    if (debug) Serial.println("Down button pressed");
+    send_down_pulse();
   }
-
-  delay(500);
 }
 
 
@@ -105,5 +100,38 @@ void print_pin_setup() {
   Serial.println("Upper limit switch pin");
   Serial.println(LIMIT_LIFT_MAX_PIN);
   Serial.println("\n");
+}
+
+
+// TODO: differentiate these with limit switch logic
+void send_up_pulse() {
+  digitalWrite(DIR_PIN, LOW);
+  digitalWrite(STEP_PIN, LOW);
+  delayMicroseconds(QUARTER_PERIOD);
+  digitalWrite(STEP_PIN, HIGH);
+  delayMicroseconds(HALF_PERIOD);
+  digitalWrite(STEP_PIN, LOW);
+  delayMicroseconds(QUARTER_PERIOD);
+}
+
+
+void send_down_pulse() {
+  digitalWrite(DIR_PIN, HIGH);
+  digitalWrite(STEP_PIN, LOW);
+  delayMicroseconds(QUARTER_PERIOD);
+  digitalWrite(STEP_PIN, HIGH);
+  delayMicroseconds(HALF_PERIOD);
+  digitalWrite(STEP_PIN, LOW);
+  delayMicroseconds(QUARTER_PERIOD);
+}
+
+
+bool up_button_pressed() {
+  return digitalRead(BUTTON_UP) == LOW;
+}
+
+
+bool down_button_pressed() {
+  return digitalRead(BUTTON_DOWN) == LOW;
 }
 
