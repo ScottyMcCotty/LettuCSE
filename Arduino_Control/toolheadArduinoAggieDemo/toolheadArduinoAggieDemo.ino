@@ -3,8 +3,9 @@
 const int UP_BTN_PIN= A0;
 const int DWN_BTN_PIN = A1;
 
-const int FORKLIFT_ARM_LIMIT = 10;
-const int FORKLIFT_TOP_LIMIT = 11;
+const int FORKLIFT_TRAY_LIMIT = 9; // limit switch X: fork has been lowered to maximum
+const int FORKLIFT_ARM_LIMIT = 10; // limit switch Y: fork has been lowered to tray
+const int FORKLIFT_TOP_LIMIT = 11; // limit switch Z: forklift has been raised to maximum
 
 // these are the pins when the driver is plugged into X
 const int STEP_PIN = 2;
@@ -55,9 +56,10 @@ void loop() {
       delayMicroseconds(half_period);
     }
   } else if (digitalRead(DWN_BTN_PIN) == LOW){
-    // Only move down if the button is held AND the lower limit switch isn't triggered
+    // Only move down if the button is held & NEITHER of the lower limit switches are triggered
     digitalWrite(DIR_PIN, HIGH);
-    while ((digitalRead(DWN_BTN_PIN) == LOW) && (digitalRead(FORKLIFT_ARM_LIMIT) == HIGH)){
+    while ((digitalRead(DWN_BTN_PIN) == LOW) && (digitalRead(FORKLIFT_ARM_LIMIT) == HIGH)
+            && (digitalRead(FORKLIFT_TRAY_LIMIT) == HIGH)){
       // Move down (code copypasted from toolhead_down)
       digitalWrite(STEP_PIN, HIGH);
       delayMicroseconds(half_period);
