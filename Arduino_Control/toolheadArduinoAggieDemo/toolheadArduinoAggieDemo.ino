@@ -11,14 +11,16 @@ const int FORKLIFT_TOP_LIMIT = 11; // limit switch Z: forklift has been raised t
 const int STEP_PIN = 2;
 const int DIR_PIN = 5;
 
-const int half_period = 600;
-const int NUM_EXTRA_STEPS = 50;
+const int half_period = 700;
+//const int NUM_EXTRA_STEPS = 50;
 
 const String UP = "0";
 const String DOWN = "1";
-const String CALIBRATION_STRING = "calibrate";
+//const String CALIBRATION_STRING = "calibrate";
 
-const int TOOLHEAD_TRAVEL = 1000; // 2000 motor steps ~ 80 mm
+//const int TOOLHEAD_TRAVEL = 1000; // 2000 motor steps ~ 80 mm
+
+bool debug = true;
 
 void setup() {
   // pinMode setup
@@ -27,12 +29,13 @@ void setup() {
 
   pinMode(FORKLIFT_ARM_LIMIT, INPUT_PULLUP);
   pinMode(FORKLIFT_TOP_LIMIT, INPUT_PULLUP);
+  pinMode(FORKLIFT_TRAY_LIMIT, INPUT_PULLUP);
 
   // Aggie demo button setup
   pinMode(UP_BTN_PIN, INPUT_PULLUP);
   pinMode(DWN_BTN_PIN, INPUT_PULLUP);
   
-  Serial.begin(9600);
+  Serial.begin(115200);
   delay(500);
   
   //Serial.println("Hello, world!");
@@ -47,6 +50,7 @@ void loop() {
   // Move up or down while appropriate button is held. If both held at once, default to up
   if (digitalRead(UP_BTN_PIN) == LOW) {
     // Only move up if the button is held AND the upper limit switch isn't triggered
+    if (debug) Serial.println("Going upp!");
     digitalWrite(DIR_PIN, LOW);
     while ((digitalRead(UP_BTN_PIN) == LOW) && (digitalRead(FORKLIFT_TOP_LIMIT) == HIGH)) {
       // Move up (code copypasted from auto_calibrate)
@@ -55,8 +59,13 @@ void loop() {
       digitalWrite(STEP_PIN, LOW);
       delayMicroseconds(half_period);
     }
-  } else if (digitalRead(DWN_BTN_PIN) == LOW){
+    if (debug) {
+      Serial.println(digitalRead(FORKLIFT_TOP_LIMIT));
+    }
+  }
+  if (digitalRead(DWN_BTN_PIN) == LOW){
     // Only move down if the button is held & NEITHER of the lower limit switches are triggered
+    if (debug) Serial.println("Going downnnn");
     digitalWrite(DIR_PIN, HIGH);
     while ((digitalRead(DWN_BTN_PIN) == LOW) && (digitalRead(FORKLIFT_ARM_LIMIT) == HIGH)
             && (digitalRead(FORKLIFT_TRAY_LIMIT) == HIGH)){
@@ -65,6 +74,9 @@ void loop() {
       delayMicroseconds(half_period);
       digitalWrite(STEP_PIN, LOW);
       delayMicroseconds(half_period);
+    }
+    if (debug) {
+      Serial.print(digitalRead(FORKLIFT_ARM_LIMIT)); Serial.print(" && "); Serial.println(digitalRead(FORKLIFT_TRAY_LIMIT));
     }
   }
   
@@ -203,10 +215,10 @@ String wait_for_input(String prompt) {
 }*/
 
 // Move toolhead up by TOOLHEAD_TRAVEL motor steps.
-void toolhead_up() {
-  move_not_blocking(STEP_PIN, DIR_PIN, TOOLHEAD_TRAVEL, LOW, half_period);
-  Serial.println("Done");
-}
+//void toolhead_up() {
+//  move_not_blocking(STEP_PIN, DIR_PIN, TOOLHEAD_TRAVEL, LOW, half_period);
+//  Serial.println("Done");
+//}
 
 // Move toolhead down by TOOLHEAD_TRAVEL motor steps.
 //void toolhead_down() {
@@ -215,31 +227,31 @@ void toolhead_up() {
 //}
 
 // Move toolhead down until it hits the limit switch.
-void toolhead_down() {
-
-  bool moved = false;
-  // set direction negative
-  digitalWrite(DIR_PIN, HIGH);
-  while (digitalRead(FORKLIFT_ARM_LIMIT) == HIGH) {
-    // motor hasn't been triggered yet, keep rolling in negative direction
-    moved = true;
-    digitalWrite(STEP_PIN, HIGH);
-    delayMicroseconds(half_period);
-    digitalWrite(STEP_PIN, LOW);
-    delayMicroseconds(half_period);
-  }
-
-//  delay(500);
-
-  // if the motor was moved down, give it a few more steps
-  // to ensure that it's low enough
-  if (moved) {
-    for (int ii = 0; ii < NUM_EXTRA_STEPS; ++ii) {
-      digitalWrite(STEP_PIN, HIGH);
-      delayMicroseconds(half_period);
-      digitalWrite(STEP_PIN, LOW);
-      delayMicroseconds(half_period);
-    }
-  }
-  Serial.println("Done");
-}
+//void toolhead_down() {
+//
+//  bool moved = false;
+//  // set direction negative
+//  digitalWrite(DIR_PIN, HIGH);
+//  while (digitalRead(FORKLIFT_ARM_LIMIT) == HIGH) {
+//    // motor hasn't been triggered yet, keep rolling in negative direction
+//    moved = true;
+//    digitalWrite(STEP_PIN, HIGH);
+//    delayMicroseconds(half_period);
+//    digitalWrite(STEP_PIN, LOW);
+//    delayMicroseconds(half_period);
+//  }
+//
+////  delay(500);
+//
+//  // if the motor was moved down, give it a few more steps
+//  // to ensure that it's low enough
+//  if (moved) {
+//    for (int ii = 0; ii < NUM_EXTRA_STEPS; ++ii) {
+//      digitalWrite(STEP_PIN, HIGH);
+//      delayMicroseconds(half_period);
+//      digitalWrite(STEP_PIN, LOW);
+//      delayMicroseconds(half_period);
+//    }
+//  }
+//  Serial.println("Done");
+//}

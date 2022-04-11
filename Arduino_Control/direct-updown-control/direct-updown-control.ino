@@ -27,7 +27,7 @@ const int LIMIT_LOWER_MAX_PIN = 9; // X axis limit
 const int LIMIT_TRAY_PIN = 10;     // Y axis limit
 const int LIMIT_LIFT_MAX_PIN = 11; // Z axis limit
 
-const int HALF_PERIOD = 600; // microseconds
+const int HALF_PERIOD = 700; // microseconds
 const int QUARTER_PERIOD = HALF_PERIOD / 2;
 
 
@@ -35,7 +35,8 @@ const int QUARTER_PERIOD = HALF_PERIOD / 2;
 // Global variables
 //
 
-bool debug = true; // Set to false to disable debugging output
+//bool debug = true; // Set to false to disable debugging output
+bool debug = false;
 
 
 //
@@ -64,7 +65,7 @@ void loop() {
 //
 
 void set_up_serial() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   delay(500);
   Serial.println("Serial setup complete, debugging messages enabled");
 }
@@ -134,4 +135,3 @@ bool up_button_pressed() {
 bool down_button_pressed() {
   return digitalRead(BUTTON_DOWN) == LOW;
 }
-
