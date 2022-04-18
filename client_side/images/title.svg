@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="170mm"
+   height="39mm"
+   viewBox="0 0 170 39"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (1:1.1+202202050950+0a00cf5339)"
+   sodipodi:docname="title.svg"
+   inkscape:export-filename="/home/punky/Documents/school/LettuCSE/client_side/images/title.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="1"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:lockguides="true"
+     inkscape:zoom="1.0645786"
+     inkscape:cx="219.33561"
+     inkscape:cy="2.8180164"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#008000;fill-opacity:1;stroke-width:1.26901;stroke-miterlimit:4;stroke-dasharray:10.1521, 10.1521;stroke-dashoffset:0"
+       id="rect8172"
+       width="181.284"
+       height="44.110703"
+       x="-3.6215572"
+       y="-1.4284675"
+       inkscape:export-filename="/home/punky/Documents/school/LettuCSE/client_side/images/title.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.88056px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="88.107376"
+       y="25.324703"
+       id="text4719"><tspan
+         sodipodi:role="line"
+         id="tspan4717"
+         style="font-size:3.88056px;text-align:center;text-anchor:middle;stroke-width:0.264583"
+         x="88.107376"
+         y="25.324703">Welcome to the LettuCSE Automatic Transplanter! It was designed under the</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:3.88056px;text-align:center;text-anchor:middle;stroke-width:0.264583"
+         x="88.107376"
+         y="30.175404"
+         id="tspan12792">supervision of Dr. Lieth by Scott Ballinger, Martin Oroza, Liam Carr, and Mira Welner</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:3.88056px;text-align:center;text-anchor:middle;stroke-width:0.264583"
+         x="88.107376"
+         y="35.026104"
+         id="tspan46858">as our Senior Design project in Computer Science Engineering</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="66.841667"
+       y="72.298645"
+       id="text47378"><tspan
+         sodipodi:role="line"
+         id="tspan47376"
+         style="stroke-width:0.264583"
+         x="66.841667"
+         y="72.298645" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="31.179865"
+       y="68.538582"
+       id="text55956"><tspan
+         sodipodi:role="line"
+         id="tspan55954"
+         style="stroke-width:0.264583"
+         x="31.179865"
+         y="68.538582" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="6.7852364"
+       y="7.7836061"
+       id="text4719-3"><tspan
+         sodipodi:role="line"
+         id="tspan4717-6"
+         style="stroke-width:0.264583"
+         x="6.7852364"
+         y="7.7836061">LettuCSE Automatic Transplanter</tspan></text>
+  </g>
+</svg>
