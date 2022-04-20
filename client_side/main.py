@@ -1,6 +1,8 @@
 """The main function class - you run it with python3 main.py"""
 import configparser
 from tkinter import Tk
+from port_name_label import PortNameLabel
+from transplanter import Transplanter
 from tray import Tray
 from frame_arduino import FrameArduino
 from toolhead_arduino import ToolheadArduino
@@ -36,6 +38,13 @@ def main():
     window_maker = WindowMaker(tkinter_instance)
 
     plant_relocator = RelocatePlant(go_behind_cup, go_to_cup, raise_toolhead, lower_toolhead)
+    relocation_function = plant_relocator.transport_plant
+
+    transpanter = Transplanter(source_tray_full, destination_tray_full,
+                                                 next_source_hole,
+                                                 destination_tray_full,
+                                                 go_to_origin,
+                                                 relocation_function)
 
     gui_window = window_maker.window
 

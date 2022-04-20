@@ -18,17 +18,17 @@ class PortNameLabel():
 
     def __init__(self, tkinter_instance: Tk, toolhead_port: str, frame_port: str) -> None:
 
-        self.toolhead_arudino_port_label = Label(tkinter_instance,
-                                                 text = toolhead_port,
+        self._toolhead_arudino_port_label = Label(tkinter_instance,
+                                                 text = "Toolhead " + toolhead_port,
                                                  borderwidth=0,
                                                  bg="green")
-        self.toolhead_arudino_port_label.place(relx = 0.1, rely = 0.9, anchor = LEFT)
+        self._toolhead_arudino_port_label.place(relx = 0.22, rely = 0.975, anchor = 'e')
 
-        self.frame_arudino_port_label = Label(tkinter_instance,
-                                                 text = frame_port,
+        self._frame_arudino_port_label = Label(tkinter_instance,
+                                                 text = "Frame " + frame_port,
                                                  borderwidth=0,
                                                  bg="green")
-        self.frame_arudino_port_label.place(relx = 0.9, rely = 0.9, anchor = RIGHT)
+        self._frame_arudino_port_label.place(relx = 0.78, rely = 0.975, anchor = 'w')
 
 
     @property

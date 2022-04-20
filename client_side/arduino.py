@@ -30,7 +30,7 @@ class Arduino():
         right place
     """
     arduino_connection = None
-    port_name = "Arduino not connected"
+    port_name = "arduino not connected"
     mm_to_motor_constant = 1
 
     def __init__(self, arduino_id:str, motor_data:list) -> None:
