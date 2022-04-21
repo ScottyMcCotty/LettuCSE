@@ -34,6 +34,11 @@ class Arduino():
     mm_to_motor_constant = 1
 
     def __init__(self, arduino_id:str, motor_data:list) -> None:
+        """Set constants, find which port the arduino is connected to, and wait for the 'hello' response"""
+        self.mm_to_motor_constant = motor_data["mm_to_motor_constant"]
+        self.corner_to_first_cup_x = motor_data["corner_to_first_cup_x"]
+        self.corner_to_first_cup_y = motor_data["corner_to_first_cup_y"]
+        self.distance_traveled_to_lift_cup = motor_data["distance_traveled_to_lift_cup"]
 
         for port in list_ports.comports():
             if arduino_id == str(port.serial_number):
@@ -42,10 +47,14 @@ class Arduino():
                     self.port_name = port.device
                 except SerialException:
                     self.port_name = "ERROR CHANGE PORT PERMISSIONS TO ACCESS PORT"
-        self.mm_to_motor_constant = motor_data["mm_to_motor_constant"]
-        self.corner_to_first_cup_x = motor_data["corner_to_first_cup_x"]
-        self.corner_to_first_cup_y = motor_data["corner_to_first_cup_y"]
-        self.distance_traveled_to_lift_cup = motor_data["distance_traveled_to_lift_cup"]
+        while True:
+            response = self.arduino_connection.readline().decode("utf-8")
+            if response == "":
+                print(f"Waiting for response from {self.port_name}...")
+                sleep(.5)
+            else:
+                print(f"Response: '{response}'!")
+                break
 
     def send_string_to_arduino(self, string_to_send:str) -> None:
         """Convert input to bytes, send it to arduino, wait until

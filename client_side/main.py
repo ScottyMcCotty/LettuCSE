@@ -1,6 +1,7 @@
 """The main function class - you run it with python3 main.py"""
 import configparser
 from tkinter import Tk
+from start_continue_button import StartContinueButton
 from port_name_label import PortNameLabel
 from transplanter import Transplanter
 from tray import Tray
@@ -37,21 +38,31 @@ def main():
     port_name_labels = PortNameLabel(tkinter_instance, t_arduino.port_name, f_arduino.port_name)
     window_maker = WindowMaker(tkinter_instance)
 
-    plant_relocator = RelocatePlant(go_behind_cup, go_to_cup, raise_toolhead, lower_toolhead)
+    plant_relocator = RelocatePlant(go_behind_cup, go_to_cup, raise_toolhead, lower_toolhead, go_to_origin)
     relocation_function = plant_relocator.transport_plant
+    reset = plant_relocator.reset_transplanter
 
     transpanter = Transplanter(source_tray_full, destination_tray_full,
                                                  next_source_hole,
                                                  destination_tray_full,
-                                                 go_to_origin,
+                                                 reset,
                                                  relocation_function)
 
-    gui_window = window_maker.window
+    transplant = transpanter.transplant
+    continue_transplant = transpanter.continue_transplant
+    stop_transplant = transpanter.stop
+    transplanting_is_paused = transpanter.is_paused
+
+    start_continue_button = StartContinueButton
 
 
 
 
-    gui_window.mainloop()
+
+    #gui_window = window_maker.window
+
+
+    #gui_window.mainloop()
 
 if __name__ == "__main__":
     main()

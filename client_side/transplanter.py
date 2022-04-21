@@ -78,3 +78,7 @@ class Transplanter():
         resetting the arm"""
         self.reset()
         self.stopped = True
+
+    def is_paused(self):
+        """Says if the trays need replacing"""
+        return self.paused

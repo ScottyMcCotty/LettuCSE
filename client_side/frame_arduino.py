@@ -45,15 +45,15 @@ class FrameArduino(Arduino):
     def go_behind_cup(self, coords:tuple) -> None:
         """Go to a given distance behind the cup so that it will
         be in place to scoop it up when it is lifted"""
-        x_coord = round((coords[0]-self.corner_to_first_cup_x)/super.mm_per_motor_step)
+        x_coord = round((coords[0] -float(self.corner_to_first_cup_x))/super().mm_to_motor_constant)
         y_coord = round((coords[1] -
-                         self.corner_to_first_cup_y -
-                         self.distance_traveled_to_lift_cup)
-                         /super.mm_per_motor_step)
+                         float(self.corner_to_first_cup_y) -
+                         float(self.distance_traveled_to_lift_cup))
+                         /super().mm_to_motor_constant)
         super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))
 
     def go_to_cup(self, coords:tuple) -> None:
         """Go directly to the cordinate location"""
-        x_coord = round((coords[0] - self.corner_to_first_cup_x)/super.mm_per_motor_step)
-        y_coord = round((coords[1] - self.corner_to_first_cup_y)/super.mm_per_motor_step)
+        x_coord = round((coords[0] - float(self.corner_to_first_cup_x))/super().mm_to_motor_constant)
+        y_coord = round((coords[1] - float(self.corner_to_first_cup_y))/super().mm_to_motor_constant)
         super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))
