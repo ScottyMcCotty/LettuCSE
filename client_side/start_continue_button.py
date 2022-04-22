@@ -1,7 +1,7 @@
 """Module contains the Transplanter class"""
 
 import threading
-from tkinter import DISABLED, NORMAL, Button
+from tkinter import DISABLED, N, NORMAL, Button
 
 class StartContinueButton():
     """
@@ -17,6 +17,8 @@ class StartContinueButton():
         The button object that is placed in a location on the window and changed
     transplanter_function : function
         This runs the transplanting proccess and must be called in another thread
+    is_transplanting : bool
+        Records whether the transplanting is in progress or not
 
     Methods
     ----------
@@ -31,14 +33,20 @@ class StartContinueButton():
     set_to_stopped()
         Reset the button so it's like it is after the button
         is initialized
-    
-    
-
+    get_is_transplanting()
+        a closure that supplies whether the transplanting
+        is in progress
+    __continue_transplanting()
+        a private function that is called
+        when the user presses the continue button.
+        this is called when the button is set to 
+        paused, and then pressed.
     """
     tkinter_instance = None
     tkinter_button = None
     transplanter_function = None
     continue_transplant = None
+    is_transplanting = False
 
     def __init__(self, tkinter_instance, transplanter_function, continue_transplant) -> None:
         self.transplanter_function = transplanter_function
@@ -49,6 +57,8 @@ class StartContinueButton():
                                      command=lambda:self.set_to_transplanting,
                                      bd=0,
                                      state=NORMAL)
+        self.tkinter_button.place(relx = 0.5, rely = 0.4, anchor = N)
+
 
 
     def set_to_transplanting(self):
@@ -57,6 +67,7 @@ class StartContinueButton():
                                      text ="Transplanting in Progress",
                                      bd=0,
                                      state=DISABLED)
+        self.is_transplanting = True
         threading.Thread(target=self.transplanter_function).start()
 
     def set_to_paused(self):
@@ -75,6 +86,11 @@ class StartContinueButton():
                                      command=lambda:self.set_to_transplanting,
                                      bd=0,
                                      state=NORMAL)
+
+    def get_is_transplanting(self):
+        """Lets user know if the transplanting is in progress
+        which is used for knowing if the stop button is enabled"""
+        return self.is_transplanting
 
 
     def __continue_transplanting(self):

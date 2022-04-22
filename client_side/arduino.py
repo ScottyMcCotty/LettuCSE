@@ -47,20 +47,22 @@ class Arduino():
                     self.port_name = port.device
                 except SerialException:
                     self.port_name = "ERROR CHANGE PORT PERMISSIONS TO ACCESS PORT"
-        while True:
-            response = self.arduino_connection.readline().decode("utf-8")
-            if response == "":
-                print(f"Waiting for response from {self.port_name}...")
-                sleep(.5)
-            else:
-                print(f"Response: '{response}'!")
-                break
+        if self.arduino_connection:
+            while True:
+                response = self.arduino_connection.readline().decode("utf-8")
+                if response == "":
+                    print(f"Waiting for response from {self.port_name}...")
+                    sleep(.5)
+                else:
+                    print(f"Response: '{response}'!")
+                    break
 
     def send_string_to_arduino(self, string_to_send:str) -> None:
         """Convert input to bytes, send it to arduino, wait until
         the command is "Done" before continuing if an arduino is connected,
         othewise sleep because it is on 'test mode'"""
         if self.arduino_connection:
+            print(self.arduino_connection)
             self.arduino_connection.write(bytes(string_to_send + "\n", 'utf8'))
             while True:
                 response = self.arduino_connection.readline().decode("utf-8")

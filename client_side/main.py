@@ -9,6 +9,7 @@ from frame_arduino import FrameArduino
 from toolhead_arduino import ToolheadArduino
 from window_maker import WindowMaker
 from relocate_plant import RelocatePlant
+from stop_button import StopButton
 
 
 def main():
@@ -53,16 +54,16 @@ def main():
     stop_transplant = transpanter.stop
     transplanting_is_paused = transpanter.is_paused
 
-    start_continue_button = StartContinueButton
+    start_continue_button = StartContinueButton(tkinter_instance, transplant, continue_transplant)
+    stop_button = StopButton(tkinter_instance, stop_transplant)
 
 
 
 
+    gui_window = window_maker.window
 
-    #gui_window = window_maker.window
 
-
-    #gui_window.mainloop()
+    gui_window.mainloop()
 
 if __name__ == "__main__":
     main()
