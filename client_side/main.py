@@ -1,6 +1,7 @@
 """The main function class - you run it with python3 main.py"""
 import configparser
 from tkinter import Tk
+from toolhead_location_label import ToolheadLocationLabel
 from start_continue_button import StartContinueButton
 from port_name_label import PortNameLabel
 from transplanter import Transplanter
@@ -45,7 +46,7 @@ def main():
 
     transpanter = Transplanter(source_tray_full, destination_tray_full,
                                                  next_source_hole,
-                                                 destination_tray_full,
+                                                 next_destination_hole,
                                                  reset,
                                                  relocation_function)
 
@@ -56,14 +57,22 @@ def main():
 
     start_continue_button = StartContinueButton(tkinter_instance, transplant, continue_transplant)
     stop_button = StopButton(tkinter_instance, stop_transplant)
-
+    location_label = ToolheadLocationLabel(tkinter_instance)
 
 
 
     gui_window = window_maker.window
 
 
-    gui_window.mainloop()
+    while True:
+        if start_continue_button.is_transplanting and not stop_button.is_enabled:
+            stop_button.enable_button()
+        elif not start_continue_button.is_transplanting and stop_button.is_enabled:
+            stop_button.disable_button()
+        location_label.update_location(f_arduino.location)
+
+
+        gui_window.update()
 
 if __name__ == "__main__":
     main()

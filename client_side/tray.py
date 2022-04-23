@@ -47,6 +47,7 @@ class Tray:
         """get an integer tuple representing the x and y values in mm of the place the
            motor needs to go. Measurement is in absolute coordinates, not motor coordinates"""
         next_hole = self.hole_location_map.get(str(self.hole_iterator))
+
         next_hole_distance_from_origin = (next_hole[0], round(float(next_hole[1]) +
                                           float(self.hole_location_map.get("distance_from_bottom")),3))
         if self.hole_iterator+1 == int(self.hole_location_map.get("holes")):

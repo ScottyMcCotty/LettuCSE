@@ -27,14 +27,14 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:lockguides="true"
-     inkscape:zoom="0.32"
-     inkscape:cx="1401.5625"
-     inkscape:cy="803.125"
-     inkscape:window-width="1920"
-     inkscape:window-height="1011"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
+     inkscape:zoom="0.64"
+     inkscape:cx="1924.2188"
+     inkscape:cy="910.15625"
+     inkscape:window-width="1280"
+     inkscape:window-height="664"
+     inkscape:window-x="724"
+     inkscape:window-y="207"
+     inkscape:window-maximized="0"
      inkscape:current-layer="layer1"
      width="799mm"
      height="224mm" />
@@ -419,8 +419,8 @@
     <rect
        x="677.47101"
        y="134.31248"
-       width="303.40594"
-       height="113.75263"
+       width="160.11752"
+       height="59.698846"
        id="rect50967-6-1-7-9" />
     <rect
        x="677.47101"
@@ -527,8 +527,8 @@
     <rect
        x="677.47101"
        y="134.31248"
-       width="235.37769"
-       height="53.914734"
+       width="172.15328"
+       height="26.360317"
        id="rect50967-6-1-4-8" />
     <rect
        x="677.47101"
@@ -1074,11 +1074,11 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-6-1);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71428">move_toolhead_image()
+         id="tspan74210">move_toolhead_image()
 </tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71430">get_canvas_instance()</tspan></text>
+         id="tspan74212">get_canvas_instance()</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:5.64444px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -1138,35 +1138,35 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71434"><tspan
+         id="tspan74216"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71432">get_next_hole()
+           id="tspan74214">get_next_hole()
 </tspan></tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71440"><tspan
+         id="tspan74222"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71436">is_tray_full</tspan><tspan
+           id="tspan74218">is_tray_full</tspan><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71438">()
+           id="tspan74220">()
 </tspan></tspan><tspan
          x="677.4707"
          y="202.51"
-         id="tspan71444"><tspan
+         id="tspan74226"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71442">
+           id="tspan74224">
 </tspan></tspan><tspan
          x="677.4707"
          y="210.86938"
-         id="tspan71448"><tspan
+         id="tspan74230"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71446">
+           id="tspan74228">
 </tspan></tspan><tspan
          x="677.4707"
          y="235.86938"
-         id="tspan71452"><tspan
+         id="tspan74234"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71450">
+           id="tspan74232">
 </tspan></tspan></text>
     <text
        xml:space="preserve"
@@ -1175,21 +1175,21 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-2);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71456"><tspan
+         id="tspan74238"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71454">json_file_link
+           id="tspan74236">json_file_link
 </tspan></tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71460"><tspan
+         id="tspan74242"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71458">hole_iterator
+           id="tspan74240">hole_iterator
 </tspan></tspan><tspan
          x="677.4707"
          y="202.51"
-         id="tspan71464"><tspan
+         id="tspan74246"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71462">hole_location_map
+           id="tspan74244">hole_location_map
 </tspan></tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.866445;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -1231,33 +1231,33 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-3);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71468"><tspan
+         id="tspan74250"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71466">relocate_plant()
+           id="tspan74248">relocate_plant()
 </tspan></tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71472"><tspan
+         id="tspan74254"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71470">reset_transplanter()
+           id="tspan74252">reset_transplanter()
 </tspan></tspan><tspan
          x="677.4707"
          y="202.51"
-         id="tspan71476"><tspan
+         id="tspan74258"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71474">
+           id="tspan74256">
 </tspan></tspan><tspan
          x="677.4707"
          y="208.09399"
-         id="tspan71480"><tspan
+         id="tspan74262"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71478">
+           id="tspan74260">
 </tspan></tspan><tspan
          x="677.4707"
          y="233.09399"
-         id="tspan71484"><tspan
+         id="tspan74266"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71482">
+           id="tspan74264">
 </tspan></tspan></text>
     <text
        xml:space="preserve"
@@ -1266,39 +1266,39 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-3-8);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71488"><tspan
+         id="tspan74270"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71486">transplant()
+           id="tspan74268">transplant()
 </tspan></tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71492"><tspan
+         id="tspan74274"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71490">stop_transplanting()
+           id="tspan74272">stop_transplanting()
 </tspan></tspan><tspan
          x="677.4707"
          y="202.51"
-         id="tspan71496"><tspan
+         id="tspan74278"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71494">continue_transplanting()
+           id="tspan74276">continue_transplanting()
 </tspan></tspan><tspan
          x="677.4707"
          y="227.51"
-         id="tspan71500"><tspan
+         id="tspan74282"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71498">
+           id="tspan74280">
 </tspan></tspan><tspan
          x="677.4707"
          y="252.51"
-         id="tspan71504"><tspan
+         id="tspan74286"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71502">
+           id="tspan74284">
 </tspan></tspan><tspan
          x="677.4707"
          y="257.18969"
-         id="tspan71508"><tspan
+         id="tspan74290"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71506">
+           id="tspan74288">
 </tspan></tspan></text>
     <text
        xml:space="preserve"
@@ -1307,33 +1307,33 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-2-6);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71512"><tspan
+         id="tspan74294"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71510">raise_toolhead
+           id="tspan74292">raise_toolhead
 </tspan></tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71516"><tspan
+         id="tspan74298"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71514">lower_toolhead
+           id="tspan74296">lower_toolhead
 </tspan></tspan><tspan
          x="677.4707"
          y="202.51"
-         id="tspan71520"><tspan
+         id="tspan74302"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71518">go_to_origin
+           id="tspan74300">go_to_origin
 </tspan></tspan><tspan
          x="677.4707"
          y="227.51"
-         id="tspan71524"><tspan
+         id="tspan74306"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71522">go_behind_cup
+           id="tspan74304">go_behind_cup
 </tspan></tspan><tspan
          x="677.4707"
          y="252.51"
-         id="tspan71528"><tspan
+         id="tspan74310"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71526">go_to_cup</tspan></tspan></text>
+           id="tspan74308">go_to_cup</tspan></tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.866445;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect85634-29"
@@ -1380,23 +1380,23 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-2-9-2);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71530">toolhead_image
+         id="tspan74312">toolhead_image
 </tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71532">canvas
+         id="tspan74314">canvas
 </tspan><tspan
          x="677.4707"
          y="202.51"
-         id="tspan71534">source_tray_rectangle_image
+         id="tspan74316">source_tray_rectangle_image
 </tspan><tspan
          x="677.4707"
          y="227.51"
-         id="tspan71536">destination_tray_rectangle_image
+         id="tspan74318">destination_tray_rectangle_image
 </tspan><tspan
          x="677.4707"
          y="252.51"
-         id="tspan71538">toolhead_location
+         id="tspan74320">toolhead_location
 </tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.951739;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -1419,11 +1419,11 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-6-1-4);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71540">set_window_to_paused()
+         id="tspan74322">set_window_to_paused()
 </tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71542">set_window_to_unpaused()
+         id="tspan74324">set_window_to_unpaused()
 </tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:1.31093;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -1450,7 +1450,7 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-2-9-2-7);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71544">window
+         id="tspan74326">window
 </tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.951739;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -1473,18 +1473,15 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-6-1-4-8);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71546">update_location()
-</tspan><tspan
-         x="677.4707"
-         y="177.51"
-         id="tspan71548">get_label_instance()</tspan></text>
+         id="tspan74328">update_location()
+</tspan></text>
     <rect
-       style="fill:none;stroke:#000000;stroke-width:1.50892;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:1.39868;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect55-3-6-3-7-4-3"
-       width="98.816154"
-       height="51.357372"
-       x="455.00238"
-       y="207.84935" />
+       width="98.926392"
+       height="44.078335"
+       x="454.94727"
+       y="207.79424" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:7.05556px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -1503,15 +1500,15 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-2-9-2-7-8);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71550">label_instance
+         id="tspan74330">tkinter_instance
 </tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71552">label_text
+         id="tspan74332">label_instance
 </tspan><tspan
          x="677.4707"
          y="202.51"
-         id="tspan71554">toolhead_location</tspan></text>
+         id="tspan74334">toolhead_location</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.951739;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect85634-7-0-8-2"
@@ -1533,19 +1530,19 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-6-1-7);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71556">set_to_currently_transplanting()
+         id="tspan74336">set_to_transplanting()
 </tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71558">set_to_transplanting_paused()
+         id="tspan74338">set_to_paused()
 </tspan><tspan
          x="677.4707"
          y="202.51"
-         id="tspan71560">set_to_pre_tranplant()
+         id="tspan74340">set_to_stopped()
 </tspan><tspan
          x="677.4707"
          y="227.51"
-         id="tspan71562">get_button_instance()</tspan></text>
+         id="tspan74342">__continue_transplanting()</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:1.74563;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect55-3-6-3-7-2"
@@ -1571,20 +1568,19 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-2-9-2-5);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71564">tkinter_button
+         id="tspan74344">tkinter_object
 </tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71566">button_text
+         id="tspan74346">tkinter_button
 </tspan><tspan
          x="677.4707"
          y="202.51"
-         id="tspan71568">start_transplant_function
+         id="tspan74348">transplanter_function
 </tspan><tspan
          x="677.4707"
          y="227.51"
-         id="tspan71570">pause_transplant_function
-</tspan></text>
+         id="tspan74350">is_transplanting</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.951739;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect85634-7-0-7"
@@ -1606,26 +1602,18 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-6-1-7-9);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71572">set_to_currently_transplanting()
+         id="tspan74352">enable_button()
 </tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71574">set_to_transplanting_paused()
-</tspan><tspan
-         x="677.4707"
-         y="202.51"
-         id="tspan71576">set_to_pre_tranplant()
-</tspan><tspan
-         x="677.4707"
-         y="227.51"
-         id="tspan71578">get_button_instannce()</tspan></text>
+         id="tspan74354">disable_button()</tspan></text>
     <rect
-       style="fill:none;stroke:#000000;stroke-width:1.66708;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:1.49797;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect55-3-6-3-7-2-9"
-       width="98.657997"
-       height="62.788864"
-       x="455.35846"
-       y="75.947937" />
+       width="98.82711"
+       height="50.60928"
+       x="455.2739"
+       y="75.86338" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:7.05556px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -1644,20 +1632,19 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-2-9-2-5-3);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71580">tkinter_button
+         id="tspan74356">tkinter_object
 </tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71582">button_text
+         id="tspan74358">tkinter_button
 </tspan><tspan
          x="677.4707"
          y="202.51"
-         id="tspan71584">stop_tranplant_function
-</tspan></text>
+         id="tspan74360">stop_function</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.951739;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect85634-7-0-7-4"
-       width="96.872177"
+       width="96.872002"
        height="0.35122541"
        x="456.14752"
        y="86.623917" />
@@ -1693,35 +1680,35 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-26);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71588"><tspan
+         id="tspan74364"><tspan
            style="font-weight:bold"
-           id="tspan71586">
+           id="tspan74362">
 </tspan></tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71594"><tspan
+         id="tspan74370"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71590">calibrate()</tspan><tspan
+           id="tspan74366">calibrate()</tspan><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71592">
+           id="tspan74368">
 </tspan></tspan><tspan
          x="677.4707"
          y="202.51"
-         id="tspan71598"><tspan
+         id="tspan74374"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71596">signal_arduino()
+           id="tspan74372">signal_arduino()
 </tspan></tspan><tspan
          x="677.4707"
          y="227.51"
-         id="tspan71602"><tspan
+         id="tspan74378"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71600">
+           id="tspan74376">
 </tspan></tspan><tspan
          x="677.4707"
          y="233.60571"
-         id="tspan71606"><tspan
+         id="tspan74382"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71604">
+           id="tspan74380">
 </tspan></tspan></text>
     <text
        xml:space="preserve"
@@ -1730,15 +1717,15 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-2-1);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71608">arduino_connection
+         id="tspan74384">arduino_connection
 </tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71610">port_name
+         id="tspan74386">port_name
 </tspan><tspan
          x="677.4707"
          y="202.51"
-         id="tspan71612">
+         id="tspan74388">
 </tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.866445;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -1779,27 +1766,27 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-26-0);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71614">next_hole_getter_source
+         id="tspan74390">next_hole_getter_source
 </tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71616">next_hole_getter_destination
+         id="tspan74392">next_hole_getter_destination
 </tspan><tspan
          x="677.4707"
          y="202.51"
-         id="tspan71618">is_source_tray_full
+         id="tspan74394">is_source_tray_full
 </tspan><tspan
          x="677.4707"
          y="227.51"
-         id="tspan71620">is_destination_tray_full
+         id="tspan74396">is_destination_tray_full
 </tspan><tspan
          x="677.4707"
          y="252.51"
-         id="tspan71622">relocate_plant
+         id="tspan74398">relocate_plant
 </tspan><tspan
          x="677.4707"
          y="277.51"
-         id="tspan71624">reset_tranplanter</tspan></text>
+         id="tspan74400">reset_tranplanter</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.928193;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect85634-2-49"
@@ -1832,15 +1819,15 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-26-5);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71628"><tspan
+         id="tspan74404"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71626">lower_toolhead()
+           id="tspan74402">lower_toolhead()
 </tspan></tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71632"><tspan
+         id="tspan74408"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71630">raise_toolhead()</tspan></tspan></text>
+           id="tspan74406">raise_toolhead()</tspan></tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,-70.526153,246.43138)"
@@ -1848,7 +1835,7 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-2-1-9);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71634">name</tspan></text>
+         id="tspan74410">name</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,-72.528421,182.43556)"
@@ -1856,19 +1843,19 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-2-1-9-3);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71636">name
+         id="tspan74412">name
 </tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71638">corner_to_first_cup_y
+         id="tspan74414">corner_to_first_cup_y
 </tspan><tspan
          x="677.4707"
          y="202.51"
-         id="tspan71640">corner_to_first_cup_x
+         id="tspan74416">corner_to_first_cup_x
 </tspan><tspan
          x="677.4707"
          y="227.51"
-         id="tspan71642">distance_to_lift_cup
+         id="tspan74418">distance_to_lift_cup
 </tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.830415;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -1909,45 +1896,45 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-26-1);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71646"><tspan
+         id="tspan74422"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71644">go_to_origin()
+           id="tspan74420">go_to_origin()
 </tspan></tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71650"><tspan
+         id="tspan74426"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71648">go_behind_cup()
+           id="tspan74424">go_behind_cup()
 </tspan></tspan><tspan
          x="677.4707"
          y="202.51"
-         id="tspan71654"><tspan
+         id="tspan74430"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71652">go_to_cup()
+           id="tspan74428">go_to_cup()
 </tspan></tspan><tspan
          x="677.4707"
          y="227.0393"
-         id="tspan71658"><tspan
+         id="tspan74434"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71656">
+           id="tspan74432">
 </tspan></tspan><tspan
          x="677.4707"
          y="252.0393"
-         id="tspan71662"><tspan
+         id="tspan74438"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71660">
+           id="tspan74436">
 </tspan></tspan><tspan
          x="677.4707"
          y="277.0393"
-         id="tspan71666"><tspan
+         id="tspan74442"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71664">
+           id="tspan74440">
 </tspan></tspan><tspan
          x="677.4707"
          y="302.0393"
-         id="tspan71670"><tspan
+         id="tspan74446"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71668">
+           id="tspan74444">
 </tspan></tspan></text>
     <text
        xml:space="preserve"
@@ -1956,45 +1943,45 @@
        style="font-style:normal;font-weight:normal;font-size:18.6667px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-26-1-2);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="151.29687"
-         id="tspan71674"><tspan
+         id="tspan74450"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71672">go_to_origin
+           id="tspan74448">go_to_origin
 </tspan></tspan><tspan
          x="677.4707"
          y="174.63024"
-         id="tspan71678"><tspan
+         id="tspan74454"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71676">go_behind_cup
+           id="tspan74452">go_behind_cup
 </tspan></tspan><tspan
          x="677.4707"
          y="197.96362"
-         id="tspan71682"><tspan
+         id="tspan74458"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71680">go_to_cup
+           id="tspan74456">go_to_cup
 </tspan></tspan><tspan
          x="677.4707"
          y="221.29699"
-         id="tspan71686"><tspan
+         id="tspan74462"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71684">
+           id="tspan74460">
 </tspan></tspan><tspan
          x="677.4707"
          y="222.05859"
-         id="tspan71690"><tspan
+         id="tspan74466"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71688">
+           id="tspan74464">
 </tspan></tspan><tspan
          x="677.4707"
          y="245.39196"
-         id="tspan71694"><tspan
+         id="tspan74470"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71692">
+           id="tspan74468">
 </tspan></tspan><tspan
          x="677.4707"
          y="268.72534"
-         id="tspan71698"><tspan
+         id="tspan74474"><tspan
            style="-inkscape-font-specification:sans-serif"
-           id="tspan71696">
+           id="tspan74472">
 </tspan></tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.838237;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -2249,11 +2236,11 @@
        style="font-style:normal;font-weight:normal;font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect50967-2-9-2-7-8-8);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="677.4707"
          y="152.51"
-         id="tspan71700">toolhead_arduino_port_label
+         id="tspan74476">toolhead_arduino_port_label
 </tspan><tspan
          x="677.4707"
          y="177.51"
-         id="tspan71702">frame_arduino_port_label</tspan></text>
+         id="tspan74478">frame_arduino_port_label</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.980776;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect85634-7-0-8-2-6"

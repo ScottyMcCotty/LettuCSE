@@ -31,7 +31,7 @@ class Arduino():
     """
     arduino_connection = None
     port_name = "arduino not connected"
-    mm_to_motor_constant = 1
+    mm_to_motor_constant = 1.0
 
     def __init__(self, arduino_id:str, motor_data:list) -> None:
         """Set constants, find which port the arduino is connected to, and wait for the 'hello' response"""
@@ -59,21 +59,17 @@ class Arduino():
 
     def send_string_to_arduino(self, string_to_send:str) -> None:
         """Convert input to bytes, send it to arduino, wait until
-        the command is "Done" before continuing if an arduino is connected,
-        othewise sleep because it is on 'test mode'"""
+        the arduino has reported that it has received before continuing if an arduino is connected,
+        othewise sleep because if there are no arduinos connected it means the software
+        is being tested and nothing needs to be sent """
         if self.arduino_connection:
-            print(self.arduino_connection)
             self.arduino_connection.write(bytes(string_to_send + "\n", 'utf8'))
-            while True:
+            response = self.arduino_connection.readline().decode("utf-8")
+            while "Done" not in response:
+                sleep(0.5)
                 response = self.arduino_connection.readline().decode("utf-8")
-                if response == "":
-                    print(f"Waiting for response from {self.port_name}...")
-                    sleep(.5)
-                else:
-                    print(f"Response: '{response}'!")
-                    break
         else:
-            sleep(0.1)
+            sleep(0.5)
 
     def calibrate(self) -> None:
         "sends a string saying calibrate to the toolhead"

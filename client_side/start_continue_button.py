@@ -33,9 +33,6 @@ class StartContinueButton():
     set_to_stopped()
         Reset the button so it's like it is after the button
         is initialized
-    get_is_transplanting()
-        a closure that supplies whether the transplanting
-        is in progress
     __continue_transplanting()
         a private function that is called
         when the user presses the continue button.
@@ -54,7 +51,7 @@ class StartContinueButton():
 
         self.tkinter_button = Button(tkinter_instance,
                                      text ="Start Transplant",
-                                     command=lambda:self.set_to_transplanting,
+                                     command=self.set_to_transplanting,
                                      bd=0,
                                      state=NORMAL)
         self.tkinter_button.place(relx = 0.5, rely = 0.4, anchor = N)
@@ -63,10 +60,7 @@ class StartContinueButton():
 
     def set_to_transplanting(self):
         """Make the button disabled, so you can't re-press it when it's transplanting already"""
-        self.tkinter_button = Button(self.tkinter_instance,
-                                     text ="Transplanting in Progress",
-                                     bd=0,
-                                     state=DISABLED)
+        self.tkinter_button["state"] = "disabled"
         self.is_transplanting = True
         threading.Thread(target=self.transplanter_function).start()
 
@@ -83,15 +77,9 @@ class StartContinueButton():
         """Reset the button so it can start again"""
         self.tkinter_button = Button(self.tkinter_instance,
                                      text ="Start Transplant",
-                                     command=lambda:self.set_to_transplanting,
+                                     command=self.set_to_transplanting,
                                      bd=0,
                                      state=NORMAL)
-
-    def get_is_transplanting(self):
-        """Lets user know if the transplanting is in progress
-        which is used for knowing if the stop button is enabled"""
-        return self.is_transplanting
-
 
     def __continue_transplanting(self):
         """Make the button disabled, so you can't re-press it when it's transplanting already,
