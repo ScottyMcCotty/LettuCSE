@@ -39,7 +39,7 @@ class tray_info():
         self.rows_between_gap = -1
 
         self.window = tkinter_object
-        self.info_label = Label(text = "N/A")
+        self.info_label = Label(self.window, text = "N/A")
 
     def update_info(self):
         # Go through all held info and instantiate their text lines
@@ -123,8 +123,5 @@ class tray_info():
                                font = ("Arial", 10),
                                justify = LEFT,
                                bg = 'light green')
-        self.info_label.place_forget()
+        #self.info_label.place_forget()
         self.info_label.place(relx = 0.8, rely = 0.8, anchor = CENTER)
-
-    def hide_info(self):
-        self.info_label.place_forget()

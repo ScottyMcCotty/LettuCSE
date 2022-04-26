@@ -158,8 +158,18 @@ class windowHandler():
         self.confirm_return_yes.place_forget()
         self.confirm_return_no.place_forget()
 
-        # Hide tray information.
-        self.tray_measurements.hide_info()
+        # Reset and hide tray information.
+        self.tray_measurements.tray_name = "Placeholder"
+        self.tray_measurements.hole_size = -1
+        self.tray_measurements.short_axis_distance = -1
+        self.tray_measurements.short_axis_distance_to_edge = -1
+        self.tray_measurements.long_axis_distance = -1
+        self.tray_measurements.long_axis_distance_to_edge = -1
+        self.tray_measurements.extra_gap = -1
+        self.tray_measurements.rows = -1
+        self.tray_measurements.columns = -1
+        self.tray_measurements.rows_between_gap = -1
+        self.tray_measurements.info_label.place_forget()
 
         # Hide step 1 objects.
         self.step1_title.place_forget()
@@ -217,6 +227,7 @@ class windowHandler():
         self.main_title.place_forget()
 
         # Display step 1 information (source tray or destination tray?) and the exit button.
+        self.tray_measurements.info_label.place_forget()
         self.tray_measurements.update_info()
         self.return_title_button.place(relx = 0.1, rely = 0.04, anchor = CENTER)
         self.step1_title.place(relx = 0.5, rely = 0.05, anchor = CENTER)
@@ -232,4 +243,5 @@ class windowHandler():
         elif trayType == "Destination":
             self.tray_measurements.tray_name = "Destination"
 
+        self.tray_measurements.info_label.place_forget()
         self.tray_measurements.update_info()
