@@ -1,7 +1,7 @@
 """Module contains the GUI class"""
 
 from tkinter import N, Tk, Label, PhotoImage, CENTER, NORMAL, Button
-from trayInfo import trayInfo
+from tray_info import tray_info
 
 class windowHandler():
     """
@@ -22,7 +22,7 @@ class windowHandler():
     set_window_to_unpaused()
         change the window color to green
     """
-    trayMeasurements = trayInfo()
+    tray_measurements = None
 
     window = None
     
@@ -53,6 +53,8 @@ class windowHandler():
         self.window.title("LettuCSE Transplanter")
         self.window.geometry("1000x800")
         self.window.configure(bg = 'light green')
+
+        self.tray_measurements = tray_info(self.window)
 
         # Instantiate all buttons and images.
         # TITLE SCREEN
@@ -127,11 +129,11 @@ class windowHandler():
                                         bg = 'light green')
         self.step1_source_button = Button(self.window,
                                           text = "Source tray",
-                                          command = self.step2_screen("Source"),
+                                          command = lambda: self.step2_screen("Source"),
                                           state = NORMAL)
         self.step1_destination_button = Button(self.window,
                                                text = "Destination tray",
-                                               command = self.step2_screen("Destination"),
+                                               command = lambda: self.step2_screen("Destination"),
                                                state = NORMAL)                          
                                               
         # Initialize to title screen.
@@ -155,6 +157,9 @@ class windowHandler():
         self.confirm_return_warning.place_forget()
         self.confirm_return_yes.place_forget()
         self.confirm_return_no.place_forget()
+
+        # Hide tray information.
+        self.tray_measurements.hide_info()
 
         # Hide step 1 objects.
         self.step1_title.place_forget()
@@ -212,6 +217,7 @@ class windowHandler():
         self.main_title.place_forget()
 
         # Display step 1 information (source tray or destination tray?) and the exit button.
+        self.tray_measurements.update_info()
         self.return_title_button.place(relx = 0.1, rely = 0.04, anchor = CENTER)
         self.step1_title.place(relx = 0.5, rely = 0.05, anchor = CENTER)
         self.step1_instructions.place(relx = 0.5, rely = 0.15, anchor = CENTER)
@@ -222,6 +228,8 @@ class windowHandler():
         """Stores answer from step 1 and displays information for step 2. Called from step 1 screen only"""
         # Handle logic from previous step before continuing.
         if trayType == "Source":
-            self.trayMeasurements.tray_name = "custom_dense_tray_measurements.json"
+            self.tray_measurements.tray_name = "Source"
         elif trayType == "Destination":
-            self.trayMeasurements.tray_name = "custom_sparse_tray_measurements.json"
+            self.tray_measurements.tray_name = "Destination"
+
+        self.tray_measurements.update_info()
