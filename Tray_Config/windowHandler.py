@@ -212,12 +212,13 @@ class windowHandler():
 
         # Reset and hide tray information.
         self.tray_measurements.tray_name = "Placeholder"
-        self.tray_measurements.hole_size = -1
-        self.tray_measurements.short_axis_distance = -1
-        self.tray_measurements.short_axis_distance_to_edge = -1
-        self.tray_measurements.long_axis_distance = -1
-        self.tray_measurements.long_axis_distance_to_edge = -1
-        self.tray_measurements.extra_gap = -1
+        self.tray_measurements.hole_length = -1.0
+        self.tray_measurements.hole_width = -1.0
+        self.tray_measurements.short_axis_distance = -1.0
+        self.tray_measurements.short_axis_distance_to_edge = -1.0
+        self.tray_measurements.long_axis_distance = -1.0
+        self.tray_measurements.long_axis_distance_to_edge = -1.0
+        self.tray_measurements.extra_gap = -1.0
         self.tray_measurements.rows = -1
         self.tray_measurements.columns = -1
         self.tray_measurements.rows_between_gap = -1
