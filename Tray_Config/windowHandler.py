@@ -1,6 +1,6 @@
 """Module contains the GUI class"""
 
-from tkinter import N, Tk, Label, PhotoImage, CENTER, NORMAL, Button, DISABLED
+from tkinter import N, Tk, Label, PhotoImage, CENTER, NORMAL, Button, DISABLED, Canvas, Entry
 from tray_info import tray_info
 
 class windowHandler():
@@ -33,12 +33,12 @@ class windowHandler():
     start_measuring_button = None
     skip_measuring_button = None
 
-    start_measuring_warning = None
+    
     confirm_continue_button = None
     confirm_exit_button = None
 
     return_title_button = None
-    confirm_return_warning = None
+    
     confirm_return_yes = None
     confirm_return_no = None
 
@@ -48,10 +48,25 @@ class windowHandler():
     step1_source_button = None
     step1_destination_button = None
 
+    accept_input_button = None
+
     # The labels.
     main_title = None
+    start_measuring_warning = None
+    confirm_return_warning = None
     step_title = None
     step_instructions = None
+    text_entry_warning = None
+    text_entryA_label = None
+    text_entryB_label = None
+
+    # The pictures & canvases.
+    step2_pictureA_canvas = None
+    step2_pictureA = None
+
+    # The text input boxes.
+    text_entryA = None
+    text_entryB = None
 
 
     def __init__(self, tkinter_object:Tk) -> None:
@@ -150,7 +165,28 @@ class windowHandler():
         self.step1_destination_button = Button(self.window,
                                                text = "Destination tray",
                                                command = self.step1_destination,#lambda: self.step2_screen("Destination"),
-                                               state = NORMAL)                          
+                                               state = NORMAL)
+
+        # STEP 2 SCREEN (length & width of tray holes?)
+        self.step2_pictureA_canvas = Canvas(master=None,width=542,height=548)
+        self.step2_pictureA = PhotoImage(file="images/step2Image.png")
+        self.text_entry_warning = Label(text = "NOTE: Any non-number\ninput will be discarded.",
+                                        font = ("Arial", 12),
+                                        bg = 'yellow')
+        self.text_entryA_label = Label(text = "Length:",
+                                        font = ("Arial", 12),
+                                        bg = 'light green')
+        self.text_entryB_label = Label(text = " Width:",
+                                        font = ("Arial", 12),
+                                        bg = 'light green')                                
+        self.text_entryA = Entry(self.window,
+                                 bd = 5)
+        self.text_entryB = Entry(self.window,
+                                 bd = 5)
+        self.accept_input_button = Button(self.window,
+                                          text = "Enter input",
+                                          command = self.accept_input,
+                                          state = NORMAL)
                                               
         # Initialize to title screen.
         self.title_screen()
@@ -350,4 +386,27 @@ class windowHandler():
                                       bg = 'light green')
         self.step1_source_button.place_forget()
         self.step1_destination_button.place_forget()
-                        
+        # TODO: Step 3 objects need to be hidden
+
+        # NOTE TO SELF: (0,0) on the canvas is the upper left corner
+        self.step2_pictureA_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
+        self.step2_pictureA_canvas.create_image(275, 275, anchor=CENTER, image=self.step2_pictureA)
+        # Add related step 2 objects
+        self.text_entry_warning.place(relx = 0.9, rely = 0.55, anchor = CENTER)
+        self.text_entryA.place(relx = 0.9, rely = 0.6, anchor = CENTER)
+        self.text_entryB.place(relx = 0.9, rely = 0.65, anchor = CENTER)
+        self.text_entryA_label.config(text = "Length:",
+                                        font = ("Arial", 12),
+                                        bg = 'light green')
+        self.text_entryB_label.config(text = " Width:",
+                                        font = ("Arial", 12),
+                                        bg = 'light green')
+        self.text_entryA_label.place(relx = 0.8, rely = 0.6, anchor = CENTER)
+        self.text_entryB_label.place(relx = 0.8, rely = 0.65, anchor = CENTER)
+        self.accept_input_button.place(relx = 0.9, rely = 0.7, anchor = CENTER)
+
+    # Function for accepting input from the two text boxes.
+    def accept_input(self) -> None:
+        """Confirms the input in each text box is a number before storing it in the tray_info class object"""
+        # TODO potato.replace(".","",1).isdigit()
+        print("POTATO!")

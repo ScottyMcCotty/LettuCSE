@@ -48,7 +48,7 @@ class tray_info():
         # Go through all held info and instantiate their text lines
         self.tray_name_text = "Tray type:\t\t\t\t"
         if self.tray_name == "Source":
-            self.tray_name_text += "Source     "
+            self.tray_name_text += "Source        "
         elif self.tray_name == "Destination":
             self.tray_name_text += "Destination"
         else:
@@ -134,4 +134,4 @@ class tray_info():
                                justify = LEFT,
                                bg = 'light green')
         #self.info_label.place_forget()
-        self.info_label.place(relx = 0.8, rely = 0.85, anchor = CENTER)
+        self.info_label.place(relx = 0.8, rely = 0.86, anchor = CENTER)
