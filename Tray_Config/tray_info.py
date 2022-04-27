@@ -48,11 +48,11 @@ class tray_info():
         # Go through all held info and instantiate their text lines
         self.tray_name_text = "Tray type:\t\t\t\t"
         if self.tray_name == "Source":
-            self.tray_name_text += "Source        "
+            self.tray_name_text += "Source      "
         elif self.tray_name == "Destination":
             self.tray_name_text += "Destination"
         else:
-            self.tray_name_text += "TBD"
+            self.tray_name_text += "TBD          "
         
         self.hole_length_text = "Hole length:\t\t\t\t"
         if self.hole_length == -1.0:
