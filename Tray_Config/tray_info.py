@@ -2,7 +2,8 @@ from tkinter import Tk, Label, CENTER, LEFT
 
 class tray_info():
     tray_name = None
-    hole_size = None
+    hole_length = None
+    hole_width = None
     short_axis_distance = None
     short_axis_distance_to_edge = None
     long_axis_distance = None
@@ -14,7 +15,8 @@ class tray_info():
 
     window = None
     tray_name_text = None
-    hole_size_text = None
+    hole_length_text = None
+    hole_width_text = None
     short_axis_distance_text = None
     short_axis_distance_to_edge_text = None
     long_axis_distance_text = None
@@ -28,7 +30,8 @@ class tray_info():
 
     def __init__(self, tkinter_object:Tk):
         self.tray_name = "Placeholder"
-        self.hole_size = -1
+        self.hole_length = -1
+        self.hole_width = -1
         self.short_axis_distance = -1
         self.short_axis_distance_to_edge = -1
         self.long_axis_distance = -1
@@ -51,11 +54,17 @@ class tray_info():
         else:
             self.tray_name_text += "TBD"
         
-        self.hole_size_text = "Hole size:\t\t\t\t"
-        if self.hole_size == -1:
-            self.hole_size_text += "TBD"
+        self.hole_length_text = "Hole length:\t\t\t\t"
+        if self.hole_length == -1:
+            self.hole_length_text += "TBD"
         else:
-            self.hole_size_text += str(self.hole_size)
+            self.hole_length_text += str(self.hole_length)
+
+        self.hole_width_text = "Hole width:\t\t\t\t"
+        if self.hole_width == -1:
+            self.hole_width_text += "TBD"
+        else:
+            self.hole_width_text += str(self.hole_width)
 
         self.short_axis_distance_text = "Short axis distance:\t\t\t"
         if self.short_axis_distance == -1:
@@ -111,7 +120,8 @@ class tray_info():
 
         # Now that all information is updated, display it on the Tkinter object
         self.info_label = Label(self.window, text = self.tray_name_text + "\n"
-                               + self.hole_size_text + "\n"
+                               + self.hole_length_text + "\n"
+                               + self.hole_width_text + "\n"
                                + self.short_axis_distance_text + "\n"
                                + self.short_axis_distance_to_edge_text + "\n"
                                + self.long_axis_distance_text + "\n"
@@ -124,4 +134,4 @@ class tray_info():
                                justify = LEFT,
                                bg = 'light green')
         #self.info_label.place_forget()
-        self.info_label.place(relx = 0.8, rely = 0.8, anchor = CENTER)
+        self.info_label.place(relx = 0.8, rely = 0.85, anchor = CENTER)

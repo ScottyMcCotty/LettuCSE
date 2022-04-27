@@ -1,6 +1,6 @@
 """Module contains the GUI class"""
 
-from tkinter import N, Tk, Label, PhotoImage, CENTER, NORMAL, Button
+from tkinter import N, Tk, Label, PhotoImage, CENTER, NORMAL, Button, DISABLED
 from tray_info import tray_info
 
 class windowHandler():
@@ -25,6 +25,9 @@ class windowHandler():
     tray_measurements = None
 
     window = None
+
+    current_step = -1
+    current_progress = -2
     
     # The buttons.
     start_measuring_button = None
@@ -39,13 +42,16 @@ class windowHandler():
     confirm_return_yes = None
     confirm_return_no = None
 
+    continue_button = None
+    back_button = None
+
     step1_source_button = None
     step1_destination_button = None
 
     # The labels.
     main_title = None
-    step1_title = None
-    step1_instructions = None
+    step_title = None
+    step_instructions = None
 
 
     def __init__(self, tkinter_object:Tk) -> None:
@@ -94,12 +100,12 @@ class windowHandler():
                                               text = "Proceed",
                                               font = ("Arial", 10),
                                               command = self.step1_screen,
-                                              state=NORMAL)
+                                              state = NORMAL)
         self.confirm_exit_button = Button(self.window,
                                               text = "Go back",
                                               font = ("Arial", 10),
                                               command = self.title_screen,
-                                              state=NORMAL)
+                                              state = NORMAL)
 
         # EXIT BUTTON (present on all steps to return to title screen)
         self.return_title_button = Button(self.window,
@@ -119,21 +125,31 @@ class windowHandler():
                                      command = self.cancel_return,
                                      state = NORMAL)
 
+        # CONTINUE & BACK BUTTONS (present on all steps to move between steps)
+        self.continue_button = Button(self.window,
+                                      text = "Next step",
+                                      command = self.next_step,
+                                      state = DISABLED)
+        self.back_button = Button(self.window,
+                                  text = "Previous step",
+                                  command = self.previous_step,
+                                  state = DISABLED)
+
         # STEP 1 SCREEN (source or destination tray?)  
-        self.step1_title = Label(text = "Step 1 of X\n\nSpecify tray type",
+        self.step_title = Label(text = "Step 1 of X\n\nSpecify tray type",
                                  font = ("Arial", 15),
                                  bg = 'light green')
-        self.step1_instructions = Label(text = "Indicate whether the information being entered is "
+        self.step_instructions = Label(text = "Indicate whether the information being entered is "
                                                "for the source (dense) tray or the destination (sparse) tray.",
                                         font = ("Arial", 15),
                                         bg = 'light green')
         self.step1_source_button = Button(self.window,
                                           text = "Source tray",
-                                          command = lambda: self.step2_screen("Source"),
+                                          command = self.step1_source,#lambda: self.step2_screen("Source"),
                                           state = NORMAL)
         self.step1_destination_button = Button(self.window,
                                                text = "Destination tray",
-                                               command = lambda: self.step2_screen("Destination"),
+                                               command = self.step1_destination,#lambda: self.step2_screen("Destination"),
                                                state = NORMAL)                          
                                               
         # Initialize to title screen.
@@ -171,9 +187,16 @@ class windowHandler():
         self.tray_measurements.rows_between_gap = -1
         self.tray_measurements.info_label.place_forget()
 
+        self.current_step = -1
+        self.current_progress = -2
+        self.continue_button.config(state = DISABLED)
+        self.continue_button.place_forget()
+        self.back_button.config(state = DISABLED)
+        self.back_button.place_forget()
+
         # Hide step 1 objects.
-        self.step1_title.place_forget()
-        self.step1_instructions.place_forget()
+        self.step_title.place_forget()
+        self.step_instructions.place_forget()
         self.step1_source_button.place_forget()
         self.step1_destination_button.place_forget()
 
@@ -216,32 +239,115 @@ class windowHandler():
 
         # Display return button.
         self.return_title_button.place(relx = 0.1, rely = 0.04, anchor = CENTER)
+
+    # Fucntion for going to the next step in the process.
+    def next_step(self) -> None:
+        """Checks current step and calls the appropriate step function to move forward"""
+        if self.current_step == 1:
+            self.step2_screen()
+            self.back_button.config(state = NORMAL)
+        #elif self.current_step == 2:
+            #self.step3_screen()
+        # TODO: CONTINUE ADDING ELIFS AS MORE STEPS ARE IMPLEMENTED
+
+        # Only allow the next button to be clicked again if input has completed for the current step.
+        if self.current_progress >= self.current_step:
+            self.continue_button.config(state = NORMAL)
+        else:
+            self.continue_button.config(state = DISABLED)
+
+
+    # Function for going back to the previous step in the process.
+    def previous_step(self) -> None:
+        """Checks current step and calls the appropriate step function to move back"""
+        # If current_step is 2, disable the previous step button on moving into step 1.
+        if self.current_step == 2:
+            self.step1_screen()
+            self.back_button.config(state = DISABLED)
+        elif self.current_step == 3:
+            self.step2_screen()
+
+        # Allow the next button to be clicked again if input has completed for the current step.
+        if self.current_progress >= self.current_step:
+            self.continue_button.config(state = NORMAL)
+        else:
+            self.continue_button.config(state = DISABLED)
     
-    # Function for confirm_continue_button.
+    # Function for displaying step 1.
     def step1_screen(self) -> None:
-        """Displays information for step 1 of creating a JSON config file. Called from confirmation screen only"""
+        """Displays information for step 1 of creating a JSON config file. Called from confirmation screen or step 2"""
         # Hide confirmation screen and title objects.
         self.start_measuring_warning.place_forget()
         self.confirm_continue_button.place_forget()
         self.confirm_exit_button.place_forget()
         self.main_title.place_forget()
 
-        # Display step 1 information (source tray or destination tray?) and the exit button.
+        # Hide step 2 objects.
+        # TODO
+
+        self.current_step = 1
+
+        # Display step 1 information (source tray or destination tray?), the exit button, and the continue/back buttons.
         self.tray_measurements.info_label.place_forget()
         self.tray_measurements.update_info()
         self.return_title_button.place(relx = 0.1, rely = 0.04, anchor = CENTER)
-        self.step1_title.place(relx = 0.5, rely = 0.05, anchor = CENTER)
-        self.step1_instructions.place(relx = 0.5, rely = 0.15, anchor = CENTER)
+        self.step_title.config(text = "Step 1 of X\n\nSpecify tray type",
+                                 font = ("Arial", 15),
+                                 bg = 'light green')
+        self.step_title.place(relx = 0.5, rely = 0.05, anchor = CENTER)
+        self.step_instructions.config(text = "Indicate whether the information being entered is "
+                                             "for the source (dense) tray or the destination (sparse) tray.",
+                                      font = ("Arial", 15),
+                                      bg = 'light green')
+        self.step_instructions.place(relx = 0.5, rely = 0.15, anchor = CENTER)
         self.step1_source_button.place(relx = 0.45, rely = 0.2, anchor = CENTER)
         self.step1_destination_button.place(relx = 0.55, rely = 0.2, anchor = CENTER)
+        self.continue_button.config(state = DISABLED)
+        self.continue_button.place(relx = 0.65, rely = 0.02, anchor = CENTER)
+        self.back_button.config(state = DISABLED)
+        self.back_button.place(relx = 0.35, rely = 0.02, anchor = CENTER)
 
-    def step2_screen(self, trayType) -> None:
-        """Stores answer from step 1 and displays information for step 2. Called from step 1 screen only"""
-        # Handle logic from previous step before continuing.
-        if trayType == "Source":
-            self.tray_measurements.tray_name = "Source"
-        elif trayType == "Destination":
-            self.tray_measurements.tray_name = "Destination"
+    # Function for pressing the "Source" button in step 1.
+    def step1_source(self) -> None:
+        """Sets the tray type stored to 'Source'"""
+        self.tray_measurements.tray_name = "Source"
+        self.tray_measurements.info_label.place_forget()
+        self.tray_measurements.update_info()
+
+        # Update input progress and make the next button available.
+        if self.current_progress < 1:
+            self.current_progress = 1
+            self.continue_button.config(state = NORMAL)
+
+    # Function for pressing the "Destination" button in step 1.
+    def step1_destination(self) -> None:
+        """Sets the tray type stored to 'Destination'"""
+        self.tray_measurements.tray_name = "Destination"
+        self.tray_measurements.info_label.place_forget()
+        self.tray_measurements.update_info()
+
+        # Update input progress and make the next button available.
+        if self.current_progress < 1:
+            self.current_progress = 1
+            self.continue_button.config(state = NORMAL)
+
+    def step2_screen(self) -> None:
+        """Stores answer from step 1 and displays information for step 2. Called from step 1 & 3 screens"""
 
         self.tray_measurements.info_label.place_forget()
         self.tray_measurements.update_info()
+
+        self.current_step = 2
+
+        # Hide/modify step 1 and step 3 objects.
+        self.step_title.config(text = "Step 2 of X\n\nTray hole dimensions",
+                            font = ("Arial", 15),
+                            bg = 'light green')
+        self.step_instructions.config(text = "Enter (in mm) the length and width of one of the tray holes.\n"
+                                             "Note that the length side is defined as the side parallel "
+                                             "to the long side of the tray.",
+                                      font = ("Arial", 15),
+                                      bg = 'light green')
+        self.step1_source_button.place_forget()
+        self.step1_destination_button.place_forget()
+                        
