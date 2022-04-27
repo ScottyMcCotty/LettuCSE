@@ -170,7 +170,7 @@ class windowHandler():
         # STEP 2 SCREEN (length & width of tray holes?)
         self.step2_pictureA_canvas = Canvas(master=None,width=542,height=548)
         self.step2_pictureA = PhotoImage(file="images/step2Image.png")
-        self.text_entry_warning = Label(text = "NOTE: Any invalid\ninput will be discarded.",
+        self.text_entry_warning = Label(text = "NOTE: Any invalid/large\ninput will be discarded.",
                                         font = ("Arial", 12),
                                         bg = 'yellow')
         self.text_entryA_label = Label(text = "Length:",
@@ -218,11 +218,12 @@ class windowHandler():
         self.tray_measurements.short_axis_distance_to_edge = -1.0
         self.tray_measurements.long_axis_distance = -1.0
         self.tray_measurements.long_axis_distance_to_edge = -1.0
-        self.tray_measurements.extra_gap = -1.0
+        self.tray_measurements.extra_gap = -1
         self.tray_measurements.rows = -1
         self.tray_measurements.columns = -1
         self.tray_measurements.rows_between_gap = -1
-        self.tray_measurements.info_label.place_forget()
+        #self.tray_measurements.update_info()
+        self.tray_measurements.hide_label()
 
         self.current_step = -1
         self.current_progress = -2
@@ -447,6 +448,10 @@ class windowHandler():
         elif self.current_step == 6:
             if not inputA.isdigit() or not inputB.replace(".","",1).isdigit():
                 return
+
+        # If input is unreasonably large, also discard.
+        if float(inputA) > 1000 or float(inputB) > 1000:
+            return
         
         # If code reached here, input is valid. Enter info into relevant tray_info object.
         if self.current_step == 2:

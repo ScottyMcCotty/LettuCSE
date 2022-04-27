@@ -119,7 +119,7 @@ class tray_info():
             self.rows_between_gap_text += str(self.rows_between_gap)
 
         # Now that all information is updated, display it on the Tkinter object
-        self.info_label = Label(self.window, text = self.tray_name_text + "\n"
+        self.info_label.config(text = self.tray_name_text + "\n"
                                + self.hole_length_text + "\n"
                                + self.hole_width_text + "\n"
                                + self.short_axis_distance_text + "\n"
@@ -133,5 +133,8 @@ class tray_info():
                                font = ("Arial", 10),
                                justify = LEFT,
                                bg = 'light green')
-        #self.info_label.place_forget()
+        self.info_label.place_forget()
         self.info_label.place(relx = 0.8, rely = 0.86, anchor = CENTER)
+
+    def hide_label(self) -> None:
+        self.info_label.place_forget()
