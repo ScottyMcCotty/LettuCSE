@@ -1,6 +1,6 @@
 """Module contains the GUI class"""
 
-from tkinter import N, Tk, Label, PhotoImage, CENTER, NORMAL, Button, DISABLED, Canvas, Entry
+from tkinter import N, Tk, Label, PhotoImage, CENTER, NORMAL, Button, DISABLED, Canvas, Entry, END
 from tray_info import tray_info
 
 class windowHandler():
@@ -151,7 +151,7 @@ class windowHandler():
                                   state = DISABLED)
 
         # STEP 1 SCREEN (source or destination tray?)  
-        self.step_title = Label(text = "Step 1 of X\n\nSpecify tray type",
+        self.step_title = Label(text = "Step 1 of 7\n\nSpecify tray type",
                                  font = ("Arial", 15),
                                  bg = 'light green')
         self.step_instructions = Label(text = "Indicate whether the information being entered is "
@@ -170,7 +170,7 @@ class windowHandler():
         # STEP 2 SCREEN (length & width of tray holes?)
         self.step2_pictureA_canvas = Canvas(master=None,width=542,height=548)
         self.step2_pictureA = PhotoImage(file="images/step2Image.png")
-        self.text_entry_warning = Label(text = "NOTE: Any non-number\ninput will be discarded.",
+        self.text_entry_warning = Label(text = "NOTE: Any invalid\ninput will be discarded.",
                                         font = ("Arial", 12),
                                         bg = 'yellow')
         self.text_entryA_label = Label(text = "Length:",
@@ -200,7 +200,7 @@ class windowHandler():
     def title_screen(self) -> None:
         """Hides everything else and displays the title screen"""
         # Hide all non-title screen objects.
-        # INPROGRESS
+        # TODO
         self.start_measuring_warning.place_forget()
         self.confirm_continue_button.place_forget()
         self.confirm_exit_button.place_forget()
@@ -235,6 +235,15 @@ class windowHandler():
         self.step_instructions.place_forget()
         self.step1_source_button.place_forget()
         self.step1_destination_button.place_forget()
+
+        # Hide step 2 objects.
+        self.step2_pictureA_canvas.place_forget()
+        self.accept_input_button.place_forget()
+        self.text_entry_warning.place_forget()
+        self.text_entryA_label.place_forget()
+        self.text_entryA.place_forget()
+        self.text_entryB_label.place_forget()
+        self.text_entryB.place_forget()
 
         # Displays the title screen objects.
         self.main_title.place(relx = 0.5, rely = 0.1, anchor = CENTER)
@@ -319,7 +328,13 @@ class windowHandler():
         self.main_title.place_forget()
 
         # Hide step 2 objects.
-        # TODO
+        self.step2_pictureA_canvas.place_forget()
+        self.accept_input_button.place_forget()
+        self.text_entry_warning.place_forget()
+        self.text_entryA_label.place_forget()
+        self.text_entryA.place_forget()
+        self.text_entryB_label.place_forget()
+        self.text_entryB.place_forget()
 
         self.current_step = 1
 
@@ -327,7 +342,7 @@ class windowHandler():
         self.tray_measurements.info_label.place_forget()
         self.tray_measurements.update_info()
         self.return_title_button.place(relx = 0.1, rely = 0.04, anchor = CENTER)
-        self.step_title.config(text = "Step 1 of X\n\nSpecify tray type",
+        self.step_title.config(text = "Step 1 of 7\n\nSpecify tray type",
                                  font = ("Arial", 15),
                                  bg = 'light green')
         self.step_title.place(relx = 0.5, rely = 0.05, anchor = CENTER)
@@ -376,7 +391,7 @@ class windowHandler():
         self.current_step = 2
 
         # Hide/modify step 1 and step 3 objects.
-        self.step_title.config(text = "Step 2 of X\n\nTray hole dimensions",
+        self.step_title.config(text = "Step 2 of 7\n\nTray hole dimensions",
                             font = ("Arial", 15),
                             bg = 'light green')
         self.step_instructions.config(text = "Enter (in mm) the length and width of one of the tray holes.\n"
@@ -407,6 +422,52 @@ class windowHandler():
 
     # Function for accepting input from the two text boxes.
     def accept_input(self) -> None:
-        """Confirms the input in each text box is a number before storing it in the tray_info class object"""
+        """Confirms the input in each text box is a number before storing it in the tray_info class object based on current step"""
         # TODO potato.replace(".","",1).isdigit()
-        print("POTATO!")
+        # Get input from each box, then clear it.
+        inputA = ""
+        inputB = ""
+        inputA += self.text_entryA.get()
+        inputB += self.text_entryB.get()
+        self.text_entryA.delete(0, END)
+        self.text_entryB.delete(0, END)
+
+        # Is the entry valid? This depends on the step.
+        # Steps 2-4 can have decimal input
+        # Step 5 can only have whole numbers
+        # Step 6 can have decimals for input B, but not input A
+        # If invalid input is detected, return without updating any information.
+        if self.current_step <= 4 and self.current_step >= 2:
+            if not inputA.replace(".","",1).isdigit() or not inputB.replace(".","",1).isdigit():
+                return
+        elif self.current_step == 5:
+            if not inputA.isdigit() or not inputB.isdigit():
+                return
+        elif self.current_step == 6:
+            if not inputA.isdigit() or not inputB.replace(".","",1).isdigit():
+                return
+        
+        # If code reached here, input is valid. Enter info into relevant tray_info object.
+        if self.current_step == 2:
+            self.tray_measurements.hole_length = float(inputA)
+            self.tray_measurements.hole_width = float(inputB)
+        elif self.current_step == 3:
+            self.tray_measurements.short_axis_distance = float(inputA)
+            self.tray_measurements.long_axis_distance = float(inputB)
+        elif self.current_step == 4:
+            self.tray_measurements.short_axis_distance_to_edge = float(inputA)
+            self.tray_measurements.long_axis_distance_to_edge = float(inputB)
+        elif self.current_step == 5:
+            self.tray_measurements.rows = int(inputA)
+            self.tray_measurements.columns = int(inputB)
+        elif self.current_step == 6:
+            self.tray_measurements.rows_between_gap = int(inputA)
+            self.tray_measurements.extra_gap = float(inputB)
+
+        # Update the tray info displayed.
+        self.tray_measurements.update_info()
+
+        # Update input progress and make the next button available, if applicable.
+        if self.current_progress < self.current_step:
+            self.current_progress = self.current_step
+            self.continue_button.config(state = NORMAL)

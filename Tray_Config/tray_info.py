@@ -30,13 +30,13 @@ class tray_info():
 
     def __init__(self, tkinter_object:Tk):
         self.tray_name = "Placeholder"
-        self.hole_length = -1
-        self.hole_width = -1
-        self.short_axis_distance = -1
-        self.short_axis_distance_to_edge = -1
-        self.long_axis_distance = -1
-        self.long_axis_distance_to_edge = -1
-        self.extra_gap = -1
+        self.hole_length = -1.0
+        self.hole_width = -1.0
+        self.short_axis_distance = -1.0
+        self.short_axis_distance_to_edge = -1.0
+        self.long_axis_distance = -1.0
+        self.long_axis_distance_to_edge = -1.0
+        self.extra_gap = -1.0
         self.rows = -1
         self.columns = -1
         self.rows_between_gap = -1
@@ -55,43 +55,43 @@ class tray_info():
             self.tray_name_text += "TBD"
         
         self.hole_length_text = "Hole length:\t\t\t\t"
-        if self.hole_length == -1:
+        if self.hole_length == -1.0:
             self.hole_length_text += "TBD"
         else:
             self.hole_length_text += str(self.hole_length)
 
         self.hole_width_text = "Hole width:\t\t\t\t"
-        if self.hole_width == -1:
+        if self.hole_width == -1.0:
             self.hole_width_text += "TBD"
         else:
             self.hole_width_text += str(self.hole_width)
 
         self.short_axis_distance_text = "Short axis distance:\t\t\t"
-        if self.short_axis_distance == -1:
+        if self.short_axis_distance == -1.0:
             self.short_axis_distance_text += "TBD"
         else:
             self.short_axis_distance_text += str(self.short_axis_distance)
 
         self.short_axis_distance_to_edge_text = "Short axis distance to edge:\t\t\t"
-        if self.short_axis_distance_to_edge == -1:
+        if self.short_axis_distance_to_edge == -1.0:
             self.short_axis_distance_to_edge_text += "TBD"
         else:
             self.short_axis_distance_to_edge_text += str(self.short_axis_distance_to_edge)
 
         self.long_axis_distance_text = "Long axis distance:\t\t\t"
-        if self.long_axis_distance == -1:
+        if self.long_axis_distance == -1.0:
             self.long_axis_distance_text += "TBD"
         else:
             self.long_axis_distance_text += str(self.long_axis_distance)
 
         self.long_axis_distance_to_edge_text = "Long axis distance to edge:\t\t\t"
-        if self.long_axis_distance_to_edge == -1:
+        if self.long_axis_distance_to_edge == -1.0:
             self.long_axis_distance_to_edge_text += "TBD"
         else:
             self.long_axis_distance_to_edge_text += str(self.long_axis_distance_to_edge)
 
         self.extra_gap_text = "Additional gap length:\t\t\t"
-        if self.extra_gap == -1:
+        if self.extra_gap == -1.0:
             self.extra_gap_text += "TBD"
         elif self.extra_gap < -1:
             self.extra_gap_text += "N/A"
