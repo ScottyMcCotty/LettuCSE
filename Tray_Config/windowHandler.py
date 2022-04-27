@@ -71,7 +71,7 @@ class windowHandler():
 
     def __init__(self, tkinter_object:Tk) -> None:
         self.window = tkinter_object
-        self.window.title("LettuCSE Transplanter")
+        self.window.title("LettuCSE Config Tool")
         self.window.geometry("1000x800")
         self.window.configure(bg = 'light green')
 
