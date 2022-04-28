@@ -67,6 +67,8 @@ class windowHandler():
     step3_pictureA = None
     step4_pictureA_canvas = None
     step4_pictureA = None
+    step5_pictureA_canvas = None
+    step5_pictureA = None
 
     # The text input boxes.
     text_entryA = None
@@ -199,6 +201,10 @@ class windowHandler():
         # STEP 4 SCREEN (long & short axis distance to edge?)
         self.step4_pictureA_canvas = Canvas(master = None, width = 504, height = 378)
         self.step4_pictureA = PhotoImage(file = "images/step4Image.png")
+
+        # STEP 5 SCREEN (number rows & columns?)
+        self.step5_pictureA_canvas = Canvas(master = None, width = 550, height = 357)
+        self.step5_pictureA = PhotoImage(file = "images/step5Image.png")
                                               
         # Initialize to title screen.
         self.title_screen()
@@ -265,6 +271,9 @@ class windowHandler():
         # Hide step 4 objects.
         self.step4_pictureA_canvas.place_forget()
 
+        # Hide step 5 objects.
+        self.step5_pictureA_canvas.place_forget()
+
         # Displays the title screen objects.
         self.main_title.place(relx = 0.5, rely = 0.1, anchor = CENTER)
         self.start_measuring_button.place(relx = .35, rely = .3, anchor = CENTER)
@@ -315,6 +324,8 @@ class windowHandler():
             self.step3_screen()
         elif self.current_step == 3:
             self.step4_screen()
+        elif self.current_step == 4:
+            self.step5_screen()
         # TODO: CONTINUE ADDING ELIFS AS MORE STEPS ARE IMPLEMENTED
 
         # Only allow the next button to be clicked again if input has completed for the current step.
@@ -335,6 +346,8 @@ class windowHandler():
             self.step2_screen()
         elif self.current_step == 4:
             self.step3_screen()
+        elif self.current_step == 5:
+            self.step4_screen()
         # TODO: CONTINUE ADDING ELIFS AS MORE STEPS ARE IMPLEMENTED
 
         # Allow the next button to be clicked again if input has completed for the current step.
@@ -536,7 +549,7 @@ class windowHandler():
         self.step3_pictureA_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
         self.step3_pictureA_canvas.create_image(252, 189, anchor=CENTER, image=self.step3_pictureA)
 
-    # Function for display step 4.
+    # Function for displaying step 4.
     def step4_screen(self):
         """Displays information for step 4. Called from step 3 & 5 screens"""
 
@@ -549,7 +562,7 @@ class windowHandler():
         self.step3_pictureA_canvas.place_forget()
 
         # Hide step 5 objects.
-        # TODO
+        self.step5_pictureA_canvas.place_forget()
 
         # Modify/add objects for step 4.
         self.step_title.config(text = "Step 4 of 7\n\nDistance to tray edge",
@@ -568,3 +581,36 @@ class windowHandler():
 
         self.step4_pictureA_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
         self.step4_pictureA_canvas.create_image(252, 189, anchor=CENTER, image=self.step4_pictureA)
+
+    # Function for displaying step 5.
+    def step5_screen(self):
+        """Displays information for step 5. Called from step 4 & 6 screens"""
+
+        self.tray_measurements.hide_label()
+        self.tray_measurements.update_info()
+
+        self.current_step = 5
+
+        # Hide/modify step 4 and 6 objects.
+        self.step4_pictureA_canvas.place_forget()
+
+        # Hide step 6 objects.
+        # TODO
+
+        # Modify/add objects for step 5.
+        self.step_title.config(text = "Step 5 of 7\n\nTotal rows and columns",
+                            font = ("Arial", 15),
+                            bg = 'light green')
+        self.step_instructions.config(text = "Enter the total number of rows and columns of tray holes.\n"
+                                             "Rows are parallel to the long axis while columns are parallel to the short axis.",
+                                      font = ("Arial", 15),
+                                      bg = 'light green')
+        self.text_entryA_label.config(text = "   Rows:")
+        self.text_entryA_label.place_forget()
+        self.text_entryA_label.place(relx = 0.8, rely = 0.6, anchor = CENTER)
+        self.text_entryB_label.config(text = "Columns:")
+        self.text_entryB_label.place_forget()
+        self.text_entryB_label.place(relx = 0.8, rely = 0.65, anchor = CENTER)
+
+        self.step5_pictureA_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
+        self.step5_pictureA_canvas.create_image(275, 178, anchor=CENTER, image=self.step5_pictureA)
