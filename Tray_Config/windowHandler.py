@@ -52,6 +52,8 @@ class windowHandler():
 
     step7_create_file_button = None
 
+    title_button_no_confirmation = None
+
     # The labels.
     main_title = None
     start_measuring_warning = None
@@ -61,6 +63,7 @@ class windowHandler():
     text_entry_warning = None
     text_entryA_label = None
     text_entryB_label = None
+    complete_message = None
 
     # The pictures & canvases.
     step2_pictureA_canvas = None
@@ -108,7 +111,7 @@ class windowHandler():
         
 
         self.skip_measuring_button = Button(self.window,
-                                     text = "Use existing measurements\nto create a JSON config",
+                                     text = "Upload existing JSON measurements\nto create a movement file",
                                      font = ("Arial", 10),
                                      command = self.title_screen, #TODO: Set up skipping steps directly into designating holes in file
                                      state = NORMAL)
@@ -217,8 +220,20 @@ class windowHandler():
         # STEP 7 SCREEN (review information?)
         self.step7_create_file_button = Button(self.window,
                                                text = "Create JSON info file",
-                                               command = self.tray_measurements.create_JSON_info_file,
+                                               command = self.create_info_file,
                                                state = NORMAL)
+
+        # COMPLETE SCREEN
+        self.complete_message = Label(text = "The file has been deposited into the current "
+                                             "directory. Save it somewhere else.\n"
+                                             "If you would like to generate a movement file immediately,\n"
+                                             "return to the main menu and select the upload option.",
+                                        font = ("Arial", 15),
+                                        bg = 'yellow')
+        self.title_button_no_confirmation = Button(self.window,
+                                                   text = "Return to main menu",
+                                                   command = self.title_screen,
+                                                   state = NORMAL)
                                               
         # Initialize to title screen.
         self.title_screen()
@@ -254,7 +269,6 @@ class windowHandler():
         self.tray_measurements.rows = -1
         self.tray_measurements.columns = -1
         self.tray_measurements.rows_between_gap = -1
-        #self.tray_measurements.update_info()
         self.tray_measurements.hide_label()
 
         self.current_step = -1
@@ -293,6 +307,10 @@ class windowHandler():
 
         # Hide step 7 objects.
         self.step7_create_file_button.place_forget()
+
+        # Hide complete step objects.
+        self.complete_message.place_forget()
+        self.title_button_no_confirmation.place_forget()
 
         # Displays the title screen objects.
         self.main_title.place(relx = 0.5, rely = 0.1, anchor = CENTER)
@@ -711,3 +729,32 @@ class windowHandler():
                                       font = ("Arial", 15),
                                       bg = 'light green')
         self.step7_create_file_button.place(relx = .5, rely = .3, anchor = CENTER)
+
+    def create_info_file(self) -> None:
+        """Creates the JSON information file and prints a confirmation to the user."""
+
+        # Hide previous step objects.
+        self.tray_measurements.hide_label()
+        self.continue_button.place_forget()
+        self.back_button.place_forget()
+        self.return_title_button.place_forget()
+        self.step7_create_file_button.place_forget()
+
+        # Send the command to create the file.
+        self.tray_measurements.create_JSON_info_file()
+
+        # Modify/add objects for the completion step.
+        self.step_title.place_forget()
+        if self.tray_measurements.tray_name == "Source":
+            file_name = "custom_dense_tray_measurements.json"
+        elif self.tray_measurements.tray_name == "Destination":
+            file_name = "custom_sparse_tray_measurements.json"
+        else:
+            file_name = "ERROR"
+        self.step_instructions.config(text = "CREATION PROCESS COMPLETE\n"
+                                             "File '" + file_name + "'\n"
+                                             "has been created.",
+                                      font = ("Arial", 15),
+                                      bg = 'green')
+        self.complete_message.place(relx = 0.5, rely = 0.3, anchor = CENTER)
+        self.title_button_no_confirmation.place(relx = 0.5, rely = 0.4, anchor = CENTER)
