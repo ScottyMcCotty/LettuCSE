@@ -128,8 +128,8 @@ class tray_info():
                                + self.long_axis_distance_to_edge_text + "\n"
                                + self.rows_text + "\n"
                                + self.columns_text + "\n"
-                               + self.extra_gap_text + "\n"
-                               + self.rows_between_gap_text,
+                               + self.rows_between_gap_text + "\n"
+                               + self.extra_gap_text + "\n",
                                font = ("Arial", 10),
                                justify = LEFT,
                                bg = 'light green')
