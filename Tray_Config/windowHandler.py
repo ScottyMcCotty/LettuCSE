@@ -63,6 +63,10 @@ class windowHandler():
     # The pictures & canvases.
     step2_pictureA_canvas = None
     step2_pictureA = None
+    step3_pictureA_canvas = None
+    step3_pictureA = None
+    step4_pictureA_canvas = None
+    step4_pictureA = None
 
     # The text input boxes.
     text_entryA = None
@@ -168,8 +172,8 @@ class windowHandler():
                                                state = NORMAL)
 
         # STEP 2 SCREEN (length & width of tray holes?)
-        self.step2_pictureA_canvas = Canvas(master=None,width=542,height=548)
-        self.step2_pictureA = PhotoImage(file="images/step2Image.png")
+        self.step2_pictureA_canvas = Canvas(master = None, width = 542, height = 548)
+        self.step2_pictureA = PhotoImage(file = "images/step2Image.png")
         self.text_entry_warning = Label(text = "NOTE: Any invalid/large\ninput will be discarded.",
                                         font = ("Arial", 12),
                                         bg = 'yellow')
@@ -187,6 +191,14 @@ class windowHandler():
                                           text = "Enter input",
                                           command = self.accept_input,
                                           state = NORMAL)
+
+        # STEP 3 SCREEN (long & short axis distance between holes?)
+        self.step3_pictureA_canvas = Canvas(master = None, width = 504, height = 378)
+        self.step3_pictureA = PhotoImage(file = "images/step3Image.png")
+
+        # STEP 4 SCREEN (long & short axis distance to edge?)
+        self.step4_pictureA_canvas = Canvas(master = None, width = 504, height = 378)
+        self.step4_pictureA = PhotoImage(file = "images/step4Image.png")
                                               
         # Initialize to title screen.
         self.title_screen()
@@ -247,6 +259,12 @@ class windowHandler():
         self.text_entryB_label.place_forget()
         self.text_entryB.place_forget()
 
+        # Hide step 3 objects.
+        self.step3_pictureA_canvas.place_forget()
+
+        # Hide step 4 objects.
+        self.step4_pictureA_canvas.place_forget()
+
         # Displays the title screen objects.
         self.main_title.place(relx = 0.5, rely = 0.1, anchor = CENTER)
         self.start_measuring_button.place(relx = .35, rely = .3, anchor = CENTER)
@@ -293,8 +311,10 @@ class windowHandler():
         if self.current_step == 1:
             self.step2_screen()
             self.back_button.config(state = NORMAL)
-        #elif self.current_step == 2:
-            #self.step3_screen()
+        elif self.current_step == 2:
+            self.step3_screen()
+        elif self.current_step == 3:
+            self.step4_screen()
         # TODO: CONTINUE ADDING ELIFS AS MORE STEPS ARE IMPLEMENTED
 
         # Only allow the next button to be clicked again if input has completed for the current step.
@@ -313,6 +333,9 @@ class windowHandler():
             self.back_button.config(state = DISABLED)
         elif self.current_step == 3:
             self.step2_screen()
+        elif self.current_step == 4:
+            self.step3_screen()
+        # TODO: CONTINUE ADDING ELIFS AS MORE STEPS ARE IMPLEMENTED
 
         # Allow the next button to be clicked again if input has completed for the current step.
         if self.current_progress >= self.current_step:
@@ -384,10 +407,11 @@ class windowHandler():
             self.current_progress = 1
             self.continue_button.config(state = NORMAL)
 
+    # Function for displaying step 2.
     def step2_screen(self) -> None:
-        """Stores answer from step 1 and displays information for step 2. Called from step 1 & 3 screens"""
+        """Displays information for step 2. Called from step 1 & 3 screens"""
 
-        self.tray_measurements.info_label.place_forget()
+        self.tray_measurements.hide_label()
         self.tray_measurements.update_info()
 
         self.current_step = 2
@@ -404,6 +428,7 @@ class windowHandler():
         self.step1_source_button.place_forget()
         self.step1_destination_button.place_forget()
         # TODO: Step 3 objects need to be hidden
+        self.step3_pictureA_canvas.place_forget()
 
         # NOTE TO SELF: (0,0) on the canvas is the upper left corner
         self.step2_pictureA_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
@@ -422,7 +447,7 @@ class windowHandler():
         self.text_entryB_label.place(relx = 0.8, rely = 0.65, anchor = CENTER)
         self.accept_input_button.place(relx = 0.9, rely = 0.7, anchor = CENTER)
 
-    # Function for accepting input from the two text boxes.
+    # Function for accepting input from the two text boxes present in step 2 beyond.
     def accept_input(self) -> None:
         """Confirms the input in each text box is a number before storing it in the tray_info class object based on current step"""
         # TODO potato.replace(".","",1).isdigit()
@@ -477,3 +502,69 @@ class windowHandler():
         if self.current_progress < self.current_step:
             self.current_progress = self.current_step
             self.continue_button.config(state = NORMAL)
+
+    # Function for displaying step 3.
+    def step3_screen(self):
+        """Displays information for step 3. Called from step 2 & 4 screens"""
+
+        self.tray_measurements.hide_label()
+        self.tray_measurements.update_info()
+
+        self.current_step = 3
+
+        # Hide/modify step 2 and 4 objects.
+        self.step2_pictureA_canvas.place_forget()
+
+        # Hide step 4 objects.
+        self.step4_pictureA_canvas.place_forget()
+
+        # Modify/add objects for step 3.
+        self.step_title.config(text = "Step 3 of 7\n\nTray hole spaces",
+                            font = ("Arial", 15),
+                            bg = 'light green')
+        self.step_instructions.config(text = "Enter (in mm) the distance between each of the tray holes.\n"
+                                             "Identify each axis based on which side of the tray it is parallel to.",
+                                      font = ("Arial", 15),
+                                      bg = 'light green')
+        self.text_entryA_label.config(text = "Short axis distance:")
+        self.text_entryA_label.place_forget()
+        self.text_entryA_label.place(relx = 0.75, rely = 0.6, anchor = CENTER)
+        self.text_entryB_label.config(text = " Long axis distance:")
+        self.text_entryB_label.place_forget()
+        self.text_entryB_label.place(relx = 0.75, rely = 0.65, anchor = CENTER)
+
+        self.step3_pictureA_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
+        self.step3_pictureA_canvas.create_image(252, 189, anchor=CENTER, image=self.step3_pictureA)
+
+    # Function for display step 4.
+    def step4_screen(self):
+        """Displays information for step 4. Called from step 3 & 5 screens"""
+
+        self.tray_measurements.hide_label()
+        self.tray_measurements.update_info()
+
+        self.current_step = 4
+
+        # Hide/modify step 3 and 5 objects.
+        self.step3_pictureA_canvas.place_forget()
+
+        # Hide step 5 objects.
+        # TODO
+
+        # Modify/add objects for step 4.
+        self.step_title.config(text = "Step 4 of 7\n\nDistance to tray edge",
+                            font = ("Arial", 15),
+                            bg = 'light green')
+        self.step_instructions.config(text = "Enter (in mm) the distance from the outer tray holes to the tray edges.\n"
+                                             "Identify each axis based on which side of the tray it is parallel to.",
+                                      font = ("Arial", 15),
+                                      bg = 'light green')
+        self.text_entryA_label.config(text = "Short axis distance to edge:")
+        self.text_entryA_label.place_forget()
+        self.text_entryA_label.place(relx = 0.73, rely = 0.6, anchor = CENTER)
+        self.text_entryB_label.config(text = " Long axis distance to edge:")
+        self.text_entryB_label.place_forget()
+        self.text_entryB_label.place(relx = 0.73, rely = 0.65, anchor = CENTER)
+
+        self.step4_pictureA_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
+        self.step4_pictureA_canvas.create_image(252, 189, anchor=CENTER, image=self.step4_pictureA)
