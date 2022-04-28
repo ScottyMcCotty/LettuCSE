@@ -34,11 +34,11 @@ def get_width() -> float:
     distances = short_axis_distance*(columns-1)
     return edges + holes + distances + 6
 
-def get_number_of_holes(self) -> int:
+def get_number_of_holes() -> int:
     """Returns total number of holes in tray"""
-    return self.columns*self.rows
+    return columns*rows
 
 for m in range (0,columns*rows):
     print('"' + str(m) + '":' + str(ith_hole_location(m)) + ',')
-print('holes:' + '"' + str(get_number_of_holes) + '",')
+print('holes:' + '"' + str(get_number_of_holes()) + '",')
 print('distance_from_bottom:' + str(get_width()))

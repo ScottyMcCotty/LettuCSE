@@ -1,4 +1,5 @@
 from tkinter import Tk, Label, CENTER, LEFT
+import json
 
 class tray_info():
     tray_name = None
@@ -139,6 +140,25 @@ class tray_info():
     def hide_label(self) -> None:
         self.info_label.place_forget()
 
+    # Function that takes info from the class and stores it in a JSON file.
     def create_JSON_info_file(self) -> None:
-        # TODO
-        print("POTATO!")
+        if self.tray_name == "Source":
+            file_name = "custom_dense_tray_measurements.json"
+        elif self.tray_name == "Destination":
+            file_name = "custom_sparse_tray_measurements.json"
+
+        file_info = {
+            "hole_length" : self.hole_length,
+            "hole_width" : self.hole_width,
+            "short_axis_distance" : self.short_axis_distance,
+            "long_axis_distance" : self.long_axis_distance,
+            "short_axis_distance_to_edge" : self.short_axis_distance_to_edge,
+            "long_axis_distance_to_edge" : self.long_axis_distance_to_edge,
+            "rows" : self.rows,
+            "columns" : self.columns,
+            "rows_between_gap" : self.rows_between_gap,
+            "extra_gap" : self.extra_gap
+        }
+        
+        with open(file_name, 'w') as output:
+            json.dump(file_info, output)
