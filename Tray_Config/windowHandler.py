@@ -50,6 +50,8 @@ class windowHandler():
 
     accept_input_button = None
 
+    step7_create_file_button = None
+
     # The labels.
     main_title = None
     start_measuring_warning = None
@@ -211,6 +213,12 @@ class windowHandler():
         # STEP 6 SCREEN (special gaps between rows?)
         self.step6_pictureA_canvas = Canvas(master = None, width = 357, height = 550)
         self.step6_pictureA = PhotoImage(file = "images/step6Image.png")
+
+        # STEP 7 SCREEN (review information?)
+        self.step7_create_file_button = Button(self.window,
+                                               text = "Create JSON info file",
+                                               command = self.tray_measurements.create_JSON_info_file,
+                                               state = NORMAL)
                                               
         # Initialize to title screen.
         self.title_screen()
@@ -283,6 +291,9 @@ class windowHandler():
         # Hide step 6 objects.
         self.step6_pictureA_canvas.place_forget()
 
+        # Hide step 7 objects.
+        self.step7_create_file_button.place_forget()
+
         # Displays the title screen objects.
         self.main_title.place(relx = 0.5, rely = 0.1, anchor = CENTER)
         self.start_measuring_button.place(relx = .35, rely = .3, anchor = CENTER)
@@ -337,12 +348,18 @@ class windowHandler():
             self.step5_screen()
         elif self.current_step == 5:
             self.step6_screen()
+        elif self.current_step == 6:
+            self.step7_screen()
         # TODO: CONTINUE ADDING ELIFS AS MORE STEPS ARE IMPLEMENTED
 
         # Only allow the next button to be clicked again if input has completed for the current step.
         if self.current_progress >= self.current_step:
             self.continue_button.config(state = NORMAL)
         else:
+            self.continue_button.config(state = DISABLED)
+
+        # If the current step is 7, disable the next step button.
+        if self.current_step == 7:
             self.continue_button.config(state = DISABLED)
 
 
@@ -361,6 +378,8 @@ class windowHandler():
             self.step4_screen()
         elif self.current_step == 6:
             self.step5_screen()
+        elif self.current_step == 7:
+            self.step6_screen()
         # TODO: CONTINUE ADDING ELIFS AS MORE STEPS ARE IMPLEMENTED
 
         # Allow the next button to be clicked again if input has completed for the current step.
@@ -554,10 +573,10 @@ class windowHandler():
                                       bg = 'light green')
         self.text_entryA_label.config(text = "Short axis distance:")
         self.text_entryA_label.place_forget()
-        self.text_entryA_label.place(relx = 0.75, rely = 0.6, anchor = CENTER)
+        self.text_entryA_label.place(relx = 0.76, rely = 0.6, anchor = CENTER)
         self.text_entryB_label.config(text = " Long axis distance:")
         self.text_entryB_label.place_forget()
-        self.text_entryB_label.place(relx = 0.75, rely = 0.65, anchor = CENTER)
+        self.text_entryB_label.place(relx = 0.76, rely = 0.65, anchor = CENTER)
 
         self.step3_pictureA_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
         self.step3_pictureA_canvas.create_image(252, 189, anchor=CENTER, image=self.step3_pictureA)
@@ -621,9 +640,9 @@ class windowHandler():
         self.text_entryA_label.config(text = "   Rows:")
         self.text_entryA_label.place_forget()
         self.text_entryA_label.place(relx = 0.8, rely = 0.6, anchor = CENTER)
-        self.text_entryB_label.config(text = "Columns:")
+        self.text_entryB_label.config(text = "  Columns:")
         self.text_entryB_label.place_forget()
-        self.text_entryB_label.place(relx = 0.8, rely = 0.65, anchor = CENTER)
+        self.text_entryB_label.place(relx = 0.79, rely = 0.65, anchor = CENTER)
 
         self.step5_pictureA_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
         self.step5_pictureA_canvas.create_image(178, 275, anchor=CENTER, image=self.step5_pictureA)
@@ -641,7 +660,7 @@ class windowHandler():
         self.step5_pictureA_canvas.place_forget()
 
         # Hide step 7 objects.
-        # TODO
+        self.step7_create_file_button.place_forget()
 
         # Modify/add objects for step 6.
         self.step_title.config(text = "Step 6 of 7\n\nExtra gap space?",
@@ -651,12 +670,44 @@ class windowHandler():
                                              "See the image for an example. If no special gaps, input 0 for both fields.",
                                       font = ("Arial", 15),
                                       bg = 'light green')
+        self.text_entry_warning.place(relx = 0.9, rely = 0.55, anchor = CENTER)
+        self.text_entryA.place(relx = 0.9, rely = 0.6, anchor = CENTER)
+        self.text_entryB.place(relx = 0.9, rely = 0.65, anchor = CENTER)
         self.text_entryA_label.config(text = "Number of rows between special gaps:")
         self.text_entryA_label.place_forget()
-        self.text_entryA_label.place(relx = 0.7, rely = 0.6, anchor = CENTER)
-        self.text_entryB_label.config(text = "               Special gap distance:")
+        self.text_entryA_label.place(relx = 0.69, rely = 0.6, anchor = CENTER)
+        self.text_entryB_label.config(text = "                            Special gap distance:")
         self.text_entryB_label.place_forget()
-        self.text_entryB_label.place(relx = 0.7, rely = 0.65, anchor = CENTER)
+        self.text_entryB_label.place(relx = 0.69, rely = 0.65, anchor = CENTER)
+        self.accept_input_button.place(relx = 0.9, rely = 0.7, anchor = CENTER)
 
         self.step6_pictureA_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
         self.step6_pictureA_canvas.create_image(178, 275, anchor=CENTER, image=self.step6_pictureA)
+
+    # Function for displaying step 7.
+    def step7_screen(self):
+        """Displays information for step 7. Called from step 6 screen"""
+
+        self.tray_measurements.hide_label()
+        self.tray_measurements.update_info()
+
+        self.current_step = 7
+
+        # Hide/modify step 6 objects.
+        self.step6_pictureA_canvas.place_forget()
+        self.text_entryA.place_forget()
+        self.text_entryA_label.place_forget()
+        self.text_entryB.place_forget()
+        self.text_entryB_label.place_forget()
+        self.text_entry_warning.place_forget()
+        self.accept_input_button.place_forget()
+
+        # Modify/add objects for step 7.
+        self.step_title.config(text = "Step 7 of 7\n\nReview",
+                            font = ("Arial", 15),
+                            bg = 'light green')
+        self.step_instructions.config(text = "Double check all entered information is as accurate as possible.\n"
+                                             "When ready, press the button to generate a JSON info file.",
+                                      font = ("Arial", 15),
+                                      bg = 'light green')
+        self.step7_create_file_button.place(relx = .5, rely = .3, anchor = CENTER)

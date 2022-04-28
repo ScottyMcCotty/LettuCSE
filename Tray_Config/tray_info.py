@@ -138,3 +138,7 @@ class tray_info():
 
     def hide_label(self) -> None:
         self.info_label.place_forget()
+
+    def create_JSON_info_file(self) -> None:
+        # TODO
+        print("POTATO!")
