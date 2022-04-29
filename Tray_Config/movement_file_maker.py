@@ -1,5 +1,8 @@
+import json
+
 class movement_file_maker():
 
+    output_file_name = None
     hole_length = None
     hole_width = None
     short_axis_distance = None
@@ -11,7 +14,13 @@ class movement_file_maker():
     rows_between_gap = None
     extra_gap = None
 
-    def __init__(self, hL, hW, sAD, lAD, sADtE, lADtE, row, col, rBG, eG):
+    def __init__(self, fN, hL, hW, sAD, lAD, sADtE, lADtE, row, col, rBG, eG):
+        if fN == "Source":
+            self.output_file_name = "source_tray.json"
+        elif fN == "Destination":
+            self.output_file_name = "destination_tray.json"
+        else:
+            return
         self.hole_length = hL
         self.hole_width = hW
         self.short_axis_distance = sAD

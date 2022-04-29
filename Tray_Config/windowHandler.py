@@ -4,6 +4,7 @@ from tkinter import N, Tk, Label, PhotoImage, CENTER, NORMAL, Button, DISABLED, 
 from tokenize import String
 from tray_info import tray_info
 from movement_file_maker import movement_file_maker
+import json
 
 class windowHandler():
     """
@@ -26,6 +27,7 @@ class windowHandler():
     """
     tray_measurements = None
     uploaded_measurements = None
+    is_dense = None
 
     window = None
 
@@ -74,6 +76,7 @@ class windowHandler():
     text_entryA_label = None
     text_entryB_label = None
     complete_message = None
+    complete_movement_message = None
 
     # The pictures & canvases.
     step2_pictureA_canvas = None
@@ -99,6 +102,7 @@ class windowHandler():
         self.window.configure(bg = 'light green')
 
         self.tray_measurements = tray_info(self.window)
+        self.uploaded_measurements = tray_info(self.window)
 
         # Instantiate all buttons and images.
         # TITLE SCREEN
@@ -270,6 +274,14 @@ class windowHandler():
                                                   text = "Create JSON movement file",
                                                   command = self.create_movement_file,
                                                   state = NORMAL)
+
+        # COMPLETED MOVEMENT SCREEN
+        self.complete_movement_message = Label(text = "The file has been deposited into the current "
+                                             "directory. Save it somewhere else.\n"
+                                             "If you would like to generate another movement file immediately,\n"
+                                             "return to the main menu and select the upload option again.",
+                                             font = ("Arial", 15),
+                                             bg = 'yellow')
                                               
         # Initialize to title screen.
         self.title_screen()
@@ -306,6 +318,8 @@ class windowHandler():
         self.tray_measurements.columns = -1
         self.tray_measurements.rows_between_gap = -1
         self.tray_measurements.hide_label()
+
+        self.uploaded_measurements.hide_label()
 
         self.current_step = -1
         self.current_progress = -2
@@ -357,6 +371,9 @@ class windowHandler():
 
         # Hide confirm upload screen objects.
         self.create_movement_file_button.place_forget()
+
+        # Hide completed generation objects.
+        self.complete_movement_message.place_forget()
 
         # Displays the title screen objects.
         self.main_title.place(relx = 0.5, rely = 0.1, anchor = CENTER)
@@ -784,6 +801,9 @@ class windowHandler():
         self.continue_button.place_forget()
         self.back_button.place_forget()
         self.return_title_button.place_forget()
+        self.confirm_return_warning.place_forget()
+        self.confirm_return_yes.place_forget()
+        self.confirm_return_no.place_forget()
         self.step7_create_file_button.place_forget()
 
         # Send the command to create the file.
@@ -867,6 +887,7 @@ class windowHandler():
             file_name_trunc = file_name_rev[0:35]
             file_name_trunc = file_name_trunc[::-1]
             if file_name_trunc == "custom_dense_tray_measurements.json":
+                self.is_dense = True
                 self.generate_movement_file_screen()
                 return
             else:
@@ -877,12 +898,14 @@ class windowHandler():
             file_name_trunc = file_name_rev[0:35]
             file_name_trunc = file_name_trunc[::-1]
             if file_name_trunc == "custom_dense_tray_measurements.json":
+                self.is_dense = True
                 self.generate_movement_file_screen()
                 return                
             
             file_name_trunc = file_name_rev[0:36]
             file_name_trunc = file_name_trunc[::-1]
             if file_name_trunc == "custom_sparse_tray_measurements.json":
+                self.is_dense = False
                 self.generate_movement_file_screen()
                 return
             else:
@@ -904,8 +927,55 @@ class windowHandler():
                                       font = ("Arial", 15),
                                       bg = 'light green')
         self.create_movement_file_button.place(relx = .5, rely = .3, anchor = CENTER)
+
+        with open(self.selected_file) as opened_file:
+            data = json.load(opened_file)
+
+        # Initialize the uploaded file info
+        if self.is_dense:
+            self.uploaded_measurements.tray_name = "Source"
+        else:
+            self.uploaded_measurements.tray_name = "Destination"
+
+        self.uploaded_measurements.hole_length = data['hole_length']
+        self.uploaded_measurements.hole_width = data['hole_width']
+        self.uploaded_measurements.short_axis_distance = data['short_axis_distance']
+        self.uploaded_measurements.long_axis_distance = data['long_axis_distance']
+        self.uploaded_measurements.short_axis_distance_to_edge = data['short_axis_distance_to_edge']
+        self.uploaded_measurements.long_axis_distance_to_edge = data['long_axis_distance_to_edge']
+        self.uploaded_measurements.rows = data['rows']
+        self.uploaded_measurements.columns = data['columns']
+        self.uploaded_measurements.rows_between_gap = data['rows_between_gap']
+        self.uploaded_measurements.extra_gap = data['extra_gap']
+        self.uploaded_measurements.update_info()
         
     # Function that calls functions in movement_file_maker to create a movement JSON file.
     # It also displays the confirmation screen.
     def create_movement_file(self):
-        print("POTATO!")
+        file_maker = movement_file_maker(self.uploaded_measurements.tray_name,
+                                         self.uploaded_measurements.hole_length,
+                                         self.uploaded_measurements.hole_width,
+                                         self.uploaded_measurements.short_axis_distance,
+                                         self.uploaded_measurements.long_axis_distance,
+                                         self.uploaded_measurements.short_axis_distance_to_edge,
+                                         self.uploaded_measurements.long_axis_distance_to_edge,
+                                         self.uploaded_measurements.rows,
+                                         self.uploaded_measurements.columns,
+                                         self.uploaded_measurements.rows_between_gap,
+                                         self.uploaded_measurements.extra_gap)
+        file_maker.create_movement_file()
+
+        # Hide/modify confirm upload file screen objects.
+        self.return_title_button.place_forget()
+        self.confirm_return_warning.place_forget()
+        self.confirm_return_yes.place_forget()
+        self.confirm_return_no.place_forget()
+        self.step_title.place_forget()
+        self.create_movement_file_button.place_forget()
+        self.step_instructions.config(text = "CREATION PROCESS COMPLETE\n"
+                                             "File '" + file_maker.output_file_name + "'\n"
+                                             "has been created.",
+                                      font = ("Arial", 15),
+                                      bg = 'green')
+        self.complete_movement_message.place(relx = 0.5, rely = 0.3, anchor = CENTER)
+        self.title_button_no_confirmation.place(relx = 0.5, rely = 0.4, anchor = CENTER)
