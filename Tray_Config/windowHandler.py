@@ -1,6 +1,7 @@
 """Module contains the GUI class"""
 
-from tkinter import N, Tk, Label, PhotoImage, CENTER, NORMAL, Button, DISABLED, Canvas, Entry, END
+from tkinter import N, Tk, Label, PhotoImage, CENTER, NORMAL, Button, DISABLED, Canvas, Entry, END, filedialog
+from tokenize import String
 from tray_info import tray_info
 
 class windowHandler():
@@ -28,6 +29,7 @@ class windowHandler():
 
     current_step = -1
     current_progress = -2
+    selected_file = None
     
     # The buttons.
     start_measuring_button = None
@@ -53,6 +55,11 @@ class windowHandler():
     step7_create_file_button = None
 
     title_button_no_confirmation = None
+
+    start_uploading_warning = None
+    confirm_upload_continue_button = None
+
+    upload_button = None
 
     # The labels.
     main_title = None
@@ -113,7 +120,7 @@ class windowHandler():
         self.skip_measuring_button = Button(self.window,
                                      text = "Upload existing JSON measurements\nto create a movement file",
                                      font = ("Arial", 10),
-                                     command = self.title_screen, #TODO: Set up skipping steps directly into designating holes in file
+                                     command = self.start_uploading_button_handler,
                                      state = NORMAL)
         
 
@@ -137,7 +144,7 @@ class windowHandler():
 
         # EXIT BUTTON (present on all steps to return to title screen)
         self.return_title_button = Button(self.window,
-                                     text = "Exit config generation",
+                                     text = "Exit to main menu",
                                      command = self.confirm_title_return,
                                      state = NORMAL)
         self.confirm_return_warning = Label(text="NOTE: Exiting now will discard\n"
@@ -234,6 +241,26 @@ class windowHandler():
                                                    text = "Return to main menu",
                                                    command = self.title_screen,
                                                    state = NORMAL)
+
+        # UPLOAD CONFIRMATION WINDOW
+        self.confirm_upload_continue_button = Button(self.window,
+                                                     text = "Proceed",
+                                                     font = ("Arial", 10),
+                                                     command = lambda: self.upload_file_screen(False),
+                                                     state = NORMAL)
+        self.start_uploading_warning = Label(text = "NOTE: Completing this process will create a new file:\n"
+                                                  "destination_tray.json or source_tray.json.\n"
+                                                  "If this file already exists within the directory, it will"
+                                                  " be overwritten.\nProceed?",
+                                             font = ("Arial", 12),
+                                             bg = 'yellow')
+
+        # UPLOAD SCREEN
+        self.upload_button = Button(self.window,
+                                    text = "Select a file",
+                                    font = ("Arial", 10),
+                                    command = self.select_file,
+                                    state = NORMAL)
                                               
         # Initialize to title screen.
         self.title_screen()
@@ -311,6 +338,13 @@ class windowHandler():
         # Hide complete step objects.
         self.complete_message.place_forget()
         self.title_button_no_confirmation.place_forget()
+
+        # Hide upload confirmation warning objects.
+        self.start_uploading_warning.place_forget()
+        self.confirm_upload_continue_button.place_forget()
+
+        # Hide upload screen objects.
+        self.upload_button.place_forget()
 
         # Displays the title screen objects.
         self.main_title.place(relx = 0.5, rely = 0.1, anchor = CENTER)
@@ -758,3 +792,90 @@ class windowHandler():
                                       bg = 'green')
         self.complete_message.place(relx = 0.5, rely = 0.3, anchor = CENTER)
         self.title_button_no_confirmation.place(relx = 0.5, rely = 0.4, anchor = CENTER)
+
+
+    ## COORDINATE FILE CREATION PROCESS
+    # Function for start_measuring_button.
+    def start_uploading_button_handler(self) -> None:
+        """Creates a confirmation & warning message before continuing. Called from title screen only"""
+        # Hide start_measuring & skip_measuring button.
+        self.start_measuring_button.place_forget()
+        self.skip_measuring_button.place_forget()
+
+        # Display message & confirmation buttons.
+        self.start_uploading_warning.place(relx = 0.5, rely = 0.3, anchor = CENTER)
+        self.confirm_upload_continue_button.place(relx = 0.45, rely = 0.38, anchor = CENTER)
+        self.confirm_exit_button.place(relx = 0.55, rely = 0.38, anchor = CENTER)
+
+    def upload_file_screen(self, repeat) -> None:
+        """Displays the screen that prompts the user to upload their measurements file. Called from title screen."""
+        # Hide title screen objects.
+        self.start_uploading_warning.place_forget()
+        self.confirm_upload_continue_button.place_forget()
+        self.confirm_exit_button.place_forget()
+        self.main_title.place_forget()
+
+        # Display upload file button & accompanying objects.
+        self.return_title_button.place(relx = 0.1, rely = 0.04, anchor = CENTER)
+        self.step_title.config(text = "Step 1 of X\n\nUpload measurement file",
+                                 font = ("Arial", 15),
+                                 bg = 'light green')
+        self.step_title.place(relx = 0.5, rely = 0.05, anchor = CENTER)
+        # Display different instructions based on if the user failed an upload attempt already.
+        if repeat:
+            self.step_instructions.config(text = "ERROR: selected file name is not\n"
+                                                "'custom_sparse_tray_measurements.json' or 'custom_dense_tray_measurements.json'.\n"
+                                                "Try again.",
+                                        font = ("Arial", 15),
+                                        bg = 'orange')
+        else:
+            self.step_instructions.config(text = "Click the upload button and select a previously created "
+                                                "measurement file:\n"
+                                                "'custom_sparse_tray_measurements.json' or 'custom_dense_tray_measurements.json'.\n"
+                                                "Any other file name will not be accepted.",
+                                        font = ("Arial", 15),
+                                        bg = 'light green')
+        self.step_instructions.place(relx = 0.5, rely = 0.16, anchor = CENTER)
+        self.upload_button.place(relx = 0.5, rely = 0.3, anchor = CENTER)
+
+    # Function for selecting a file.
+    def select_file(self):
+        self.selected_file = filedialog.askopenfilename()
+
+        # If the selected file does not end with 'custom_dense_tray_measurements.json'
+        # or 'custom_sparse_tray_measurements.json', retry with an error message.
+        file_name_rev = self.selected_file[::-1]
+
+        if len(file_name_rev) < 35:
+            # File name too short to be one of the two accepted options.
+            self.upload_file_screen(True)
+            return
+        elif len(file_name_rev) == 35:
+            # File name could be dense_tray, so check.
+            file_name_trunc = file_name_rev[0:35]
+            file_name_trunc = file_name_trunc[::-1]
+            if file_name_trunc == "custom_dense_tray_measurements.json":
+                self.upload_file_screen(False) # TODO: Replace with next step in the process
+                return
+            else:
+                self.upload_file_screen(True)
+                return
+        else:
+            # File name is longer than 35 chars (should be practically all cases)
+            file_name_trunc = file_name_rev[0:35]
+            file_name_trunc = file_name_trunc[::-1]
+            if file_name_trunc == "custom_dense_tray_measurements.json":
+                self.upload_file_screen(False) # TODO: Replace with next step in the process
+                return                
+            
+            file_name_trunc = file_name_rev[0:36]
+            file_name_trunc = file_name_trunc[::-1]
+            if file_name_trunc == "custom_sparse_tray_measurements.json":
+                self.upload_file_screen(False) # TODO: Replace with next step in the process
+                return
+            else:
+                self.upload_file_screen(True)
+                return
+
+    # Function that displays the selected file's information before generating a movement JSON file.
+    #def 
