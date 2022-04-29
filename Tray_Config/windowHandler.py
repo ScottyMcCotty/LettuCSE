@@ -3,6 +3,7 @@
 from tkinter import N, Tk, Label, PhotoImage, CENTER, NORMAL, Button, DISABLED, Canvas, Entry, END, filedialog
 from tokenize import String
 from tray_info import tray_info
+from movement_file_maker import movement_file_maker
 
 class windowHandler():
     """
@@ -24,6 +25,7 @@ class windowHandler():
         change the window color to green
     """
     tray_measurements = None
+    uploaded_measurements = None
 
     window = None
 
@@ -60,6 +62,7 @@ class windowHandler():
     confirm_upload_continue_button = None
 
     upload_button = None
+    create_movement_file_button = None
 
     # The labels.
     main_title = None
@@ -261,6 +264,12 @@ class windowHandler():
                                     font = ("Arial", 10),
                                     command = self.select_file,
                                     state = NORMAL)
+
+        # CONFIRM UPLOAD SCREEN
+        self.create_movement_file_button = Button(self.window,
+                                                  text = "Create JSON movement file",
+                                                  command = self.create_movement_file,
+                                                  state = NORMAL)
                                               
         # Initialize to title screen.
         self.title_screen()
@@ -345,6 +354,9 @@ class windowHandler():
 
         # Hide upload screen objects.
         self.upload_button.place_forget()
+
+        # Hide confirm upload screen objects.
+        self.create_movement_file_button.place_forget()
 
         # Displays the title screen objects.
         self.main_title.place(relx = 0.5, rely = 0.1, anchor = CENTER)
@@ -826,15 +838,15 @@ class windowHandler():
             self.step_instructions.config(text = "ERROR: selected file name is not\n"
                                                 "'custom_sparse_tray_measurements.json' or 'custom_dense_tray_measurements.json'.\n"
                                                 "Try again.",
-                                        font = ("Arial", 15),
-                                        bg = 'orange')
+                                          font = ("Arial", 15),
+                                          bg = 'orange')
         else:
             self.step_instructions.config(text = "Click the upload button and select a previously created "
                                                 "measurement file:\n"
                                                 "'custom_sparse_tray_measurements.json' or 'custom_dense_tray_measurements.json'.\n"
                                                 "Any other file name will not be accepted.",
-                                        font = ("Arial", 15),
-                                        bg = 'light green')
+                                          font = ("Arial", 15),
+                                          bg = 'light green')
         self.step_instructions.place(relx = 0.5, rely = 0.16, anchor = CENTER)
         self.upload_button.place(relx = 0.5, rely = 0.3, anchor = CENTER)
 
@@ -855,7 +867,7 @@ class windowHandler():
             file_name_trunc = file_name_rev[0:35]
             file_name_trunc = file_name_trunc[::-1]
             if file_name_trunc == "custom_dense_tray_measurements.json":
-                self.upload_file_screen(False) # TODO: Replace with next step in the process
+                self.generate_movement_file_screen()
                 return
             else:
                 self.upload_file_screen(True)
@@ -865,17 +877,35 @@ class windowHandler():
             file_name_trunc = file_name_rev[0:35]
             file_name_trunc = file_name_trunc[::-1]
             if file_name_trunc == "custom_dense_tray_measurements.json":
-                self.upload_file_screen(False) # TODO: Replace with next step in the process
+                self.generate_movement_file_screen()
                 return                
             
             file_name_trunc = file_name_rev[0:36]
             file_name_trunc = file_name_trunc[::-1]
             if file_name_trunc == "custom_sparse_tray_measurements.json":
-                self.upload_file_screen(False) # TODO: Replace with next step in the process
+                self.generate_movement_file_screen()
                 return
             else:
                 self.upload_file_screen(True)
                 return
 
     # Function that displays the selected file's information before generating a movement JSON file.
-    #def 
+    # TODO: Add functionality to allow user to select everything past a certain row/column to be ignored,
+    #       either in this screen or a following one.
+    def generate_movement_file_screen(self):
+        """Displays information from measurement file and confirms before generating movement file"""
+        # Hide/modify upload file screen objects.
+        self.upload_button.place_forget()
+        self.step_title.config(text = "Step 2 of X\n\nReview measurement file",
+                                 font = ("Arial", 15),
+                                 bg = 'light green')
+        self.step_instructions.config(text = "Double check the uploaded file measurements are accurate.\n"
+                                             "When ready, press the button to generate a JSON movement file.",
+                                      font = ("Arial", 15),
+                                      bg = 'light green')
+        self.create_movement_file_button.place(relx = .5, rely = .3, anchor = CENTER)
+        
+    # Function that calls functions in movement_file_maker to create a movement JSON file.
+    # It also displays the confirmation screen.
+    def create_movement_file(self):
+        print("POTATO!")
