@@ -161,4 +161,4 @@ class tray_info():
         }
         
         with open(file_name, 'w') as output:
-            json.dump(file_info, output)
+            json.dump(file_info, output, indent = 4)

@@ -1,6 +1,3 @@
-from curses import beep
-
-
 class movement_file_maker():
 
     hole_length = None
@@ -31,7 +28,7 @@ class movement_file_maker():
         column_number = i% self.columns
         total_gap = self.short_axis_distance*column_number
         # use hole_length or hole_width?
-        total_hole_width = self.hole_side_length*column_number + column_number/2
+        total_hole_width = self.hole_width*column_number + column_number/2
         return total_gap + total_hole_width + self.short_axis_distance_to_edge*2
 
     def ith_hole_y(self, i:int) -> float:
@@ -40,7 +37,7 @@ class movement_file_maker():
 
         total_gap = self.long_axis_distance*(row_number-thicker_rows)+self.extra_gap*(thicker_rows)
         # use hole_length or hole_width?
-        total_hole_distance = self.hole_side_length*row_number + row_number/2
+        total_hole_distance = self.hole_length*row_number + row_number/2
         return total_gap + total_hole_distance + self.long_axis_distance_to_edge*2
 
     def ith_hole_location(self, i) -> tuple:
@@ -50,7 +47,7 @@ class movement_file_maker():
         
         #TODO the +6 is atrocious, put it in a config file or something dear lord
         edges = self.short_axis_distance_to_edge*2
-        holes = self.hole_side_length*self.columns
+        holes = self.hole_width*self.columns
         distances = self.short_axis_distance*(self.columns-1)
         return edges + holes + distances + 6
 
@@ -59,7 +56,7 @@ class movement_file_maker():
         return self.columns*self.rows
 
     def create_movement_file(self) -> None:
-        for m in range (0,columns*rows):
-            print('"' + str(m) + '":' + str(ith_hole_location(m)) + ',')
-        print('holes:' + '"' + str(get_number_of_holes()) + '",')
-        print('distance_from_bottom:' + str(get_width()))
+        for m in range (0,self.columns*self.rows):
+            print('"' + str(m) + '":' + str(self.ith_hole_location(m)) + ',')
+        print('holes:' + '"' + str(self.get_number_of_holes()) + '",')
+        print('distance_from_bottom:' + str(self.get_width()))
