@@ -849,7 +849,7 @@ class windowHandler():
 
         # Display upload file button & accompanying objects.
         self.return_title_button.place(relx = 0.1, rely = 0.04, anchor = CENTER)
-        self.step_title.config(text = "Step 1 of X\n\nUpload measurement file",
+        self.step_title.config(text = "Step 1 of 2\n\nUpload measurement file",
                                  font = ("Arial", 15),
                                  bg = 'light green')
         self.step_title.place(relx = 0.5, rely = 0.05, anchor = CENTER)
@@ -919,7 +919,7 @@ class windowHandler():
         """Displays information from measurement file and confirms before generating movement file"""
         # Hide/modify upload file screen objects.
         self.upload_button.place_forget()
-        self.step_title.config(text = "Step 2 of X\n\nReview measurement file",
+        self.step_title.config(text = "Step 2 of 2\n\nReview measurement file",
                                  font = ("Arial", 15),
                                  bg = 'light green')
         self.step_instructions.config(text = "Double check the uploaded file measurements are accurate.\n"
@@ -972,6 +972,7 @@ class windowHandler():
         self.confirm_return_no.place_forget()
         self.step_title.place_forget()
         self.create_movement_file_button.place_forget()
+        self.uploaded_measurements.hide_label()
         self.step_instructions.config(text = "CREATION PROCESS COMPLETE\n"
                                              "File '" + file_maker.output_file_name + "'\n"
                                              "has been created.",

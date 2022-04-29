@@ -42,7 +42,10 @@ class movement_file_maker():
 
     def ith_hole_y(self, i:int) -> float:
         row_number = i//self.columns
-        thicker_rows = row_number%self.rows_between_gap
+        if self.rows_between_gap > 0:
+            thicker_rows = row_number%self.rows_between_gap
+        else:
+            thicker_rows = 0
 
         total_gap = self.long_axis_distance*(row_number-thicker_rows)+self.extra_gap*(thicker_rows)
         # use hole_length or hole_width?
@@ -65,7 +68,16 @@ class movement_file_maker():
         return self.columns*self.rows
 
     def create_movement_file(self) -> None:
+        file_info = {}
+        coord = []
         for m in range (0,self.columns*self.rows):
-            print('"' + str(m) + '":' + str(self.ith_hole_location(m)) + ',')
-        print('holes:' + '"' + str(self.get_number_of_holes()) + '",')
-        print('distance_from_bottom:' + str(self.get_width()))
+            coord = [str(round(self.ith_hole_x(m), 3)), str(round(self.ith_hole_y(m), 3))]
+            file_info[str(m)] = coord
+
+        holes = str(self.get_number_of_holes())
+        file_info["holes"] = holes
+        distance = str(self.get_width())
+        file_info["distance_from_bottom"] = distance
+        
+        with open(self.output_file_name, 'w') as output:
+            json.dump(file_info, output, indent = 4)
