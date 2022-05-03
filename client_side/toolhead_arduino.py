@@ -1,4 +1,4 @@
-"""Module contains vertical arduino class"""
+"""Module contains toolhead arduino class"""
 from arduino import Arduino
 
 

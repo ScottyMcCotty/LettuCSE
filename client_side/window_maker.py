@@ -1,4 +1,4 @@
-"""Module contains the GUI class"""
+"""Module contains the WindowMaker class"""
 
 from tkinter import N, Tk, Label, PhotoImage
 
@@ -10,7 +10,7 @@ class WindowMaker():
 
     Attributes
     ----------
-    window : Tkinter Object
+    window : Tkinter Instance
         tkinter has an object instance that stores everything involving
         the GUI
 
@@ -24,8 +24,8 @@ class WindowMaker():
     window = None
 
 
-    def __init__(self, tkinter_object:Tk) -> None:
-        self.window = tkinter_object
+    def __init__(self, tkinter_instance:Tk) -> None:
+        self.window = tkinter_instance
         self.window.title("LettuCSE Transplanter")
         self.window.geometry("1000x800")
         self.window.configure(bg='green')

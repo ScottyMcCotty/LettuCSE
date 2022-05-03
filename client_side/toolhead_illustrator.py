@@ -1,4 +1,4 @@
-"""Module contains the Transplanter class"""
+"""Module contains the Toolhead Illustrator class"""
 
 import tkinter as tk
 import turtle as t
@@ -11,18 +11,29 @@ class ToolheadIllustrator():
 
     Attributes
     ----------
-    tkinter_object : Tkinter.Tk()
+    tkinter_instance : Tkinter.Tk()
         The tkinter object that is being fed into all objects on the window
-    toolhead_image
-    canvas
-    source_tray_rectangle_image
-    destination_tray_rectangle_image
+    toolhead_image : turtle
+        A python 'turtle', which is configured so that it appears as a circle.
+        It will move in accordance with how the toolhead moves
+        https://docs.python.org/3/library/turtle.html
+    canvas : turtle canvas
+        A 'canvas' object which comes with the turtle package. It provides a white
+        rectangle on which the turtle object is allowed to move
+    source_tray_box: turtle rectangle
+        A rectangle image drawn by the 'turtle' during initialization (although it's
+        too fast to see it be drawn so just think of it as a black rectangle on the canvas).
+        It shows roughly where the toolhead is in relation to the source tray
+    destination_tray_box: turtle rectangle
+        A rectangle image drawn by the 'turtle' during initialization (although
+        it's too fast to see it be drawn so just think of it as a black rectangle on the canvas).
+        It shows roughly where the toolhead is in relation to the destination tray
  
     Methods
     ----------
 
     update_location()
-        when the toolhead is somewhere else, change the label
+        when the toolhead is somewhere else, move the turtle object to that location on the canvas
     """
     tkinter_instance = None
     label_instance = None
@@ -44,5 +55,8 @@ class ToolheadIllustrator():
 
 
     def update_location(self, coords:tuple):
-        """change the text on the label to reflect new location"""
+        """
+        When the toolhead is somewhere else, move the turtle object to that location on the canvas
+        The coordinates are modified to fit on the canvas
+        """
         self.turtle.goto(coords[0]/100-140, coords[1]/100-90)

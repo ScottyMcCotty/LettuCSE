@@ -1,4 +1,4 @@
-"""Module contains the Transplanter class"""
+"""Module contains the toolhead location label class"""
 
 from tkinter import N, Label
 
@@ -10,7 +10,7 @@ class ToolheadLocationLabel():
 
     Attributes
     ----------
-    tkinter_object : Tkinter.Tk()
+    tkinter_instance : Tkinter.Tk()
         The tkinter object that is being fed into all objects on the window
     label_instance : Tkinter.Label
         The button object that is placed in a location on the window and changed

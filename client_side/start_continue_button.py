@@ -11,7 +11,7 @@ class StartContinueButton():
 
     Attributes
     ----------
-    tkinter_object : Tkinter.Tk()
+    tkinter_instance : Tkinter.Tk()
         The tkinter object that is being fed into all objects on the window
     tkinter_button : Tkinter.Button
         The button object that is placed in a location on the window and changed
