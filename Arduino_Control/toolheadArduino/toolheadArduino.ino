@@ -1,141 +1,81 @@
+//
+// Transplanting Toolhead Arduino Firmware
+// 2022-04-22
+//
+// Pin setup:
+// - Digital pins 2, 5 (X-motor connections): Step and direction pins
+// - Digital pin  9 (X-axis limit switch): lead screw bottom limit switch
+// - Digital pin 10 (Y-axis limit switch): fork limit switch
+// - Digital pin 11 (Z-axis limit switch): lead screw top limit switch
+//
+// Limit switch pins are configured with pull up resistors and are normally open,
+// so LOW means the switch is not pressed and HIGH means the switch is pressed
+//
 
-const int FORKLIFT_ARM_LIMIT = 10;
-const int FORKLIFT_TOP_LIMIT = 11;
 
-// these are the pins when the driver is plugged into X
 const int STEP_PIN = 2;
 const int DIR_PIN = 5;
 
-const int half_period = 600;
-const int NUM_EXTRA_STEPS = 50;
+const int SCREW_BOT_LIMIT = 9;
+const int FORK_LIMIT = 10;
+const int SCREW_TOP_LIMIT = 11;
 
-const String UP = "0";
-const String DOWN = "1";
-const String CALIBRATION_STRING = "calibrate";
+const int HALF_PERIOD = 600; // microseconds
 
-const int TOOLHEAD_TRAVEL = 1000; // 2000 motor steps ~ 80 mm
+const int UP = 0;
+const int DOWN = 1;
+const String UP_STRING = "0";
+const String DOWN_STRING = "1";
+
+
+//
+// Main procedures
+//
 
 void setup() {
-  // pinMode setup
-  pinMode(STEP_PIN, OUTPUT);
-  pinMode(DIR_PIN, OUTPUT);
-
-  pinMode(FORKLIFT_ARM_LIMIT, INPUT_PULLUP);
-  pinMode(FORKLIFT_TOP_LIMIT, INPUT_PULLUP);
-  
-  Serial.begin(9600);
-  delay(500);
-  
-  Serial.println("Hello, world!");
+  set_up_pins();
+  set_up_serial();
 }
 
 void loop() {
-  
   String input = wait_for_input("Toolhead command? ");
 
-  if (input == CALIBRATION_STRING) {
-    auto_calibrate();
-    
-  } else if (input == UP) {
-    toolhead_up();
-    
-  } else if (input == DOWN) {
-    toolhead_down();
-    
+  if (input == UP_STRING) {
+    Serial.println("moving up");
+    move(UP);
+  } else if (input == DOWN_STRING) {
+    Serial.println("moving down");
+    move(DOWN);
   } else {
     Serial.println("Failed! Unknown command");
-    // block forever
-    while(1){}
-    
+    while(1){} // block forever
   }
-  
 }
 
-// move toolhead up towards the top limit switch
-void auto_calibrate() {
 
-  digitalWrite(DIR_PIN, LOW);
-  while (digitalRead(FORKLIFT_TOP_LIMIT) == HIGH) {
-    // motor hasn't been triggered yet, keep rolling in positive direction
-    digitalWrite(STEP_PIN, HIGH);
-    delayMicroseconds(half_period);
-    digitalWrite(STEP_PIN, LOW);
-    delayMicroseconds(half_period);
-  }
-
-  Serial.println("Calibrated");
-  // we can say this is the home position
-  // Barely just in front of triggering the limit switch
-}
-
-/*
- * Scott's function move_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, int dir, int half_step_delay)
- * 
- * This function runs the specified motor the specified number of steps before returning to the caller.
- * It essentially blocks the rest of the program from execution until it has finished, so this function
- * DOES NOT SUPPORT SIMULTANEOUS MOTOR MOVEMENT. This means we'll probably want to not use this when we have limit switches
- * and/or safety checks to stop the movement mid-command.
- * 
- * motor_step_pin: the steps pin which the motor is attached to via CNC shield (should be STEP_PIN)
- * motor_direction_pin: the direction pin which the motor is attached to via CNC shield (should be DIR_PIN)
- * num_steps: the number of pulses to send to the motor. 200 steps per revolution
- * dir: the direction to spin motor. See frame for positive/negative labels
- * half_step_delay: the delay (in microseconds) between each high and low write, equalling half the period of a pulse
- * 
- * Return: None
- */
-//void move_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, int dir, int half_step_delay) {
-//  // set direction
-//  digitalWrite(motor_direction_pin, dir);
 //
-//  // apply movement
-//  for(int ii = 0; ii < num_steps; ii++) {
-//    digitalWrite(motor_step_pin, HIGH);
-//    delayMicroseconds(half_step_delay);
-//    digitalWrite(motor_step_pin, LOW);
-//    delayMicroseconds(half_step_delay);
-//  }
-//}
+// Helper functions
+//
 
-
-// Movement function, but this version doesn't block the rest of the program from executing.
-// Allows for mid-movement interruption, for limit switches or safety shutoffs for example
-void move_not_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, int dir, int half_step_delay) {
-
-  // Double the number of steps since we're moving in half-steps
-  num_steps = num_steps * 2;
-
-  // set direction
-  digitalWrite(motor_direction_pin, dir);
-
-  // setup for movement
-  int counter = 0;
-  unsigned long othercounter = 0; // Doesn't seem to be used at all?
-  int pulse = HIGH;
-  unsigned long previous = micros();
-
-  while (counter < num_steps) {
-    unsigned long current = micros();
-
-    // check for naughty things here
-    if (digitalRead(FORKLIFT_TOP_LIMIT) == LOW) {
-      // hit the top, end early
+void move(int dir) {
+  digitalWrite(DIR_PIN, dir);
+  for (;;) {
+    if (dir == UP && !can_move_up()) {
+      Serial.println("hit top");
+      return;
+    }
+    if (dir == DOWN && !can_move_down()) {
+      Serial.println("hit bottom");
       return;
     }
 
-    if (current - previous > half_step_delay) {
-      digitalWrite(motor_step_pin, pulse);
-      pulse = (pulse + 1) % 2;
-      previous = current;
-      counter++;
-    } else {
-      othercounter++;
-    }
+    digitalWrite(STEP_PIN, HIGH);
+    delayMicroseconds(HALF_PERIOD);
+    digitalWrite(STEP_PIN, LOW);
+    delayMicroseconds(HALF_PERIOD);
   }
 }
 
-
-// Pause until input (terminated with \n) is received
 String wait_for_input(String prompt) {
   int state = 0;
   char buf[] = {'\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0',
@@ -148,62 +88,24 @@ String wait_for_input(String prompt) {
   return String(buf);
 }
 
-// TOOLHEAD MOVEMENT FUNCTION: true input means move to low position, false moves to raised
-/*void toolhead_move(bool movePos) {
-
-  // Move the motor based on the input direction
-  if (movePos) { // move to lowered position
-    //TODO: We don't know yet if lowering requires negative or positive movement. Will need to test in lab
-    move_not_blocking(STEP_PIN, DIR_PIN, LOWERED_MOVEMENT, dir(LOWERED_MOVEMENT), half_period);
-    positionDown = true;
-    //Serial.println("Done");
-  } else { // move to raised position
-    move_not_blocking(STEP_PIN, DIR_PIN, RAISED_MOVEMENT, dir(RAISED_MOVEMENT), half_period);
-    positionDown = false;
-    //Serial.println("Done");
-  }
-
-  Serial.println("Done");
-}*/
-
-// Move toolhead up by TOOLHEAD_TRAVEL motor steps.
-void toolhead_up() {
-  move_not_blocking(STEP_PIN, DIR_PIN, TOOLHEAD_TRAVEL, LOW, half_period);
-  Serial.println("Done");
+void set_up_pins() {
+  pinMode(STEP_PIN, OUTPUT);
+  pinMode(DIR_PIN, OUTPUT);
+  pinMode(SCREW_BOT_LIMIT, INPUT_PULLUP);
+  pinMode(FORK_LIMIT, INPUT_PULLUP);
+  pinMode(SCREW_TOP_LIMIT, INPUT_PULLUP);
 }
 
-// Move toolhead down by TOOLHEAD_TRAVEL motor steps.
-//void toolhead_down() {
-//  move_not_blocking(STEP_PIN, DIR_PIN, TOOLHEAD_TRAVEL, dir(-1), half_period);
-//  Serial.println("Done");
-//}
+void set_up_serial() {
+  Serial.begin(9600);
+  delay(500);
+  Serial.println("Hello, world!");
+}
 
-// Move toolhead down until it hits the limit switch.
-void toolhead_down() {
+boolean can_move_up() {
+  return digitalRead(SCREW_TOP_LIMIT) == HIGH;
+}
 
-  bool moved = false;
-  // set direction negative
-  digitalWrite(DIR_PIN, HIGH);
-  while (digitalRead(FORKLIFT_ARM_LIMIT) == HIGH) {
-    // motor hasn't been triggered yet, keep rolling in negative direction
-    moved = true;
-    digitalWrite(STEP_PIN, HIGH);
-    delayMicroseconds(half_period);
-    digitalWrite(STEP_PIN, LOW);
-    delayMicroseconds(half_period);
-  }
-
-//  delay(500);
-
-  // if the motor was moved down, give it a few more steps
-  // to ensure that it's low enough
-  if (moved) {
-    for (int ii = 0; ii < NUM_EXTRA_STEPS; ++ii) {
-      digitalWrite(STEP_PIN, HIGH);
-      delayMicroseconds(half_period);
-      digitalWrite(STEP_PIN, LOW);
-      delayMicroseconds(half_period);
-    }
-  }
-  Serial.println("Done");
+boolean can_move_down() {
+  return digitalRead(SCREW_BOT_LIMIT) == HIGH && digitalRead(FORK_LIMIT) == HIGH;
 }
