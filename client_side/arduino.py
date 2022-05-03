@@ -31,7 +31,7 @@ class Arduino():
     """
     arduino_connection = None
     port_name = "arduino not connected"
-    mm_to_motor_constant = 1.0
+    mm_to_motor_constant = 0.12
 
     def __init__(self, arduino_id:str, motor_data:list) -> None:
         """Set constants, find which port the arduino is connected to, and wait for the 'hello' response"""

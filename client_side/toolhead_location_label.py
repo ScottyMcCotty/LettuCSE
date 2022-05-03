@@ -1,7 +1,6 @@
 """Module contains the Transplanter class"""
 
-import threading
-from tkinter import DISABLED, N, NORMAL, Button, Label
+from tkinter import N, Label
 
 class ToolheadLocationLabel():
     """
@@ -36,8 +35,6 @@ class ToolheadLocationLabel():
                                     fg = "white",
                                     font = "Castellar")
         self.label_instance.place(relx = 0.5, rely = 0.5, anchor = N)
-
-
 
     def update_location(self, coords:tuple):
         """change the text on the label to reflect new location"""

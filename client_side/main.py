@@ -1,6 +1,7 @@
 """The main function class - you run it with python3 main.py"""
 import configparser
 from tkinter import Tk
+from toolhead_illustrator import ToolheadIllustrator
 from toolhead_location_label import ToolheadLocationLabel
 from start_continue_button import StartContinueButton
 from port_name_label import PortNameLabel
@@ -40,7 +41,7 @@ def main():
     port_name_labels = PortNameLabel(tkinter_instance, t_arduino.port_name, f_arduino.port_name)
     window_maker = WindowMaker(tkinter_instance)
 
-    plant_relocator = RelocatePlant(go_behind_cup, go_to_cup, raise_toolhead, lower_toolhead, go_to_origin)
+    plant_relocator = RelocatePlant(go_behind_cup, go_to_cup, raise_toolhead, lower_toolhead, go_to_origin, config["TRAYS"]["width_of_source_tray"])
     relocation_function = plant_relocator.transport_plant
     reset = plant_relocator.reset_transplanter
 
@@ -58,6 +59,7 @@ def main():
     start_continue_button = StartContinueButton(tkinter_instance, transplant, continue_transplant)
     stop_button = StopButton(tkinter_instance, stop_transplant)
     location_label = ToolheadLocationLabel(tkinter_instance)
+    toolhead_illustrator = ToolheadIllustrator(tkinter_instance)
 
 
 
@@ -70,7 +72,8 @@ def main():
         elif not start_continue_button.is_transplanting and stop_button.is_enabled:
             stop_button.disable_button()
         location_label.update_location(f_arduino.location)
-
+        toolhead_illustrator.update_location(f_arduino.location)
+        
 
         gui_window.update()
 
