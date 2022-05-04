@@ -70,7 +70,6 @@ def main():
         if start_continue_button.is_transplanting and not transplanter.stopped:
             transplanter.restart()
             stop_button.enable_button()
-            print("in if statement " + str(stop_button.stopped_flag))
         if stop_button.stopped_flag:
             transplanter.stop()
             start_continue_button.set_to_stopped_mode()

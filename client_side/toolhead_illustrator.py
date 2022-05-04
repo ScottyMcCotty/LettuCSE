@@ -42,11 +42,11 @@ class ToolheadIllustrator():
     destination_tray_box = None
 
     def __init__(self, tkinter_instance) -> None:
-        canvas = tk.Canvas(master = tkinter_instance, width = 315, height = 215)
+        canvas = tk.Canvas(master = tkinter_instance, width = 340, height = 230)
         canvas.place(relx = 0.5, rely = 0.55, anchor = tk.N)
         self.turtle = t.RawTurtle(canvas)
-        canvas.create_rectangle(150, 100, 10, -100, fill='white')
-        canvas.create_rectangle(-10, 100, -150, -100, fill='white')
+        canvas.create_rectangle(160, 100, 5, -100, fill='white')
+        canvas.create_rectangle(-5, 100, -160, -100, fill='white')
         self.turtle.shape("circle")
         self.turtle.pencolor("#000000")
         self.turtle.shapesize(0.5, 0.5, 1)
@@ -59,4 +59,4 @@ class ToolheadIllustrator():
         When the toolhead is somewhere else, move the turtle object to that location on the canvas
         The coordinates are modified to fit on the canvas
         """
-        self.turtle.goto(coords[0]/10-140, coords[1]/10-90)
+        self.turtle.goto(coords[0]/32-150, coords[1]/40-90)

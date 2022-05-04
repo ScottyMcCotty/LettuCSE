@@ -69,7 +69,7 @@ class Arduino():
                 sleep(0.5)
                 response = self.arduino_connection.readline().decode("utf-8")
         else:
-            sleep(0.2)
+            sleep(0.1)
 
     def calibrate(self) -> None:
         "sends a string saying calibrate to the toolhead"
