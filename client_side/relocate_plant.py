@@ -54,9 +54,9 @@ class RelocatePlant():
         self.lower_toolhead()
         self.go_to_cup(source)
         self.raise_toolhead()
-        self.go_to_cup((float(destination[0])+self.width_of_source_tray, destination[1]))
+        self.go_to_cup((float(destination[0]), destination[1]))
         self.lower_toolhead()
-        self.go_behind_cup((float(destination[0])+self.width_of_source_tray, destination[1]))
+        self.go_behind_cup((float(destination[0]), destination[1]))
         self.raise_toolhead()
 
     def reset_transplanter(self):

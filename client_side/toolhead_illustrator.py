@@ -59,4 +59,4 @@ class ToolheadIllustrator():
         When the toolhead is somewhere else, move the turtle object to that location on the canvas
         The coordinates are modified to fit on the canvas
         """
-        self.turtle.goto(coords[0]/100-140, coords[1]/100-90)
+        self.turtle.goto(coords[0]/10-140, coords[1]/10-90)

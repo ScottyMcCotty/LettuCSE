@@ -35,10 +35,10 @@ class Arduino():
 
     def __init__(self, arduino_id:str, motor_data:list) -> None:
         """Set constants, find which port the arduino is connected to, and wait for the 'hello' response"""
-        self.mm_to_motor_constant = motor_data["mm_to_motor_constant"]
-        self.corner_to_first_cup_x = motor_data["corner_to_first_cup_x"]
-        self.corner_to_first_cup_y = motor_data["corner_to_first_cup_y"]
-        self.distance_traveled_to_lift_cup = motor_data["distance_traveled_to_lift_cup"]
+        self.mm_to_motor_constant = float(motor_data["mm_to_motor_constant"])
+        self.corner_to_first_cup_x = float(motor_data["corner_to_first_cup_x"])
+        self.corner_to_first_cup_y = float(motor_data["corner_to_first_cup_y"])
+        self.distance_traveled_to_lift_cup = float(motor_data["distance_traveled_to_lift_cup"])
 
         for port in list_ports.comports():
             if arduino_id == str(port.serial_number):
@@ -69,7 +69,7 @@ class Arduino():
                 sleep(0.5)
                 response = self.arduino_connection.readline().decode("utf-8")
         else:
-            sleep(0.5)
+            sleep(2)
 
     def calibrate(self) -> None:
         "sends a string saying calibrate to the toolhead"
