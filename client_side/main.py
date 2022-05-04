@@ -45,18 +45,18 @@ def main():
     relocation_function = plant_relocator.transport_plant
     reset = plant_relocator.reset_transplanter
 
-    transpanter = Transplanter(source_tray_full, destination_tray_full,
+    transplanter = Transplanter(source_tray_full, destination_tray_full,
                                                  next_source_hole,
                                                  next_destination_hole,
                                                  reset,
                                                  relocation_function)
 
-    transplant = transpanter.transplant
-    continue_transplant = transpanter.continue_transplant
-    stop_transplant = transpanter.stop
-    transplanting_is_paused = transpanter.is_paused
+    transplant = transplanter.transplant
+    continue_transplant = transplanter.continue_transplant
+    transplanting_is_paused = transplanter.is_paused
 
     start_continue_button = StartContinueButton(tkinter_instance, transplant, continue_transplant)
+    stop_transplant = start_continue_button.set_to_stopped_mode
     stop_button = StopButton(tkinter_instance, stop_transplant)
     location_label = ToolheadLocationLabel(tkinter_instance)
     toolhead_illustrator = ToolheadIllustrator(tkinter_instance)
@@ -67,6 +67,10 @@ def main():
 
 
     while True:
+        
+        if stop_button.stopped_flag:
+            transplanter.stop()
+            start_continue_button.set_to_stopped_mode()
         if start_continue_button.is_transplanting and not stop_button.is_enabled:
             stop_button.enable_button()
         elif not start_continue_button.is_transplanting and stop_button.is_enabled:

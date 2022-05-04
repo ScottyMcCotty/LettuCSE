@@ -33,16 +33,21 @@ class StopButton():
     tkinter_button = None
     stop_function = None
     is_enabled = False
+    stopped_flag = False
 
     def __init__(self, tkinter_instance, stop_function) -> None:
         self.stop_function = stop_function
 
         self.tkinter_button = Button(tkinter_instance,
                                      text ="Stop Transplant",
-                                     command=stop_function,
+                                     command=self.stop,
                                      bd=0,
                                      state=DISABLED)
         self.tkinter_button.place(relx = 0.5, rely = 0.45, anchor = N)
+
+    def stop(self):
+        self.stopped_flag = True
+        self.stop_function()
 
     def enable_button(self):
         """Enable button, this is called when the transplanting has started"""

@@ -12,9 +12,6 @@ class Transplanter():
         paused : boolean
             this pauses the transplanting process while the human
             monitor comes and replaces the tray
-        stopped : boolean
-            when set to true, this resets the arms and stops
-            the whole process.
         source_is_full : function
             a function which indicates that the source tray is full
         dest_is_full : function
@@ -34,8 +31,6 @@ class Transplanter():
     continue_transplant()
         the transplanter automatically pauses when the trays are full.
         This function makes them continue
-    stop_transpant()
-        permanantly end the transplant, reset everything
     """
     paused = False
     stopped = False
@@ -64,21 +59,20 @@ class Transplanter():
             the trays are full
         """
         while not self.stopped:
+            print("I have not exited because self.stopped = " + str(self.stopped))
             if not self.paused:
                 self.transport(self.next_source_hole(), self.next_dest_hole())
                 if self.source_is_full() or self.dest_is_full():
                     self.paused = True
+        print("I have exited")
 
     def continue_transplant(self):
         """permanantly end the whole process"""
         self.paused = False
 
-    def stop(self):
-        """permanantly end the whole process after
-        resetting the arm"""
-        self.reset()
-        self.stopped = True
-
     def is_paused(self):
         """Says if the trays need replacing"""
         return self.paused
+
+    def stop(self):
+        self.stopped = True
