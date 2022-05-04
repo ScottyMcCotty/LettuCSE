@@ -67,17 +67,17 @@ def main():
 
 
     while True:
-        
+        if start_continue_button.is_transplanting and not transplanter.stopped:
+            transplanter.restart()
+            stop_button.enable_button()
+            print("in if statement " + str(stop_button.stopped_flag))
         if stop_button.stopped_flag:
             transplanter.stop()
             start_continue_button.set_to_stopped_mode()
         if start_continue_button.is_transplanting and not stop_button.is_enabled:
             stop_button.enable_button()
-        elif not start_continue_button.is_transplanting and stop_button.is_enabled:
-            stop_button.disable_button()
         location_label.update_location(f_arduino.location)
         toolhead_illustrator.update_location(f_arduino.location)
-        
 
         gui_window.update()
 

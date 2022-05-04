@@ -46,16 +46,14 @@ class StopButton():
         self.tkinter_button.place(relx = 0.5, rely = 0.45, anchor = N)
 
     def stop(self):
+        """reset everything"""
         self.stopped_flag = True
         self.stop_function()
+        self.tkinter_button["state"] = "disabled"
+        self.is_enabled = False
 
     def enable_button(self):
         """Enable button, this is called when the transplanting has started"""
         self.tkinter_button["state"] = "normal"
-
+        self.stopped_flag = False
         self.is_enabled = True
-
-    def disable_button(self):
-        """Enable button, this is called when the transplanting has over"""
-        self.tkinter_button["state"] = "disabled"
-        self.is_enabled = False

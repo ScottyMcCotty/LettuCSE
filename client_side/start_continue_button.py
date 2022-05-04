@@ -45,7 +45,6 @@ class StartContinueButton():
     continue_transplant = None
     is_transplanting = False
     transplanting_thread = False
-    is_stopped = False
 
     def __init__(self, tkinter_instance, transplanter_function, continue_transplant) -> None:
         self.transplanter_function = transplanter_function
@@ -62,26 +61,23 @@ class StartContinueButton():
 
     def start_transplanting_thread(self):
         """Make the button disabled, so you can't re-press it when it's transplanting already"""
-        self.is_stopped = False
-        self.tkinter_button["state"] = "disabled"
         self.is_transplanting = True
+        self.tkinter_button["state"] = "disabled"
         self.transplanting_thread = threading.Thread(target=self.transplanter_function)
         self.transplanting_thread.start()
 
     def set_to_pause_mode(self):
         """Set the button to it's 'continue' mode,
          so that the user can press it after they have replaced the trays"""
-        self.tkinter_button = Button(self.tkinter_instance,
-                                     text ="Press to Continue after Trays have been Replaced",
-                                     command=self.__continue_transplanting,
-                                     bd=0,
-                                     state=NORMAL)
+        self.tkinter_button["state"] = "now"
+        self.tkinter_button["text"] = "Press to Continue after Trays have been Replaced"
+        self.tkinter_button["command"] = self.__continue_transplanting
+        self.continue_transplant()
 
     def set_to_stopped_mode(self):
         """Reset the button so it can start again"""
-        #(self.transplanting_thread).join()
-        if not self.is_stopped:
-            self.is_stopped = True
+        if self.is_transplanting:
+            self.is_transplanting = False
             self.tkinter_button["state"] = "normal"
             self.tkinter_button["text"] = "Start Transplant"
             self.tkinter_button["command"] = self.start_transplanting_thread
@@ -90,8 +86,7 @@ class StartContinueButton():
     def __continue_transplanting(self):
         """Make the button disabled, so you can't re-press it when it's transplanting already,
         and continue the transplanting process"""
-        self.tkinter_button = Button(self.tkinter_instance,
-                                     text ="Transplanting in Progress",
-                                     bd=0,
-                                     state=DISABLED)
+        self.tkinter_button["state"] = "disabled"
+        self.tkinter_button["text"] = "Transplanting in Progress"
+        self.tkinter_button["command"] = self.start_transplanting_thread
         self.continue_transplant()

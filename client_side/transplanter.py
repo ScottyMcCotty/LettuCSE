@@ -58,13 +58,12 @@ class Transplanter():
             Run the transplanter until things are stopped. Take a break when
             the trays are full
         """
+        self.stopped = False
         while not self.stopped:
-            print("I have not exited because self.stopped = " + str(self.stopped))
             if not self.paused:
                 self.transport(self.next_source_hole(), self.next_dest_hole())
                 if self.source_is_full() or self.dest_is_full():
                     self.paused = True
-        print("I have exited")
 
     def continue_transplant(self):
         """permanantly end the whole process"""
@@ -75,4 +74,12 @@ class Transplanter():
         return self.paused
 
     def stop(self):
+        """Causes the transplant function to stop running, resets everything"""
         self.stopped = True
+        self.reset()
+
+    def restart(self):
+        """If you want to run the transplanter after stopping it
+        you need to reset the stop variable, so this does that
+        """
+        self.stopped = False
