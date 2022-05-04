@@ -59,19 +59,16 @@ class Transplanter():
             the trays are full
         """
         self.stopped = False
+        self.paused = False
         while not self.stopped:
             if not self.paused:
-                self.transport(self.next_source_hole(), self.next_dest_hole())
                 if self.source_is_full() or self.dest_is_full():
                     self.paused = True
+                self.transport(self.next_source_hole(), self.next_dest_hole())
 
     def continue_transplant(self):
         """permanantly end the whole process"""
         self.paused = False
-
-    def is_paused(self):
-        """Says if the trays need replacing"""
-        return self.paused
 
     def stop(self):
         """Causes the transplant function to stop running, resets everything"""

@@ -60,4 +60,4 @@ class Tray:
     def is_tray_full(self) -> bool:
         """return whether all holes have been visited and it is time
            for the tray to be replaced"""
-        return self.hole_iterator+1 == int(self.hole_location_map.get("holes"))
+        return self.hole_iterator == int(self.hole_location_map.get("holes")) - 1

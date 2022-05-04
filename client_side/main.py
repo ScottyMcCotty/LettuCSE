@@ -13,7 +13,6 @@ from window_maker import WindowMaker
 from relocate_plant import RelocatePlant
 from stop_button import StopButton
 
-
 def main():
     config = configparser.ConfigParser()
     config.read('configfile.ini')
@@ -53,7 +52,6 @@ def main():
 
     transplant = transplanter.transplant
     continue_transplant = transplanter.continue_transplant
-    transplanting_is_paused = transplanter.is_paused
 
     start_continue_button = StartContinueButton(tkinter_instance, transplant, continue_transplant)
     stop_transplant = start_continue_button.set_to_stopped_mode
@@ -67,6 +65,7 @@ def main():
 
 
     while True:
+        #stop handler
         if start_continue_button.is_transplanting and not transplanter.stopped:
             transplanter.restart()
             stop_button.enable_button()
@@ -75,6 +74,12 @@ def main():
             start_continue_button.set_to_stopped_mode()
         if start_continue_button.is_transplanting and not stop_button.is_enabled:
             stop_button.enable_button()
+
+        #pause handler
+        if transplanter.paused:
+            start_continue_button.set_to_pause_mode()
+
+        # location display handler
         location_label.update_location(f_arduino.location)
         toolhead_illustrator.update_location(f_arduino.location)
 

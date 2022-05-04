@@ -1,7 +1,7 @@
 """Module contains the Transplanter class"""
 
 import threading
-from tkinter import DISABLED, N, NORMAL, Button
+from tkinter import N, Button
 
 class StartContinueButton():
     """
@@ -54,7 +54,7 @@ class StartContinueButton():
                                      text ="Start Transplant",
                                      command=self.start_transplanting_thread,
                                      bd=0,
-                                     state=NORMAL)
+                                     state='normal')
         self.tkinter_button.place(relx = 0.5, rely = 0.4, anchor = N)
 
 
@@ -69,10 +69,9 @@ class StartContinueButton():
     def set_to_pause_mode(self):
         """Set the button to it's 'continue' mode,
          so that the user can press it after they have replaced the trays"""
-        self.tkinter_button["state"] = "now"
+        self.tkinter_button["state"] = "normal"
         self.tkinter_button["text"] = "Press to Continue after Trays have been Replaced"
         self.tkinter_button["command"] = self.__continue_transplanting
-        self.continue_transplant()
 
     def set_to_stopped_mode(self):
         """Reset the button so it can start again"""
@@ -88,5 +87,5 @@ class StartContinueButton():
         and continue the transplanting process"""
         self.tkinter_button["state"] = "disabled"
         self.tkinter_button["text"] = "Transplanting in Progress"
-        self.tkinter_button["command"] = self.start_transplanting_thread
+        self.tkinter_button["command"] = lambda:self.start_transplanting_thread
         self.continue_transplant()
