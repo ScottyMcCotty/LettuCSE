@@ -61,11 +61,11 @@ void move(int dir) {
   digitalWrite(DIR_PIN, dir);
   for (;;) {
     if (dir == UP && !can_move_up()) {
-      Serial.println("hit top");
+      Serial.println("Done");
       return;
     }
     if (dir == DOWN && !can_move_down()) {
-      Serial.println("hit bottom");
+      Serial.println("Done");
       return;
     }
 
