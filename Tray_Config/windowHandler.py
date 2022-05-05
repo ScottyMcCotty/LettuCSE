@@ -937,7 +937,10 @@ class windowHandler():
         #       Error check user input to ensure it is a number AND it is within the bounds set by the input information
         #       Edit movement_file_maker to go from 0 to endrow * endcol instead of row * col
         #       CONFIRM THAT THE MOVEMENT FILE USES THE SAME ROW/COL SYSTEM (where the axes start at the lower right, and
-        #       the coordinates are generated going right to left in a row before going up to the next row)
+        #       the coordinates are generated going right to left in a row before going up to the next row). IT DOES
+        #       CHANGE COORDINATE SYSTEM: It should have (1,1) at the lower left corner instead of lower right. and go
+        #       left to right instead of right to left. Update
+        #       the related image to show this, and update the movement_file_maker accordingly.
 
         with open(self.selected_file) as opened_file:
             data = json.load(opened_file)
