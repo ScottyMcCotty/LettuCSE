@@ -1,6 +1,6 @@
 """Module contains the GUI class"""
 
-from tkinter import N, Tk, Label, PhotoImage, CENTER, NORMAL, Button, DISABLED, Canvas, Entry, END, filedialog
+from tkinter import N, Tk, Label, PhotoImage, CENTER, NORMAL, Button, DISABLED, Canvas, Entry, END, filedialog, LEFT
 from tokenize import String
 from tray_info import tray_info
 from movement_file_maker import movement_file_maker
@@ -34,6 +34,11 @@ class windowHandler():
     current_step = -1
     current_progress = -2
     selected_file = None
+
+    end_row = 0
+    end_col = 0
+
+    ignored_holes = []
     
     # The buttons.
     start_measuring_button = None
@@ -66,6 +71,13 @@ class windowHandler():
     upload_button = None
     create_movement_file_button = None
 
+    part2_step2_clear_input_button = None
+
+    part2_step3_clear_last_input_button = None
+
+    part2_continue_button = None
+    part2_back_button = None
+
     # The labels.
     main_title = None
     start_measuring_warning = None
@@ -77,6 +89,7 @@ class windowHandler():
     text_entryB_label = None
     complete_message = None
     complete_movement_message = None
+    part2_info_label = None
 
     # The pictures & canvases.
     step2_pictureA_canvas = None
@@ -89,6 +102,10 @@ class windowHandler():
     step5_pictureA = None
     step6_pictureA_canvas = None
     step6_pictureA = None
+    part2_step2_picture_canvas = None
+    part2_step2_picture = None
+    part2_step3_picture_canvas = None
+    part2_step3_picture = None
 
     # The text input boxes.
     text_entryA = None
@@ -282,6 +299,37 @@ class windowHandler():
                                              "return to the main menu and select the upload option again.",
                                              font = ("Arial", 15),
                                              bg = 'yellow')
+
+        # PART 2 STEP 2 SCREEN
+        self.part2_step2_picture_canvas = Canvas(master = None, width = 501, height = 400)
+        self.part2_step2_picture = PhotoImage(file = "images/Part2Image.png")
+        self.part2_info_label = Label(text = "End coordinates:\t\t\tN/A\n"
+                                             "Holes recently added to ignore list:\tN/A",
+                                             font = ("Arial", 10),
+                                             justify = LEFT,
+                                             bg = 'light green')
+        self.part2_step2_clear_input_button = Button(self.window,
+                                                     text = "Clear end coordinates",
+                                                     font = ("Arial", 10),
+                                                     command = self.part2_step2_clear_input,
+                                                     state = NORMAL)
+        self.part2_continue_button = Button(self.window,
+                                            text = "Next",
+                                            command = self.part2_next,
+                                            state = NORMAL)
+        self.part2_back_button = Button(self.window,
+                                        text = "Previous",
+                                        command = self.part2_previous,
+                                        state = DISABLED)
+
+        # PART 2 STEP 3 SCREEN
+        self.part2_step3_picture_canvas = Canvas(master = None, width = 500, height = 500) # TODO: Set width/height to image dimensions
+        self.part2_step3_picture = PhotoImage(file = "images/Part2Image.png") # TODO: Set image to proper image
+        self.part2_step3_clear_last_input_button = Button(self.window,
+                                                          text = "Clear last entered tray hole",
+                                                          font = ("Arial,", 10),
+                                                          command = self.part2_step3_clear_last_input,
+                                                          state = NORMAL)
                                               
         # Initialize to title screen.
         self.title_screen()
@@ -374,6 +422,17 @@ class windowHandler():
 
         # Hide completed generation objects.
         self.complete_movement_message.place_forget()
+
+        # Hide part 2 step 2 objects.
+        self.part2_step2_picture_canvas.place_forget()
+        self.part2_continue_button.place_forget()
+        self.part2_back_button.place_forget()
+        self.part2_info_label.place_forget()
+        self.part2_step2_clear_input_button.place_forget()
+
+        # Hide part 2 step 3 objects.
+        self.part2_step3_picture_canvas.place_forget()
+        self.part2_step3_clear_last_input_button.place_forget()
 
         # Displays the title screen objects.
         self.main_title.place(relx = 0.5, rely = 0.1, anchor = CENTER)
@@ -623,12 +682,18 @@ class windowHandler():
             self.tray_measurements.rows_between_gap = int(inputA)
             self.tray_measurements.extra_gap = float(inputB)
         elif self.current_step == -2:
-            # TODO: Set end of tray row and column.
-            #       Display these coordinates on screen.
+            # Check to ensure the input values are within the bounds of the data set's row and columns.
+            if int(inputA) <= self.uploaded_measurements.rows and int(inputB) <= self.uploaded_measurements.columns:
+                self.end_row = int(inputA)
+                self.end_col = int(inputB)
+                self.update_part2_info()
             return
         elif self.current_step == -3:
-            # TODO: Add row and column to list of ignored coordinates.
-            #       Display these coordinates on screen, SOMEHOW.
+            # Check to ensure the input values are within the bounds of the data set's row and columns.
+            if int(inputA) <= self.uploaded_measurements.rows and int(inputB) <= self.uploaded_measurements.columns:
+                if (int(inputA)*int(inputB)) not in self.ignored_holes:
+                    self.ignored_holes.append(int(inputA)*int(inputB))
+                self.update_part2_info()
             return
 
         # Update the tray info displayed.
@@ -898,7 +963,7 @@ class windowHandler():
             file_name_trunc = file_name_trunc[::-1]
             if file_name_trunc == "custom_dense_tray_measurements.json":
                 self.is_dense = True
-                self.generate_movement_file_screen()
+                self.part2_step2_screen()
                 return
             else:
                 self.upload_file_screen(True)
@@ -909,67 +974,50 @@ class windowHandler():
             file_name_trunc = file_name_trunc[::-1]
             if file_name_trunc == "custom_dense_tray_measurements.json":
                 self.is_dense = True
-                self.generate_movement_file_screen()
+                self.part2_step2_screen()
                 return                
             
             file_name_trunc = file_name_rev[0:36]
             file_name_trunc = file_name_trunc[::-1]
             if file_name_trunc == "custom_sparse_tray_measurements.json":
                 self.is_dense = False
-                self.generate_movement_file_screen()
+                self.part2_step2_screen()
                 return
             else:
                 self.upload_file_screen(True)
                 return
 
-    # Function that displays the selected file's information before generating a movement JSON file.
-    # TODO: Add functionality to allow user to select everything past a certain row/column to be ignored,
-    #       either in this screen or a following one.
-    def generate_movement_file_screen(self):
-        """Displays information from measurement file and confirms before generating movement file"""
+    # Function that displays relevant information to part 2 (coordinates of the end hole & last 5 ignored holes).
+    def update_part2_info(self):
+        """Displays additional information entered by user during Part 2 of file generation"""
+
+        # Display entered information.
+        if self.end_row > 0 and self.end_col > 0:
+            end_coordinates = "row " + str(self.end_row) + ", column " + str(self.end_col)
+        else:
+            end_coordinates = "N/A"
+
+        reversed_holes = self.ignored_holes[::-1]
+        ignored_holes_string = ""
+        if len(reversed_holes) == 0:
+            ignored_holes_string = "N/A"
+        else:
+            for i in range(len(reversed_holes) - 1):
+                ignored_holes_string += str(reversed_holes[i]) + ", "
+            ignored_holes_string += str(reversed_holes[len(reversed_holes) - 1])
+
+        self.part2_info_label.config(text = "End coordinates:\t\t\t" + end_coordinates + "\n" +
+                                            "Holes recently added to ignore list:\t" + ignored_holes_string)
+
+        self.part2_info_label.place_forget()
+        self.part2_info_label.place(relx = 0.2, rely = 0.9, anchor = CENTER)
+        return
+
+    # Function that displays Part 2, step 2.
+    def part2_step2_screen(self):
+        """Displays information from measurement file and allows user to set an end limit on the tray holes"""
 
         self.current_step = -2
-
-        # Hide/modify upload file screen objects.
-        self.upload_button.place_forget()
-        self.step_title.config(text = "Step 2 of 3\n\nSpecify end of transplanting",
-                                 font = ("Arial", 15),
-                                 bg = 'light green')
-        self.step_instructions.config(text = "If the source tray is not completely filled with plants, specify the last row\n"
-                                             "and column to transplant to. All holes beyond that point will NOT be transplanted.\n"
-                                             "If no input is given, the transplanter will attempt to transplant\n"
-                                             "at every hole on the tray.",
-                                      font = ("Arial", 15),
-                                      bg = 'light green')
-        self.create_movement_file_button.place(relx = .8, rely = .3, anchor = CENTER)
-
-
-        self.text_entry_warning.place(relx = 0.9, rely = 0.55, anchor = CENTER)
-        self.text_entryA.place(relx = 0.9, rely = 0.6, anchor = CENTER)
-        self.text_entryB.place(relx = 0.9, rely = 0.65, anchor = CENTER)
-        self.text_entryA_label.config(text = "    Row:",
-                                        font = ("Arial", 12),
-                                        bg = 'light green')
-        self.text_entryB_label.config(text = " Column:",
-                                        font = ("Arial", 12),
-                                        bg = 'light green')
-        self.text_entryA_label.place(relx = 0.8, rely = 0.6, anchor = CENTER)
-        self.text_entryB_label.place(relx = 0.8, rely = 0.65, anchor = CENTER)
-        self.accept_input_button.place(relx = 0.9, rely = 0.7, anchor = CENTER)
-
-        # TODO: Make canvas to display Part2Step2Image.png
-        #       Add two text boxes to allow user to input the end row and end column
-        #       Make button to accept text input without advancing screen
-        #       Error check user input to ensure it is a number AND it is within the bounds set by the input information
-        #       Edit movement_file_maker to go from 0 to endrow * endcol instead of row * col
-        #       CONFIRM THAT THE MOVEMENT FILE USES THE SAME ROW/COL SYSTEM (where the axes start at the lower right, and
-        #       the coordinates are generated going right to left in a row before going up to the next row). IT DOES
-        #       CHANGE COORDINATE SYSTEM: It should have (1,1) at the lower left corner instead of lower right. and go
-        #       left to right instead of right to left. Update
-        #       the related image to show this, and update the movement_file_maker accordingly.
-        #       Implement 3rd step where the user can specify rows and columns of specific holes to ignore.
-        #       Will probably need a method of displaying all entered coordinates, as well as a 'clear' button that erases
-        #       the last entered coordinate.
 
         with open(self.selected_file) as opened_file:
             data = json.load(opened_file)
@@ -991,6 +1039,156 @@ class windowHandler():
         self.uploaded_measurements.rows_between_gap = data['rows_between_gap']
         self.uploaded_measurements.extra_gap = data['extra_gap']
         self.uploaded_measurements.update_info()
+
+        # If the uploaded file is a destination tray, skip ahead to the review step, since
+        # there is no reason to designate end holes or ignored holes in the destination tray.
+        if not self.is_dense:
+            self.part2_review_screen()
+            return
+
+        # Hide/modify upload file screen objects.
+        self.upload_button.place_forget()
+        self.step_title.config(text = "Step 2 of 3\n\nSpecify end of transplanting",
+                                 font = ("Arial", 15),
+                                 bg = 'light green')
+        self.step_instructions.config(text = "If the source tray is not completely filled with plants, specify the last row\n"
+                                             "and column to transplant from. All holes beyond that point will NOT\n"
+                                             "be transplanted.If no coordinates are given, the transplanter will\n"
+                                             "attempt to transplant at every hole on the tray.",
+                                      font = ("Arial", 15),
+                                      bg = 'light green')
+        #TODO: delete? self.create_movement_file_button.place(relx = .8, rely = .3, anchor = CENTER)
+        self.update_part2_info()
+        self.part2_step3_picture_canvas.place_forget()
+        self.part2_step3_clear_last_input_button.place_forget()
+        self.part2_step2_clear_input_button.place(relx = 0.25, rely = 0.95, anchor = CENTER)
+        self.part2_continue_button.config(state = NORMAL)
+        self.part2_continue_button.place(relx = 0.65, rely = 0.02, anchor = CENTER)
+        self.part2_back_button.config(state = DISABLED)
+        self.part2_back_button.place(relx = 0.35, rely = 0.02, anchor = CENTER)
+
+        self.text_entry_warning.place(relx = 0.9, rely = 0.55, anchor = CENTER)
+        self.text_entryA.place(relx = 0.9, rely = 0.6, anchor = CENTER)
+        self.text_entryB.place(relx = 0.9, rely = 0.65, anchor = CENTER)
+        self.text_entryA_label.config(text = "    Row:",
+                                        font = ("Arial", 12),
+                                        bg = 'light green')
+        self.text_entryB_label.config(text = " Column:",
+                                        font = ("Arial", 12),
+                                        bg = 'light green')
+        self.text_entryA_label.place(relx = 0.8, rely = 0.6, anchor = CENTER)
+        self.text_entryB_label.place(relx = 0.8, rely = 0.65, anchor = CENTER)
+        self.accept_input_button.place(relx = 0.9, rely = 0.7, anchor = CENTER)
+
+        self.part2_step2_picture_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
+        self.part2_step2_picture_canvas.create_image(250, 200, anchor=CENTER, image=self.part2_step2_picture)
+
+        # TODO: Make canvas to display Part2Step2Image.png
+        #       Add two text boxes to allow user to input the end row and end column
+        #       Make button to accept text input without advancing screen
+        #       Error check user input to ensure it is a number AND it is within the bounds set by the input information
+        #       Edit movement_file_maker to go from 0 to endrow * endcol instead of row * col
+        #       CONFIRM THAT THE MOVEMENT FILE USES THE SAME ROW/COL SYSTEM (where the axes start at the lower right, and
+        #       the coordinates are generated going right to left in a row before going up to the next row). IT DOES
+        #       CHANGE COORDINATE SYSTEM: It should have (1,1) at the lower left corner instead of lower right. and go
+        #       left to right instead of right to left. Update
+        #       the related image to show this, and update the movement_file_maker accordingly.
+        #       Implement 3rd step where the user can specify rows and columns of specific holes to ignore.
+        #       Will probably need a method of displaying all entered coordinates, as well as a 'clear' button that erases
+        #       the last entered coordinate.
+
+    # Function that clears the end coordinates input.
+    def part2_step2_clear_input(self):
+        self.end_row = 0
+        self.end_col = 0
+        self.update_part2_info()
+
+    # Function that clears the last entered hole from the list.
+    def part2_step3_clear_last_input(self):
+        if len(self.ignored_holes) == 0:
+            return
+        
+        self.ignored_holes = self.ignored_holes[:-1]
+        self.update_part2_info()
+
+    # Function that handles the next step button in Part 2.
+    def part2_next(self):
+        if self.current_step == -2:
+            self.part2_step3_screen()
+        elif self.current_step == -3:
+            self.part2_review_screen()
+
+    # Function that handles the previous step button in Part 2.
+    def part2_previous(self):
+        if self.current_step == -4:
+            self.part2_step3_screen()
+        elif self.current_step == -3:
+            self.part2_step2_screen()
+
+    # Function that displays Part 2, step 3.
+    def part2_step3_screen(self):
+        """Displays step 3 of Part 2"""
+
+        self.current_step = -3
+
+        # Hide/modify previous/next step objects.
+        self.part2_back_button.config(state = NORMAL)
+        self.part2_continue_button.config(state = NORMAL)
+        self.part2_step2_picture_canvas.place_forget()
+        self.part2_step2_clear_input_button.place_forget()
+        self.step_title.config(text = "Step 3 of 3\n\nSpecify holes to ignore",
+                                 font = ("Arial", 15),
+                                 bg = 'light green')
+        self.step_instructions.config(text = "If the source tray contains any individual empty holes, specify their\n"
+                                             "row and column. These holes will be ignored by the transplanter.",
+                                      font = ("Arial", 15),
+                                      bg = 'light green')
+        self.part2_step3_clear_last_input_button.place(relx = 0.25, rely = 0.95, anchor = CENTER)
+
+        self.text_entry_warning.place(relx = 0.9, rely = 0.55, anchor = CENTER)
+        self.text_entryA.place(relx = 0.9, rely = 0.6, anchor = CENTER)
+        self.text_entryB.place(relx = 0.9, rely = 0.65, anchor = CENTER)
+        self.text_entryA_label.config(text = "    Row:",
+                                        font = ("Arial", 12),
+                                        bg = 'light green')
+        self.text_entryB_label.config(text = " Column:",
+                                        font = ("Arial", 12),
+                                        bg = 'light green')
+        self.text_entryA_label.place(relx = 0.8, rely = 0.6, anchor = CENTER)
+        self.text_entryB_label.place(relx = 0.8, rely = 0.65, anchor = CENTER)
+        self.accept_input_button.place(relx = 0.9, rely = 0.7, anchor = CENTER)
+
+        return # TODO
+
+    # Function that displays the review step of Part 2 before generating the movement JSON file.
+    def part2_review_screen(self):
+        """Displays the review step of Part 2"""
+
+        self.current_step = -4
+
+        # Hide/modify previous step objects.
+        if not self.is_dense:
+            self.part2_back_button.config(state = DISABLED)
+        else:
+            self.part2_back_button.config(state = NORMAL)
+        self.part2_continue_button.config(state = DISABLED)
+        self.part2_step3_clear_last_input_button.place_forget()
+        self.part2_step3_picture_canvas.place_forget()
+        self.text_entry_warning.place_forget()
+        self.text_entryA.place_forget()
+        self.text_entryA_label.place_forget()
+        self.text_entryB.place_forget()
+        self.text_entryB_label.place_forget()
+
+        self.step_title.config(text = "Review",
+                                 font = ("Arial", 15),
+                                 bg = 'light green')
+        self.step_instructions.config(text = "Double check all entered information is as accurate as possible.\n"
+                                             "When ready, press the button to generate a JSON movement file.",
+                                      font = ("Arial", 15),
+                                      bg = 'light green')
+
+        return # TODO
         
     # Function that calls functions in movement_file_maker to create a movement JSON file.
     # It also displays the confirmation screen.
