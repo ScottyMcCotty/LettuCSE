@@ -931,6 +931,13 @@ class windowHandler():
                                       font = ("Arial", 15),
                                       bg = 'light green')
         self.create_movement_file_button.place(relx = .8, rely = .3, anchor = CENTER)
+        # TODO: Make canvas to display Part2Step2Image.png
+        #       Add two text boxes to allow user to input the end row and end column
+        #       Make button to accept text input without advancing screen
+        #       Error check user input to ensure it is a number AND it is within the bounds set by the input information
+        #       Edit movement_file_maker to go from 0 to endrow * endcol instead of row * col
+        #       CONFIRM THAT THE MOVEMENT FILE USES THE SAME ROW/COL SYSTEM (where the axes start at the lower right, and
+        #       the coordinates are generated going right to left in a row before going up to the next row)
 
         with open(self.selected_file) as opened_file:
             data = json.load(opened_file)
