@@ -589,11 +589,13 @@ class windowHandler():
         # Steps 2-4 can have decimal input
         # Step 5 can only have whole numbers
         # Step 6 can have decimals for input B, but not input A
+        # Step -2 (part 2 step 2) can only have whole numbers
+        # Step -3 (part 2 step 3) can only have whole numbers
         # If invalid input is detected, return without updating any information.
         if self.current_step <= 4 and self.current_step >= 2:
             if not inputA.replace(".","",1).isdigit() or not inputB.replace(".","",1).isdigit():
                 return
-        elif self.current_step == 5:
+        elif self.current_step == 5 or self.current_step == -2 or self.current_step == -3:
             if not inputA.isdigit() or not inputB.isdigit():
                 return
         elif self.current_step == 6:
@@ -620,6 +622,14 @@ class windowHandler():
         elif self.current_step == 6:
             self.tray_measurements.rows_between_gap = int(inputA)
             self.tray_measurements.extra_gap = float(inputB)
+        elif self.current_step == -2:
+            # TODO: Set end of tray row and column.
+            #       Display these coordinates on screen.
+            return
+        elif self.current_step == -3:
+            # TODO: Add row and column to list of ignored coordinates.
+            #       Display these coordinates on screen, SOMEHOW.
+            return
 
         # Update the tray info displayed.
         self.tray_measurements.update_info()
@@ -849,7 +859,7 @@ class windowHandler():
 
         # Display upload file button & accompanying objects.
         self.return_title_button.place(relx = 0.1, rely = 0.04, anchor = CENTER)
-        self.step_title.config(text = "Step 1 of 2\n\nUpload measurement file",
+        self.step_title.config(text = "Step 1 of 3\n\nUpload measurement file",
                                  font = ("Arial", 15),
                                  bg = 'light green')
         self.step_title.place(relx = 0.5, rely = 0.05, anchor = CENTER)
@@ -917,16 +927,49 @@ class windowHandler():
     #       either in this screen or a following one.
     def generate_movement_file_screen(self):
         """Displays information from measurement file and confirms before generating movement file"""
+
+        self.current_step = -2
+
         # Hide/modify upload file screen objects.
         self.upload_button.place_forget()
-        self.step_title.config(text = "Step 2 of 2\n\nReview measurement file",
+        self.step_title.config(text = "Step 2 of 3\n\nSpecify end of transplanting",
                                  font = ("Arial", 15),
                                  bg = 'light green')
-        self.step_instructions.config(text = "Double check the uploaded file measurements are accurate.\n"
-                                             "When ready, press the button to generate a JSON movement file.",
+        self.step_instructions.config(text = "If the source tray is not completely filled with plants, specify the last row\n"
+                                             "and column to transplant to. All holes beyond that point will NOT be transplanted.\n"
+                                             "If no input is given, the transplanter will attempt to transplant\n"
+                                             "at every hole on the tray.",
                                       font = ("Arial", 15),
                                       bg = 'light green')
-        self.create_movement_file_button.place(relx = .5, rely = .3, anchor = CENTER)
+        self.create_movement_file_button.place(relx = .8, rely = .3, anchor = CENTER)
+
+
+        self.text_entry_warning.place(relx = 0.9, rely = 0.55, anchor = CENTER)
+        self.text_entryA.place(relx = 0.9, rely = 0.6, anchor = CENTER)
+        self.text_entryB.place(relx = 0.9, rely = 0.65, anchor = CENTER)
+        self.text_entryA_label.config(text = "    Row:",
+                                        font = ("Arial", 12),
+                                        bg = 'light green')
+        self.text_entryB_label.config(text = " Column:",
+                                        font = ("Arial", 12),
+                                        bg = 'light green')
+        self.text_entryA_label.place(relx = 0.8, rely = 0.6, anchor = CENTER)
+        self.text_entryB_label.place(relx = 0.8, rely = 0.65, anchor = CENTER)
+        self.accept_input_button.place(relx = 0.9, rely = 0.7, anchor = CENTER)
+
+        # TODO: Make canvas to display Part2Step2Image.png
+        #       Add two text boxes to allow user to input the end row and end column
+        #       Make button to accept text input without advancing screen
+        #       Error check user input to ensure it is a number AND it is within the bounds set by the input information
+        #       Edit movement_file_maker to go from 0 to endrow * endcol instead of row * col
+        #       CONFIRM THAT THE MOVEMENT FILE USES THE SAME ROW/COL SYSTEM (where the axes start at the lower right, and
+        #       the coordinates are generated going right to left in a row before going up to the next row). IT DOES
+        #       CHANGE COORDINATE SYSTEM: It should have (1,1) at the lower left corner instead of lower right. and go
+        #       left to right instead of right to left. Update
+        #       the related image to show this, and update the movement_file_maker accordingly.
+        #       Implement 3rd step where the user can specify rows and columns of specific holes to ignore.
+        #       Will probably need a method of displaying all entered coordinates, as well as a 'clear' button that erases
+        #       the last entered coordinate.
 
         with open(self.selected_file) as opened_file:
             data = json.load(opened_file)
