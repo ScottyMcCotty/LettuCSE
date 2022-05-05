@@ -919,14 +919,18 @@ class windowHandler():
         """Displays information from measurement file and confirms before generating movement file"""
         # Hide/modify upload file screen objects.
         self.upload_button.place_forget()
-        self.step_title.config(text = "Step 2 of 2\n\nReview measurement file",
+        self.step_title.config(text = "Step 2 of 2\n\nSpecify end of transplanting",
                                  font = ("Arial", 15),
                                  bg = 'light green')
-        self.step_instructions.config(text = "Double check the uploaded file measurements are accurate.\n"
-                                             "When ready, press the button to generate a JSON movement file.",
+        self.step_instructions.config(text = "If there are any holes on the tray you would like to avoid transplanting,\n"
+                                             "specify the last row & column to transplant to. All holes beyond that point\n"
+                                             "will NOT be transplanted.\n"
+                                             "If no input is given, the transplanter will attempt to transplant\n"
+                                             "at every hole on the tray.\n"
+                                             "When ready, press the button to generate the movement file.",
                                       font = ("Arial", 15),
                                       bg = 'light green')
-        self.create_movement_file_button.place(relx = .5, rely = .3, anchor = CENTER)
+        self.create_movement_file_button.place(relx = .8, rely = .3, anchor = CENTER)
 
         with open(self.selected_file) as opened_file:
             data = json.load(opened_file)
