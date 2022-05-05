@@ -859,7 +859,7 @@ class windowHandler():
 
         # Display upload file button & accompanying objects.
         self.return_title_button.place(relx = 0.1, rely = 0.04, anchor = CENTER)
-        self.step_title.config(text = "Step 1 of 2\n\nUpload measurement file",
+        self.step_title.config(text = "Step 1 of 3\n\nUpload measurement file",
                                  font = ("Arial", 15),
                                  bg = 'light green')
         self.step_title.place(relx = 0.5, rely = 0.05, anchor = CENTER)
