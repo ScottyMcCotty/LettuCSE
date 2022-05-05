@@ -31,7 +31,7 @@ class Arduino():
     """
     arduino_connection = None
     port_name = "arduino not connected"
-    mm_to_motor_constant = 0.12
+    mm_to_motor_constant = 0.1403
 
     def __init__(self, arduino_id:str, motor_data:list) -> None:
         """
@@ -67,7 +67,7 @@ class Arduino():
                 sleep(0.5)
                 response = self.arduino_connection.readline().decode("utf-8")
         else:
-            sleep(0.05)
+            sleep(0.2)
 
     def calibrate(self) -> None:
         "sends a string saying calibrate to the toolhead"

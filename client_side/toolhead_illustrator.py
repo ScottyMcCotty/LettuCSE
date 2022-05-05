@@ -57,6 +57,7 @@ class ToolheadIllustrator():
     def update_location(self, coords:tuple):
         """
         When the toolhead is somewhere else, move the turtle object to that location on the canvas
-        The coordinates are modified to fit on the canvas
+        The coordinates are modified to fit on the canvas, and the x axis is flipped to reflect the 
+        appearance of the transplanter when you are looking at it
         """
-        self.turtle.goto(coords[0]/32-150, coords[1]/40-90)
+        self.turtle.goto(130-coords[0]/28, coords[1]/40-90)

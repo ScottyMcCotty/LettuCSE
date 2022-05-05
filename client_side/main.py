@@ -17,7 +17,7 @@ from stop_button import StopButton
 def main():
     config = configparser.ConfigParser()
     config.read('configfile.ini')
-
+    
     destination_tray = Tray(config["JSON_FILES"]["destination_tray"])
     next_destination_hole = destination_tray.get_next_hole
     destination_tray_full = destination_tray.is_tray_full
@@ -85,6 +85,8 @@ def main():
         toolhead_illustrator.update_location(f_arduino.location)
 
         gui_window.update()
+
+
 
 if __name__ == "__main__":
     main()
