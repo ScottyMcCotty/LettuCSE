@@ -919,15 +919,13 @@ class windowHandler():
         """Displays information from measurement file and confirms before generating movement file"""
         # Hide/modify upload file screen objects.
         self.upload_button.place_forget()
-        self.step_title.config(text = "Step 2 of 2\n\nSpecify end of transplanting",
+        self.step_title.config(text = "Step 2 of 3\n\nSpecify end of transplanting",
                                  font = ("Arial", 15),
                                  bg = 'light green')
-        self.step_instructions.config(text = "If there are any holes on the tray you would like to avoid transplanting,\n"
-                                             "specify the last row & column to transplant to. All holes beyond that point\n"
-                                             "will NOT be transplanted.\n"
+        self.step_instructions.config(text = "If the source tray is not completely filled with plants, specify the last row\n"
+                                             "and column to transplant to. All holes beyond that point will NOT be transplanted.\n"
                                              "If no input is given, the transplanter will attempt to transplant\n"
-                                             "at every hole on the tray.\n"
-                                             "When ready, press the button to generate the movement file.",
+                                             "at every hole on the tray.",
                                       font = ("Arial", 15),
                                       bg = 'light green')
         self.create_movement_file_button.place(relx = .8, rely = .3, anchor = CENTER)
@@ -941,6 +939,9 @@ class windowHandler():
         #       CHANGE COORDINATE SYSTEM: It should have (1,1) at the lower left corner instead of lower right. and go
         #       left to right instead of right to left. Update
         #       the related image to show this, and update the movement_file_maker accordingly.
+        #       Implement 3rd step where the user can specify rows and columns of specific holes to ignore.
+        #       Will probably need a method of displaying all entered coordinates, as well as a 'clear' button that erases
+        #       the last entered coordinate.
 
         with open(self.selected_file) as opened_file:
             data = json.load(opened_file)
