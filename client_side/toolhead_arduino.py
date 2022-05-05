@@ -28,10 +28,10 @@ class ToolheadArduino(Arduino):
     def raise_toolhead(self) -> None:
         """Sends a '0' signal to the toolhead arduino,
         which instructs the toolhead to go up"""
-        super().send_string_to_arduino(str(0))
+        super().send_to_arduino(str(0))
 
 
     def lower_toolhead(self) -> None:
         """Sends a '1' signal to the toolhead arduino,
         which instructs the toolhead to go down"""
-        super().send_string_to_arduino(str(1))
+        super().send_to_arduino(str(1))

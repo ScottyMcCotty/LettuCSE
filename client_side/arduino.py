@@ -20,7 +20,7 @@ class Arduino():
 
     Methods
     -------
-    send_string_to_arduino()
+    send_to_arduino()
         called by the child classes to connect to the arduino.
         Converts the input string into bytes, encodes it, and
         sends it to the arduino connection. If there is no
@@ -34,7 +34,10 @@ class Arduino():
     mm_to_motor_constant = 0.12
 
     def __init__(self, arduino_id:str, motor_data:list) -> None:
-        """Set constants, find which port the arduino is connected to, and wait for the 'hello' response"""
+        """
+            Set constants, find which port the arduino is connected to,
+            wait for arduino to confirm connection
+        """
         self.mm_to_motor_constant = float(motor_data["mm_to_motor_constant"])
         self.corner_to_first_cup_x = float(motor_data["corner_to_first_cup_x"])
         self.corner_to_first_cup_y = float(motor_data["corner_to_first_cup_y"])
@@ -48,16 +51,11 @@ class Arduino():
                 except SerialException:
                     self.port_name = "ERROR CHANGE PORT PERMISSIONS TO ACCESS PORT"
         if self.arduino_connection:
-            while True:
+            response = self.arduino_connection.readline().decode("utf-8")
+            while response == "":
                 response = self.arduino_connection.readline().decode("utf-8")
-                if response == "":
-                    print(f"Waiting for response from {self.port_name}...")
-                    sleep(.5)
-                else:
-                    print(f"Response: '{response}'!")
-                    break
 
-    def send_string_to_arduino(self, string_to_send:str) -> None:
+    def send_to_arduino(self, string_to_send:str) -> None:
         """Convert input to bytes, send it to arduino, wait until
         the arduino has reported that it has received before continuing if an arduino is connected,
         othewise sleep because if there are no arduinos connected it means the software
@@ -73,4 +71,4 @@ class Arduino():
 
     def calibrate(self) -> None:
         "sends a string saying calibrate to the toolhead"
-        self.send_string_to_arduino("calibrate")
+        self.send_to_arduino("calibrate")

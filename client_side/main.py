@@ -13,6 +13,7 @@ from window_maker import WindowMaker
 from relocate_plant import RelocatePlant
 from stop_button import StopButton
 
+
 def main():
     config = configparser.ConfigParser()
     config.read('configfile.ini')

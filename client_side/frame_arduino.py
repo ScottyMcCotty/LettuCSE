@@ -44,7 +44,7 @@ class FrameArduino(Arduino):
     def go_to_origin(self) -> None:
         """Sends the toolhead to the center of the first cup"""
         self.location = (0,0)
-        super().send_string_to_arduino(str(self.corner_to_first_cup_x) +
+        super().send_to_arduino(str(self.corner_to_first_cup_x) +
                                       " " +
                                       str(self.corner_to_first_cup_y))
 
@@ -55,11 +55,11 @@ class FrameArduino(Arduino):
         x_coord = round((coords[0]- self.corner_to_first_cup_x + self.distance_traveled_to_lift_cup)/super().mm_to_motor_constant)
         y_coord = round((coords[1] - self.corner_to_first_cup_y)/super().mm_to_motor_constant)
         self.location = (x_coord,y_coord)
-        super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))
+        super().send_to_arduino(str(x_coord) + " " +str(y_coord))
 
     def go_to_cup(self, coords:tuple) -> None:
         """Go directly to the cordinate location"""
         x_coord = round((coords[0] - self.corner_to_first_cup_x)/super().mm_to_motor_constant)
         y_coord = round((coords[1] - self.corner_to_first_cup_y)/super().mm_to_motor_constant)
         self.location = (x_coord,y_coord)
-        super().send_string_to_arduino(str(x_coord) + " " +str(y_coord))
+        super().send_to_arduino(str(x_coord) + " " +str(y_coord))

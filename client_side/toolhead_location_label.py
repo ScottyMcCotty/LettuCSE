@@ -37,4 +37,4 @@ class ToolheadLocationLabel():
 
     def update_location(self, coords:tuple):
         """change the text on the label to reflect new location"""
-        self.label_instance['text'] = coords
+        self.label_instance['text'] = "Destination of Toolhead in motor coordinates " + str(coords)
