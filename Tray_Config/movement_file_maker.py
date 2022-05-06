@@ -34,7 +34,9 @@ class movement_file_maker():
 
 
     def ith_hole_x(self, i) -> float:
-        column_number = i% self.columns
+        # Instead of i% self.columns, it's columns - i%self.columns to reflect order going from left to right
+        # instead of right to left.
+        column_number = (self.columns - 1) - (i% self.columns)
         total_gap = self.short_axis_distance*column_number
         # use hole_length or hole_width?
         total_hole_width = self.hole_width*column_number + column_number/2
@@ -68,6 +70,7 @@ class movement_file_maker():
         return self.columns*self.rows
 
     def create_movement_file(self, end_row, end_col, ignored_holes) -> None:
+        """Creates a JSON file with generated coordinates based on the parameters and stored tray information."""
         file_info = {}
         coord = []
         # Only create coordinates up to the end row and end column.
