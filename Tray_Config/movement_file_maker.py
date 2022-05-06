@@ -67,12 +67,14 @@ class movement_file_maker():
         """Returns total number of holes in tray"""
         return self.columns*self.rows
 
-    def create_movement_file(self) -> None:
+    def create_movement_file(self, end_row, end_col, ignored_holes) -> None:
         file_info = {}
         coord = []
-        for m in range (0,self.columns*self.rows):
-            coord = [str(round(self.ith_hole_x(m), 3)), str(round(self.ith_hole_y(m), 3))]
-            file_info[str(m)] = coord
+        # Only create coordinates up to the end row and end column.
+        for m in range (0,(end_row - 1) * self.columns + end_col):
+            if m not in ignored_holes:
+                coord = [str(round(self.ith_hole_x(m), 3)), str(round(self.ith_hole_y(m), 3))]
+                file_info[str(m)] = coord
 
         holes = str(self.get_number_of_holes())
         file_info["holes"] = holes

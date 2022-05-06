@@ -302,7 +302,7 @@ class windowHandler():
 
         # PART 2 STEP 2 SCREEN
         self.part2_step2_picture_canvas = Canvas(master = None, width = 501, height = 400)
-        self.part2_step2_picture = PhotoImage(file = "images/Part2Image.png")
+        self.part2_step2_picture = PhotoImage(file = "images/Part2Step2Image.png")
         self.part2_info_label = Label(text = "End coordinates:\t\t\tN/A\n"
                                              "Holes recently added to ignore list:\tN/A",
                                              font = ("Arial", 10),
@@ -323,8 +323,8 @@ class windowHandler():
                                         state = DISABLED)
 
         # PART 2 STEP 3 SCREEN
-        self.part2_step3_picture_canvas = Canvas(master = None, width = 500, height = 500) # TODO: Set width/height to image dimensions
-        self.part2_step3_picture = PhotoImage(file = "images/Part2Image.png") # TODO: Set image to proper image
+        self.part2_step3_picture_canvas = Canvas(master = None, width = 501, height = 400) # TODO: Set width/height to image dimensions
+        self.part2_step3_picture = PhotoImage(file = "images/Part2Step3Image.png") # TODO: Set image to proper image
         self.part2_step3_clear_last_input_button = Button(self.window,
                                                           text = "Clear last entered tray hole",
                                                           font = ("Arial,", 10),
@@ -375,6 +375,11 @@ class windowHandler():
         self.continue_button.place_forget()
         self.back_button.config(state = DISABLED)
         self.back_button.place_forget()
+
+        # Reset part 2's input.
+        self.end_row = 0
+        self.end_col = 0
+        self.ignored_holes = []
 
         # Hide step 1 objects.
         self.step_title.place_forget()
@@ -657,6 +662,8 @@ class windowHandler():
         elif self.current_step == 5 or self.current_step == -2 or self.current_step == -3:
             if not inputA.isdigit() or not inputB.isdigit():
                 return
+            elif int(inputA) <= 0 or int(inputB) <= 0:
+                return
         elif self.current_step == 6:
             if not inputA.isdigit() or not inputB.replace(".","",1).isdigit():
                 return
@@ -691,8 +698,8 @@ class windowHandler():
         elif self.current_step == -3:
             # Check to ensure the input values are within the bounds of the data set's row and columns.
             if int(inputA) <= self.uploaded_measurements.rows and int(inputB) <= self.uploaded_measurements.columns:
-                if (int(inputA)*int(inputB)) not in self.ignored_holes:
-                    self.ignored_holes.append(int(inputA)*int(inputB))
+                if ((int(inputA) - 1)*self.uploaded_measurements.columns + int(inputB)) not in self.ignored_holes:
+                    self.ignored_holes.append((int(inputA) - 1)*self.uploaded_measurements.columns + int(inputB))
                 self.update_part2_info()
             return
 
@@ -993,24 +1000,31 @@ class windowHandler():
 
         # Display entered information.
         if self.end_row > 0 and self.end_col > 0:
-            end_coordinates = "row " + str(self.end_row) + ", column " + str(self.end_col)
+            end_val = (self.end_row - 1) * self.uploaded_measurements.columns + self.end_col
+            end_coordinates = "row " + str(self.end_row) + ", column " + str(self.end_col) + " (#" + str(end_val) + ")\t"
         else:
-            end_coordinates = "N/A"
+            end_coordinates = "N/A\t\t\t"
 
         reversed_holes = self.ignored_holes[::-1]
         ignored_holes_string = ""
         if len(reversed_holes) == 0:
-            ignored_holes_string = "N/A"
+            ignored_holes_string = "N/A\t\t\t"
         else:
             for i in range(len(reversed_holes) - 1):
-                ignored_holes_string += str(reversed_holes[i]) + ", "
-            ignored_holes_string += str(reversed_holes[len(reversed_holes) - 1])
+                ignored_holes_string += "#" + str(reversed_holes[i]) + ", "
+                if i >= 3:
+                    break
+
+            if len(reversed_holes) > 5:
+                ignored_holes_string += "#" + str(reversed_holes[4])
+            else:
+                ignored_holes_string += "#" + str(reversed_holes[len(reversed_holes) - 1]) + "\t"
 
         self.part2_info_label.config(text = "End coordinates:\t\t\t" + end_coordinates + "\n" +
                                             "Holes recently added to ignore list:\t" + ignored_holes_string)
 
         self.part2_info_label.place_forget()
-        self.part2_info_label.place(relx = 0.2, rely = 0.9, anchor = CENTER)
+        self.part2_info_label.place(relx = 0.23, rely = 0.9, anchor = CENTER)
         return
 
     # Function that displays Part 2, step 2.
@@ -1057,7 +1071,6 @@ class windowHandler():
                                              "attempt to transplant at every hole on the tray.",
                                       font = ("Arial", 15),
                                       bg = 'light green')
-        #TODO: delete? self.create_movement_file_button.place(relx = .8, rely = .3, anchor = CENTER)
         self.update_part2_info()
         self.part2_step3_picture_canvas.place_forget()
         self.part2_step3_clear_last_input_button.place_forget()
@@ -1136,6 +1149,7 @@ class windowHandler():
         self.part2_continue_button.config(state = NORMAL)
         self.part2_step2_picture_canvas.place_forget()
         self.part2_step2_clear_input_button.place_forget()
+        self.create_movement_file_button.place_forget()
         self.step_title.config(text = "Step 3 of 3\n\nSpecify holes to ignore",
                                  font = ("Arial", 15),
                                  bg = 'light green')
@@ -1158,6 +1172,9 @@ class windowHandler():
         self.text_entryB_label.place(relx = 0.8, rely = 0.65, anchor = CENTER)
         self.accept_input_button.place(relx = 0.9, rely = 0.7, anchor = CENTER)
 
+        self.part2_step3_picture_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
+        self.part2_step3_picture_canvas.create_image(250, 200, anchor=CENTER, image=self.part2_step3_picture)
+
         return # TODO
 
     # Function that displays the review step of Part 2 before generating the movement JSON file.
@@ -1179,6 +1196,10 @@ class windowHandler():
         self.text_entryA_label.place_forget()
         self.text_entryB.place_forget()
         self.text_entryB_label.place_forget()
+        self.accept_input_button.place_forget()
+
+        # Can potentially jump from step 1 as well, so take that into account.
+        self.upload_button.place_forget()
 
         self.step_title.config(text = "Review",
                                  font = ("Arial", 15),
@@ -1187,6 +1208,8 @@ class windowHandler():
                                              "When ready, press the button to generate a JSON movement file.",
                                       font = ("Arial", 15),
                                       bg = 'light green')
+
+        self.create_movement_file_button.place(relx = .5, rely = .3, anchor = CENTER)
 
         return # TODO
         
@@ -1204,7 +1227,13 @@ class windowHandler():
                                          self.uploaded_measurements.columns,
                                          self.uploaded_measurements.rows_between_gap,
                                          self.uploaded_measurements.extra_gap)
-        file_maker.create_movement_file()
+        # Decrement each value in ignored_holes by 1 to account for off-by-1 issue.
+        for i in range(len(self.ignored_holes)):
+            self.ignored_holes[i] -= 1
+        if self.end_row <= 0 or self.end_col <= 0:
+            file_maker.create_movement_file(self.uploaded_measurements.rows, self.uploaded_measurements.columns, self.ignored_holes)
+        else:
+            file_maker.create_movement_file(self.end_row, self.end_col, self.ignored_holes)
 
         # Hide/modify confirm upload file screen objects.
         self.return_title_button.place_forget()
@@ -1213,6 +1242,9 @@ class windowHandler():
         self.confirm_return_no.place_forget()
         self.step_title.place_forget()
         self.create_movement_file_button.place_forget()
+        self.part2_continue_button.place_forget()
+        self.part2_back_button.place_forget()
+        self.part2_info_label.place_forget()
         self.uploaded_measurements.hide_label()
         self.step_instructions.config(text = "CREATION PROCESS COMPLETE\n"
                                              "File '" + file_maker.output_file_name + "'\n"
