@@ -1064,7 +1064,7 @@ class windowHandler():
                                  bg = 'light green')
         self.step_instructions.config(text = "If the source tray is not completely filled with plants, specify the last row\n"
                                              "and column to transplant from. All holes beyond that point will NOT\n"
-                                             "be transplanted.If no coordinates are given, the transplanter will\n"
+                                             "be transplanted. If no coordinates are given, the transplanter will\n"
                                              "attempt to transplant at every hole on the tray.",
                                       font = ("Arial", 15),
                                       bg = 'light green')
