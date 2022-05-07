@@ -323,8 +323,8 @@ class windowHandler():
                                         state = DISABLED)
 
         # PART 2 STEP 3 SCREEN
-        self.part2_step3_picture_canvas = Canvas(master = None, width = 501, height = 400) # TODO: Set width/height to image dimensions
-        self.part2_step3_picture = PhotoImage(file = "images/Part2Step3Image.png") # TODO: Set image to proper image
+        self.part2_step3_picture_canvas = Canvas(master = None, width = 501, height = 400)
+        self.part2_step3_picture = PhotoImage(file = "images/Part2Step3Image.png")
         self.part2_step3_clear_last_input_button = Button(self.window,
                                                           text = "Clear last entered tray hole",
                                                           font = ("Arial,", 10),
@@ -343,7 +343,6 @@ class windowHandler():
     def title_screen(self) -> None:
         """Hides everything else and displays the title screen"""
         # Hide all non-title screen objects.
-        # TODO
         self.start_measuring_warning.place_forget()
         self.confirm_continue_button.place_forget()
         self.confirm_exit_button.place_forget()
@@ -495,7 +494,6 @@ class windowHandler():
             self.step6_screen()
         elif self.current_step == 6:
             self.step7_screen()
-        # TODO: CONTINUE ADDING ELIFS AS MORE STEPS ARE IMPLEMENTED
 
         # Only allow the next button to be clicked again if input has completed for the current step.
         if self.current_progress >= self.current_step:
@@ -525,7 +523,6 @@ class windowHandler():
             self.step5_screen()
         elif self.current_step == 7:
             self.step6_screen()
-        # TODO: CONTINUE ADDING ELIFS AS MORE STEPS ARE IMPLEMENTED
 
         # Allow the next button to be clicked again if input has completed for the current step.
         if self.current_progress >= self.current_step:
@@ -1096,20 +1093,6 @@ class windowHandler():
         self.part2_step2_picture_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
         self.part2_step2_picture_canvas.create_image(250, 200, anchor=CENTER, image=self.part2_step2_picture)
 
-        # TODO: Make canvas to display Part2Step2Image.png
-        #       Add two text boxes to allow user to input the end row and end column
-        #       Make button to accept text input without advancing screen
-        #       Error check user input to ensure it is a number AND it is within the bounds set by the input information
-        #       Edit movement_file_maker to go from 0 to endrow * endcol instead of row * col
-        #       CONFIRM THAT THE MOVEMENT FILE USES THE SAME ROW/COL SYSTEM (where the axes start at the lower right, and
-        #       the coordinates are generated going right to left in a row before going up to the next row). IT DOES
-        #       CHANGE COORDINATE SYSTEM: It should have (1,1) at the lower left corner instead of lower right. and go
-        #       left to right instead of right to left. Update
-        #       the related image to show this, and update the movement_file_maker accordingly.
-        #       Implement 3rd step where the user can specify rows and columns of specific holes to ignore.
-        #       Will probably need a method of displaying all entered coordinates, as well as a 'clear' button that erases
-        #       the last entered coordinate.
-
     # Function that clears the end coordinates input.
     def part2_step2_clear_input(self):
         self.end_row = 0
@@ -1175,8 +1158,6 @@ class windowHandler():
         self.part2_step3_picture_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
         self.part2_step3_picture_canvas.create_image(250, 200, anchor=CENTER, image=self.part2_step3_picture)
 
-        return # TODO
-
     # Function that displays the review step of Part 2 before generating the movement JSON file.
     def part2_review_screen(self):
         """Displays the review step of Part 2"""
@@ -1210,8 +1191,6 @@ class windowHandler():
                                       bg = 'light green')
 
         self.create_movement_file_button.place(relx = .5, rely = .3, anchor = CENTER)
-
-        return # TODO
         
     # Function that calls functions in movement_file_maker to create a movement JSON file.
     # It also displays the confirmation screen.
