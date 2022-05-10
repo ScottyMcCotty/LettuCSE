@@ -39,8 +39,6 @@ class Arduino():
             wait for arduino to confirm connection
         """
         self.mm_to_motor_constant = float(motor_data["mm_to_motor_constant"])
-        self.corner_to_first_cup_x = float(motor_data["corner_to_first_cup_x"])
-        self.corner_to_first_cup_y = float(motor_data["corner_to_first_cup_y"])
         self.distance_traveled_to_lift_cup = float(motor_data["distance_traveled_to_lift_cup"])
 
         for port in list_ports.comports():

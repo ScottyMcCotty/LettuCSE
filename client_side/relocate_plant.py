@@ -34,13 +34,12 @@ class RelocatePlant():
     go_to_origin = None
     width_of_source_tray = None
 
-    def __init__(self, go_behind_cup, go_to_cup, raise_toolhead, lower_toolhead, go_to_origin, width_of_source_tray) -> None:
+    def __init__(self, go_behind_cup, go_to_cup, raise_toolhead, lower_toolhead, go_to_origin) -> None:
         self.lower_toolhead = lower_toolhead
         self.go_behind_cup = go_behind_cup
         self.go_to_cup = go_to_cup
         self.raise_toolhead = raise_toolhead
         self.go_to_origin = go_to_origin
-        self.width_of_source_tray = float(width_of_source_tray)
 
 
     def transport_plant(self, source:tuple, destination:tuple):
@@ -50,6 +49,8 @@ class RelocatePlant():
             value is added to compensate for the width of the source tray
             so that the toolhead recognizes that it needs to go further back 
             for the destination trays"""
+        self.go_to_cup(source)
+        
         self.go_behind_cup(source)
         self.lower_toolhead()
         self.go_to_cup(source)
@@ -58,7 +59,7 @@ class RelocatePlant():
         self.lower_toolhead()
         self.go_behind_cup((float(destination[0]), destination[1]))
         self.raise_toolhead()
-
+        
     def reset_transplanter(self):
         """Raise the toolhead and go to the origin"""
         self.go_to_origin()

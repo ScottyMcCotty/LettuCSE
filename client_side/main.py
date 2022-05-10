@@ -41,7 +41,7 @@ def main():
     port_name_labels = PortNameLabel(tkinter_instance, t_arduino.port_name, f_arduino.port_name)
     window_maker = WindowMaker(tkinter_instance)
 
-    plant_relocator = RelocatePlant(go_behind_cup, go_to_cup, raise_toolhead, lower_toolhead, go_to_origin, config["TRAYS"]["width_of_source_tray"])
+    plant_relocator = RelocatePlant(go_behind_cup, go_to_cup, raise_toolhead, lower_toolhead, go_to_origin)
     relocation_function = plant_relocator.transport_plant
     reset = plant_relocator.reset_transplanter
 
