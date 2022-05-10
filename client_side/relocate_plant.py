@@ -50,7 +50,7 @@ class RelocatePlant():
             so that the toolhead recognizes that it needs to go further back 
             for the destination trays"""
         self.go_to_cup(source)
-        
+        """
         self.go_behind_cup(source)
         self.lower_toolhead()
         self.go_to_cup(source)
@@ -59,6 +59,7 @@ class RelocatePlant():
         self.lower_toolhead()
         self.go_behind_cup((float(destination[0]), destination[1]))
         self.raise_toolhead()
+        """
         
     def reset_transplanter(self):
         """Raise the toolhead and go to the origin"""

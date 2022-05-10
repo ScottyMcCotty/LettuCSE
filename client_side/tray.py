@@ -50,7 +50,7 @@ class Tray:
         """
         next_hole = (float(self.hole_location_map.get(str(self.hole_iterator))[0]), float(self.hole_location_map.get(str(self.hole_iterator))[1]))
 
-        next_hole_distance_from_origin = (round(next_hole[0] + float(self.hole_location_map.get("width_of_source_tray")), 3), next_hole[1])
+        next_hole_distance_from_origin = (round(next_hole[0] + float(self.hole_location_map.get("width_of_source_tray")), 3), round(next_hole[1]))
         if self.hole_iterator+1 == int(self.hole_location_map.get("holes")):
             self.hole_iterator = 0
         else:
