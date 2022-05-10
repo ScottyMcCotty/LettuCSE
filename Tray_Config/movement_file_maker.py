@@ -102,7 +102,10 @@ class movement_file_maker():
         holes = str(self.get_number_of_holes())
         file_info["holes"] = holes
         distance = str(self.get_width())
-        file_info["width_of_source_tray"] = distance
+        if self.output_file_name == "destination_tray.json":
+            file_info["width_of_source_tray"] = distance
+        else:
+            file_info["width_of_source_tray"] = 0.0
         
         with open(self.output_file_name, 'w') as output:
             json.dump(file_info, output, indent = 4)
