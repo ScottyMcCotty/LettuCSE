@@ -1,6 +1,9 @@
 """Module contains the RelocatePlant class"""
 
 
+from time import sleep
+
+
 class RelocatePlant():
     """
     Creates a function that moves a plant from the source to the destination
@@ -45,22 +48,27 @@ class RelocatePlant():
     def transport_plant(self, source:tuple, destination:tuple):
         """Get the toolhead to go from a raised position, move
             a plant from the source to the destination, and again
-            enter a raised position. For all the destinations, an x
-            value is added to compensate for the width of the source tray
-            so that the toolhead recognizes that it needs to go further back 
-            for the destination trays"""
-        self.go_to_cup(source)
-        """
+            enter a raised position. The sleep commands serve the dual
+            purpose of ensuring the toolhead does not lower while
+            it is moving, which would crush the plants, and making
+            the video look a bit cleaner."""
         self.go_behind_cup(source)
+        sleep(7.5)
         self.lower_toolhead()
+        sleep(1.5)
         self.go_to_cup(source)
+        sleep(0.25)
         self.raise_toolhead()
-        self.go_to_cup((float(destination[0]), destination[1]))
+        sleep(1.5)
+        self.go_to_cup(destination)
+        sleep(10)
         self.lower_toolhead()
-        self.go_behind_cup((float(destination[0]), destination[1]))
+        sleep(1.5)
+        self.go_behind_cup(destination)
+        sleep(0.5)
         self.raise_toolhead()
-        """
-        
+        sleep(1.5)
+
     def reset_transplanter(self):
         """Raise the toolhead and go to the origin"""
         self.go_to_origin()
