@@ -28,6 +28,7 @@ class windowHandler():
     tray_measurements = None
     uploaded_measurements = None
     is_dense = None
+    source_lADtE = None
 
     window = None
 
@@ -1247,6 +1248,17 @@ class windowHandler():
     # Function that calls functions in movement_file_maker to create a movement JSON file.
     # It also displays the confirmation screen.
     def create_movement_file(self):
+        # Get the long_axis_distance_to_edge of the source tray, since it is needed to get the offset for the destination tray.
+        # NOTE: This means the program will not work to create the destination tray if the source tray measurements are
+        #       NOT present in the directory.
+        if self.uploaded_measurements.tray_name == "Destination":
+            source_file = self.selected_file.replace("custom_sparse_tray_measurements", "custom_dense_tray_measurements")
+            with open(source_file) as opened_file:
+                data = json.load(opened_file)
+            self.source_lADtE = data['short_axis_distance_to_edge']
+        else:
+            self.source_lADtE = 0.0
+
         file_maker = movement_file_maker(self.uploaded_measurements.tray_name,
                                          self.uploaded_measurements.hole_length,
                                          self.uploaded_measurements.hole_width,
@@ -1259,7 +1271,8 @@ class windowHandler():
                                          self.uploaded_measurements.rows_between_gap,
                                          self.uploaded_measurements.row_extra_gap,
                                          self.uploaded_measurements.cols_between_gap,
-                                         self.uploaded_measurements.col_extra_gap)
+                                         self.uploaded_measurements.col_extra_gap,
+                                         self.source_lADtE)
         # Decrement each value in ignored_holes by 1 to account for off-by-1 issue.
         for i in range(len(self.ignored_holes)):
             self.ignored_holes[i] -= 1

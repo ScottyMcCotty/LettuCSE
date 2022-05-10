@@ -16,7 +16,9 @@ class movement_file_maker():
     cols_between_gap = None
     col_extra_gap = None
 
-    def __init__(self, fN, hL, hW, sAD, lAD, sADtE, lADtE, row, col, rBG, rEG, cBG, cEG):
+    source_long_axis_distance_to_edge = None
+
+    def __init__(self, fN, hL, hW, sAD, lAD, sADtE, lADtE, row, col, rBG, rEG, cBG, cEG, sLADtE):
         if fN == "Source":
             self.output_file_name = "source_tray.json"
         elif fN == "Destination":
@@ -35,6 +37,7 @@ class movement_file_maker():
         self.row_extra_gap = rEG
         self.cols_between_gap = cBG
         self.col_extra_gap = cEG
+        self.source_long_axis_distance_to_edge = sLADtE
 
 
     def ith_hole_x(self, i) -> float:
@@ -104,8 +107,14 @@ class movement_file_maker():
         distance = str(self.get_width())
         if self.output_file_name == "destination_tray.json":
             file_info["width_of_source_tray"] = distance
+            # NOTE: Getting the height offset distance requires the source tray measurements in the directory.
+            #       This means you can't individually make source & destination files anymore; you need source tray measurements
+            #       to make destination tray coordinates. Not great code design but not much else can be done about it for now.
+
+            file_info["height_offset_distance"] = self.long_axis_distance_to_edge - self.source_long_axis_distance_to_edge
         else:
             file_info["width_of_source_tray"] = 0.0
+            file_info["height_offset_distance"] = 0.0
         
         with open(self.output_file_name, 'w') as output:
             json.dump(file_info, output, indent = 4)
