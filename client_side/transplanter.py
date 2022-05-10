@@ -64,7 +64,8 @@ class Transplanter():
             if not self.paused:
                 if self.source_is_full() or self.dest_is_full():
                     self.paused = True
-                self.transport(self.next_source_hole(), self.next_dest_hole())
+                print(float(self.next_dest_hole()[0]))
+                self.transport((float(self.next_source_hole()[0]), float(self.next_source_hole()[1])), (float(self.next_dest_hole()[0]), float(self.next_dest_hole()[1])))
 
     def continue_transplant(self):
         """permanantly end the whole process"""

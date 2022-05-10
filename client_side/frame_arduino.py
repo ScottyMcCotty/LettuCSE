@@ -41,17 +41,19 @@ class FrameArduino(Arduino):
         super().send_to_arduino('calibrate')
 
 
-    def go_behind_cup(self, coords:tuple) -> None:
+    def go_behind_cup(self, coords:tuple) -> bool:
         """Go to a given distance behind the cup so that it will
         be in place to scoop it up when it is lifted"""
         x_coord = round((coords[0] + self.distance_traveled_to_lift_cup)/super().mm_to_motor_constant)
         y_coord = round((coords[1])/super().mm_to_motor_constant)
         self.location = (x_coord,y_coord)
         super().send_to_arduino(str(x_coord) + " " +str(y_coord))
+        return True
 
-    def go_to_cup(self, coords:tuple) -> None:
+    def go_to_cup(self, coords:tuple) -> bool:
         """Go directly to the cordinate location"""
         x_coord = round(coords[0]/super().mm_to_motor_constant)
         y_coord = round(coords[1]/super().mm_to_motor_constant)
         self.location = (x_coord,y_coord)
         super().send_to_arduino(str(x_coord) + " " +str(y_coord))
+        return True

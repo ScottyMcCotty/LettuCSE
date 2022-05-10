@@ -25,13 +25,15 @@ class ToolheadArduino(Arduino):
     name = "Toolhead Arduino"
 
 
-    def raise_toolhead(self) -> None:
+    def raise_toolhead(self) -> bool:
         """Sends a '0' signal to the toolhead arduino,
         which instructs the toolhead to go up"""
         super().send_to_arduino(str(0))
+        return True
 
 
-    def lower_toolhead(self) -> None:
+    def lower_toolhead(self) -> bool:
         """Sends a '1' signal to the toolhead arduino,
         which instructs the toolhead to go down"""
         super().send_to_arduino(str(1))
+        return True
