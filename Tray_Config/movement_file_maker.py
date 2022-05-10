@@ -16,9 +16,10 @@ class movement_file_maker():
     cols_between_gap = None
     col_extra_gap = None
 
+    source_short_axis_distance_to_edge = None
     source_long_axis_distance_to_edge = None
 
-    def __init__(self, fN, hL, hW, sAD, lAD, sADtE, lADtE, row, col, rBG, rEG, cBG, cEG, sLADtE):
+    def __init__(self, fN, hL, hW, sAD, lAD, sADtE, lADtE, row, col, rBG, rEG, cBG, cEG, sSADtE, sLADtE):
         if fN == "Source":
             self.output_file_name = "source_tray.json"
         elif fN == "Destination":
@@ -37,6 +38,7 @@ class movement_file_maker():
         self.row_extra_gap = rEG
         self.cols_between_gap = cBG
         self.col_extra_gap = cEG
+        self.source_short_axis_distance_to_edge = sSADtE
         self.source_long_axis_distance_to_edge = sLADtE
 
 
@@ -114,9 +116,11 @@ class movement_file_maker():
             #       to make destination tray coordinates. Not great code design but not much else can be done about it for now.
 
             file_info["height_offset_distance"] = str(self.long_axis_distance_to_edge - self.source_long_axis_distance_to_edge)
+            file_info["width_offset_distance"] = str(self.short_axis_distance_to_edge - self.source_short_axis_distance_to_edge)
         else:
             file_info["width_of_source_tray"] = "0.0"
             file_info["height_offset_distance"] = "0.0"
+            file_info["width_offset_distance"] = "0.0"
         
         with open(self.output_file_name, 'w') as output:
             json.dump(file_info, output, indent = 4)

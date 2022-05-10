@@ -29,6 +29,7 @@ class windowHandler():
     uploaded_measurements = None
     is_dense = None
     source_lADtE = None
+    source_sADtE = None
 
     window = None
 
@@ -1255,8 +1256,10 @@ class windowHandler():
             source_file = self.selected_file.replace("custom_sparse_tray_measurements", "custom_dense_tray_measurements")
             with open(source_file) as opened_file:
                 data = json.load(opened_file)
-            self.source_lADtE = data['short_axis_distance_to_edge']
+            self.source_lADtE = data['long_axis_distance_to_edge']
+            self.source_sADtE = data['short_axis_distance_to_edge']
         else:
+            self.source_sADtE = 0.0
             self.source_lADtE = 0.0
 
         file_maker = movement_file_maker(self.uploaded_measurements.tray_name,
@@ -1272,6 +1275,7 @@ class windowHandler():
                                          self.uploaded_measurements.row_extra_gap,
                                          self.uploaded_measurements.cols_between_gap,
                                          self.uploaded_measurements.col_extra_gap,
+                                         self.source_sADtE,
                                          self.source_lADtE)
         # Decrement each value in ignored_holes by 1 to account for off-by-1 issue.
         for i in range(len(self.ignored_holes)):
