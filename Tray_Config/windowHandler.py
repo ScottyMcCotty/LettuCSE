@@ -1098,7 +1098,9 @@ class windowHandler():
         self.uploaded_measurements.rows = data['rows']
         self.uploaded_measurements.columns = data['columns']
         self.uploaded_measurements.rows_between_gap = data['rows_between_gap']
-        self.uploaded_measurements.extra_gap = data['extra_gap']
+        self.uploaded_measurements.row_extra_gap = data['row_extra_gap']
+        self.uploaded_measurements.cols_between_gap = data['cols_between_gap']
+        self.uploaded_measurements.col_extra_gap = data['col_extra_gap']
         self.uploaded_measurements.update_info()
 
         # If the uploaded file is a destination tray, skip ahead to the review step, since

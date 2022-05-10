@@ -1,14 +1,14 @@
 {
-    "hole_length": 5.0,
-    "hole_width": 5.0,
-    "short_axis_distance": 5.0,
-    "long_axis_distance": 5.0,
-    "short_axis_distance_to_edge": 5.0,
-    "long_axis_distance_to_edge": 5.0,
-    "rows": 5,
-    "columns": 5,
+    "hole_length": 32.3,
+    "hole_width": 32.3,
+    "short_axis_distance": 12.35,
+    "long_axis_distance": 21.52,
+    "short_axis_distance_to_edge": 32.93,
+    "long_axis_distance_to_edge": 47.45,
+    "rows": 15,
+    "columns": 12,
     "rows_between_gap": 5,
-    "row_extra_gap": 5.0,
-    "cols_between_gap": 5,
-    "col_extra_gap": 5.0
+    "row_extra_gap": 29.48,
+    "cols_between_gap": 6,
+    "col_extra_gap": 17.48
 }
