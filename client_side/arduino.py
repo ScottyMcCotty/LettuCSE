@@ -54,6 +54,7 @@ class Arduino():
             response = self.arduino_connection.readline().decode("utf-8")
             while response == "":
                 response = self.arduino_connection.readline().decode("utf-8")
+        self.calibrate()
 
     def send_to_arduino(self, string_to_send:str) -> None:
         """Convert input to bytes, send it to arduino, wait until
