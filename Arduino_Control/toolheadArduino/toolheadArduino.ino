@@ -26,6 +26,7 @@ const int UP = 0;
 const int DOWN = 1;
 const String UP_STRING = "0";
 const String DOWN_STRING = "1";
+const String CALIBRATE_STRING = "calibrate";
 
 
 //
@@ -40,7 +41,7 @@ void setup() {
 void loop() {
   String input = wait_for_input("Toolhead command? ");
 
-  if (input == UP_STRING) {
+  if (input == UP_STRING || input == CALIBRATE_STRING) {
     Serial.println("moving up");
     move(UP);
   } else if (input == DOWN_STRING) {

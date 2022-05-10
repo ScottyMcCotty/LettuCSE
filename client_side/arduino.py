@@ -62,7 +62,7 @@ class Arduino():
         if self.arduino_connection:
             self.arduino_connection.write(bytes(string_to_send + "\n", 'utf8'))
             response = self.arduino_connection.readline().decode("utf-8")
-            while "Done" not in response:
+            while "Done" not in response and "Calibrated" not in response:
                 sleep(0.5)
                 response = self.arduino_connection.readline().decode("utf-8")
         else:
