@@ -55,11 +55,12 @@ class movement_file_maker():
         # use hole_length or hole_width?
         total_hole_width = self.hole_width*col_number
 
-        # Destination tray needs the short axis distance to edge, but source tray does not if (0,0) is directly above the 1st hole.
+        '''# Destination tray needs the short axis distance to edge, but source tray does not if (0,0) is directly above the 1st hole.
+        # NOTE: This should no longer be needed if the measurement file contains both X and Y offsets for destination tray
         if self.output_file_name == "destination_tray.json":
             return total_gap + total_hole_width + self.short_axis_distance_to_edge
-        else:
-            return total_gap + total_hole_width
+        else:'''
+        return total_gap + total_hole_width
 
     def ith_hole_y(self, i:int) -> float:
         row_number = i//self.columns
@@ -71,11 +72,12 @@ class movement_file_maker():
         total_gap = self.long_axis_distance*(row_number-thicker_rows)+self.row_extra_gap*(thicker_rows)
         # use hole_length or hole_width?
         total_hole_distance = self.hole_length*row_number
-        # Destination tray needs the long axis distance to edge, but source tray does not if (0,0) is directly above the 1st hole.
+        '''# Destination tray needs the long axis distance to edge, but source tray does not if (0,0) is directly above the 1st hole.
+        # NOTE: This should no longer be needed if the measurement file contains both X and Y offsets for destination tray
         if self.output_file_name == "destination_tray.json":
             return total_gap + total_hole_distance + self.long_axis_distance_to_edge
-        else:
-            return total_gap + total_hole_distance
+        else:'''
+        return total_gap + total_hole_distance
 
     def ith_hole_location(self, i) -> tuple:
         return '["' + str(round(self.ith_hole_x(i), 10)) + '","' + str(round(self.ith_hole_y(i), 10)) + '"]'
@@ -106,15 +108,15 @@ class movement_file_maker():
         file_info["holes"] = holes
         distance = str(self.get_width())
         if self.output_file_name == "destination_tray.json":
-            file_info["width_of_source_tray"] = distance
+            file_info["width_of_source_tray"] = str(distance)
             # NOTE: Getting the height offset distance requires the source tray measurements in the directory.
             #       This means you can't individually make source & destination files anymore; you need source tray measurements
             #       to make destination tray coordinates. Not great code design but not much else can be done about it for now.
 
-            file_info["height_offset_distance"] = self.long_axis_distance_to_edge - self.source_long_axis_distance_to_edge
+            file_info["height_offset_distance"] = str(self.long_axis_distance_to_edge - self.source_long_axis_distance_to_edge)
         else:
-            file_info["width_of_source_tray"] = 0.0
-            file_info["height_offset_distance"] = 0.0
+            file_info["width_of_source_tray"] = "0.0"
+            file_info["height_offset_distance"] = "0.0"
         
         with open(self.output_file_name, 'w') as output:
             json.dump(file_info, output, indent = 4)
