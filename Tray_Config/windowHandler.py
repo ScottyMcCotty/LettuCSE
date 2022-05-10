@@ -61,7 +61,7 @@ class windowHandler():
 
     accept_input_button = None
 
-    step7_create_file_button = None
+    step8_create_file_button = None
 
     title_button_no_confirmation = None
 
@@ -102,6 +102,8 @@ class windowHandler():
     step5_pictureA = None
     step6_pictureA_canvas = None
     step6_pictureA = None
+    step7_pictureA_canvas = None
+    step7_pictureA = None
     part2_step2_picture_canvas = None
     part2_step2_picture = None
     part2_step3_picture_canvas = None
@@ -195,7 +197,7 @@ class windowHandler():
                                   state = DISABLED)
 
         # STEP 1 SCREEN (source or destination tray?)  
-        self.step_title = Label(text = "Step 1 of 7\n\nSpecify tray type",
+        self.step_title = Label(text = "Step 1 of 8\n\nSpecify tray type",
                                  font = ("Arial", 15),
                                  bg = 'light green')
         self.step_instructions = Label(text = "Indicate whether the information being entered is "
@@ -248,8 +250,12 @@ class windowHandler():
         self.step6_pictureA_canvas = Canvas(master = None, width = 357, height = 550)
         self.step6_pictureA = PhotoImage(file = "images/step6Image.png")
 
-        # STEP 7 SCREEN (review information?)
-        self.step7_create_file_button = Button(self.window,
+        # STEP 7 SCREEN (special gaps between cols?)
+        self.step7_pictureA_canvas = Canvas(master = None, width = 357, height = 550)
+        self.step7_pictureA = PhotoImage(file = "images/step7Image.png")
+
+        # STEP 8 SCREEN (review information?)
+        self.step8_create_file_button = Button(self.window,
                                                text = "Create JSON info file",
                                                command = self.create_info_file,
                                                state = NORMAL)
@@ -408,7 +414,10 @@ class windowHandler():
         self.step6_pictureA_canvas.place_forget()
 
         # Hide step 7 objects.
-        self.step7_create_file_button.place_forget()
+        self.step7_pictureA_canvas.place_forget()
+
+        # Hide step 8 objects.
+        self.step8_create_file_button.place_forget()
 
         # Hide complete step objects.
         self.complete_message.place_forget()
@@ -494,6 +503,8 @@ class windowHandler():
             self.step6_screen()
         elif self.current_step == 6:
             self.step7_screen()
+        elif self.current_step == 7:
+            self.step8_screen()
 
         # Only allow the next button to be clicked again if input has completed for the current step.
         if self.current_progress >= self.current_step:
@@ -501,8 +512,8 @@ class windowHandler():
         else:
             self.continue_button.config(state = DISABLED)
 
-        # If the current step is 7, disable the next step button.
-        if self.current_step == 7:
+        # If the current step is 8, disable the next step button.
+        if self.current_step == 8:
             self.continue_button.config(state = DISABLED)
 
 
@@ -523,6 +534,8 @@ class windowHandler():
             self.step5_screen()
         elif self.current_step == 7:
             self.step6_screen()
+        elif self.current_step == 8:
+            self.step7_screen()
 
         # Allow the next button to be clicked again if input has completed for the current step.
         if self.current_progress >= self.current_step:
@@ -554,7 +567,7 @@ class windowHandler():
         self.tray_measurements.info_label.place_forget()
         self.tray_measurements.update_info()
         self.return_title_button.place(relx = 0.1, rely = 0.04, anchor = CENTER)
-        self.step_title.config(text = "Step 1 of 7\n\nSpecify tray type",
+        self.step_title.config(text = "Step 1 of 8\n\nSpecify tray type",
                                  font = ("Arial", 15),
                                  bg = 'light green')
         self.step_title.place(relx = 0.5, rely = 0.05, anchor = CENTER)
@@ -604,7 +617,7 @@ class windowHandler():
         self.current_step = 2
 
         # Hide/modify step 1 and step 3 objects.
-        self.step_title.config(text = "Step 2 of 7\n\nTray hole dimensions",
+        self.step_title.config(text = "Step 2 of 8\n\nTray hole dimensions",
                             font = ("Arial", 15),
                             bg = 'light green')
         self.step_instructions.config(text = "Enter (in mm) the length and width of one of the tray holes.\n"
@@ -649,7 +662,7 @@ class windowHandler():
         # Is the entry valid? This depends on the step.
         # Steps 2-4 can have decimal input
         # Step 5 can only have whole numbers
-        # Step 6 can have decimals for input B, but not input A
+        # Step 6 and 7 can have decimals for input B, but not input A
         # Step -2 (part 2 step 2) can only have whole numbers
         # Step -3 (part 2 step 3) can only have whole numbers
         # If invalid input is detected, return without updating any information.
@@ -661,7 +674,7 @@ class windowHandler():
                 return
             elif int(inputA) <= 0 or int(inputB) <= 0:
                 return
-        elif self.current_step == 6:
+        elif self.current_step == 6 or self.current_step == 7:
             if not inputA.isdigit() or not inputB.replace(".","",1).isdigit():
                 return
 
@@ -684,7 +697,10 @@ class windowHandler():
             self.tray_measurements.columns = int(inputB)
         elif self.current_step == 6:
             self.tray_measurements.rows_between_gap = int(inputA)
-            self.tray_measurements.extra_gap = float(inputB)
+            self.tray_measurements.row_extra_gap = float(inputB)
+        elif self.current_step == 7:
+            self.tray_measurements.cols_between_gap = int(inputA)
+            self.tray_measurements.col_extra_gap = float(inputB)
         elif self.current_step == -2:
             # Check to ensure the input values are within the bounds of the data set's row and columns.
             if int(inputA) <= self.uploaded_measurements.rows and int(inputB) <= self.uploaded_measurements.columns:
@@ -724,7 +740,7 @@ class windowHandler():
         self.step4_pictureA_canvas.place_forget()
 
         # Modify/add objects for step 3.
-        self.step_title.config(text = "Step 3 of 7\n\nTray hole spaces",
+        self.step_title.config(text = "Step 3 of 8\n\nTray hole spaces",
                             font = ("Arial", 15),
                             bg = 'light green')
         self.step_instructions.config(text = "Enter (in mm) the distance between each of the tray holes.\n"
@@ -757,7 +773,7 @@ class windowHandler():
         self.step5_pictureA_canvas.place_forget()
 
         # Modify/add objects for step 4.
-        self.step_title.config(text = "Step 4 of 7\n\nDistance to tray edge",
+        self.step_title.config(text = "Step 4 of 8\n\nDistance to tray edge",
                             font = ("Arial", 15),
                             bg = 'light green')
         self.step_instructions.config(text = "Enter (in mm) the distance from the outer tray holes to the tray edges.\n"
@@ -790,7 +806,7 @@ class windowHandler():
         self.step6_pictureA_canvas.place_forget()
 
         # Modify/add objects for step 5.
-        self.step_title.config(text = "Step 5 of 7\n\nTotal rows and columns",
+        self.step_title.config(text = "Step 5 of 8\n\nTotal rows and columns",
                             font = ("Arial", 15),
                             bg = 'light green')
         self.step_instructions.config(text = "Enter the total number of rows and columns of tray holes.\n"
@@ -819,11 +835,11 @@ class windowHandler():
         # Hide/modify step 5 and 7 objects.
         self.step5_pictureA_canvas.place_forget()
 
-        # Hide step 7 objects.
-        self.step7_create_file_button.place_forget()
+        # Hide step 7 objects. TODO
+        self.step7_pictureA_canvas.place_forget()
 
         # Modify/add objects for step 6.
-        self.step_title.config(text = "Step 6 of 7\n\nExtra gap space?",
+        self.step_title.config(text = "Step 6 of 8\n\nExtra row gap space?",
                             font = ("Arial", 15),
                             bg = 'light green')
         self.step_instructions.config(text = "Are there any special gaps in between rows where the distance is different?\n"
@@ -846,15 +862,49 @@ class windowHandler():
 
     # Function for displaying step 7.
     def step7_screen(self):
-        """Displays information for step 7. Called from step 6 screen"""
-
+        """Displays information for step 7. Called from step 6 screen or step 8 screen"""
         self.tray_measurements.hide_label()
         self.tray_measurements.update_info()
 
         self.current_step = 7
 
-        # Hide/modify step 6 objects.
+        # Hide/modify step 6 and 8 objects.
         self.step6_pictureA_canvas.place_forget()
+        self.step8_create_file_button.place_forget()
+
+        # Modify/add objects for step 7.
+        self.step_title.config(text = "Step 7 of 8\n\nExtra column gap?",
+                            font = ("Arial", 15),
+                            bg = 'light green')
+        self.step_instructions.config(text = "Are there any special gaps in between columns where the distance is different?\n"
+                                             "See the image for an example. If no special gaps, input 0 for both fields.",
+                                      font = ("Arial", 15),
+                                      bg = 'light green')
+        self.text_entry_warning.place(relx = 0.9, rely = 0.55, anchor = CENTER)
+        self.text_entryA.place(relx = 0.9, rely = 0.6, anchor = CENTER)
+        self.text_entryB.place(relx = 0.9, rely = 0.65, anchor = CENTER)
+        self.text_entryA_label.config(text = "Number of cols between special gaps:")
+        self.text_entryA_label.place_forget()
+        self.text_entryA_label.place(relx = 0.69, rely = 0.6, anchor = CENTER)
+        self.text_entryB_label.config(text = "                            Special gap distance:")
+        self.text_entryB_label.place_forget()
+        self.text_entryB_label.place(relx = 0.69, rely = 0.65, anchor = CENTER)
+        self.accept_input_button.place(relx = 0.9, rely = 0.7, anchor = CENTER)
+
+        self.step7_pictureA_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
+        self.step7_pictureA_canvas.create_image(178, 275, anchor=CENTER, image=self.step7_pictureA)
+
+    # Function for displaying step 8.
+    def step8_screen(self):
+        """Displays information for step 8. Called from step 7 screen"""
+
+        self.tray_measurements.hide_label()
+        self.tray_measurements.update_info()
+
+        self.current_step = 8
+
+        # Hide/modify step 7 objects.
+        self.step7_pictureA_canvas.place_forget()
         self.text_entryA.place_forget()
         self.text_entryA_label.place_forget()
         self.text_entryB.place_forget()
@@ -862,15 +912,15 @@ class windowHandler():
         self.text_entry_warning.place_forget()
         self.accept_input_button.place_forget()
 
-        # Modify/add objects for step 7.
-        self.step_title.config(text = "Step 7 of 7\n\nReview",
+        # Modify/add objects for step 8.
+        self.step_title.config(text = "Step 8 of 8\n\nReview",
                             font = ("Arial", 15),
                             bg = 'light green')
         self.step_instructions.config(text = "Double check all entered information is as accurate as possible.\n"
                                              "When ready, press the button to generate a JSON info file.",
                                       font = ("Arial", 15),
                                       bg = 'light green')
-        self.step7_create_file_button.place(relx = .5, rely = .3, anchor = CENTER)
+        self.step8_create_file_button.place(relx = .5, rely = .3, anchor = CENTER)
 
     def create_info_file(self) -> None:
         """Creates the JSON information file and prints a confirmation to the user."""
@@ -883,7 +933,7 @@ class windowHandler():
         self.confirm_return_warning.place_forget()
         self.confirm_return_yes.place_forget()
         self.confirm_return_no.place_forget()
-        self.step7_create_file_button.place_forget()
+        self.step8_create_file_button.place_forget()
 
         # Send the command to create the file.
         self.tray_measurements.create_JSON_info_file()
@@ -1205,7 +1255,9 @@ class windowHandler():
                                          self.uploaded_measurements.rows,
                                          self.uploaded_measurements.columns,
                                          self.uploaded_measurements.rows_between_gap,
-                                         self.uploaded_measurements.extra_gap)
+                                         self.uploaded_measurements.row_extra_gap,
+                                         self.uploaded_measurements.cols_between_gap,
+                                         self.uploaded_measurements.col_extra_gap)
         # Decrement each value in ignored_holes by 1 to account for off-by-1 issue.
         for i in range(len(self.ignored_holes)):
             self.ignored_holes[i] -= 1

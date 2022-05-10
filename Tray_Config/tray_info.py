@@ -9,10 +9,12 @@ class tray_info():
     short_axis_distance_to_edge = None
     long_axis_distance = None
     long_axis_distance_to_edge = None
-    extra_gap = None
+    row_extra_gap = None
     rows = None
     columns = None
     rows_between_gap = None
+    cols_between_gap = None
+    col_extra_gap = None
 
     window = None
     tray_name_text = None
@@ -22,10 +24,12 @@ class tray_info():
     short_axis_distance_to_edge_text = None
     long_axis_distance_text = None
     long_axis_distance_to_edge_text = None
-    extra_gap_text = None
+    row_extra_gap_text = None
     rows_text = None
     columns_text = None
     rows_between_gap_text = None
+    col_extra_gap_text = None
+    cols_between_gap_text = None
 
     info_label = None
 
@@ -37,10 +41,12 @@ class tray_info():
         self.short_axis_distance_to_edge = -1.0
         self.long_axis_distance = -1.0
         self.long_axis_distance_to_edge = -1.0
-        self.extra_gap = -1.0
+        self.row_extra_gap = -1.0
         self.rows = -1
         self.columns = -1
         self.rows_between_gap = -1
+        self.cols_between_gap = -1
+        self.col_extra_gap = -1.0
 
         self.window = tkinter_object
         self.info_label = Label(self.window, text = "N/A")
@@ -91,13 +97,13 @@ class tray_info():
         else:
             self.long_axis_distance_to_edge_text += str(self.long_axis_distance_to_edge)
 
-        self.extra_gap_text = "Additional gap length:\t\t\t"
-        if self.extra_gap == -1.0:
-            self.extra_gap_text += "TBD"
-        elif self.extra_gap < -1:
-            self.extra_gap_text += "N/A"
+        self.row_extra_gap_text = "Special row gap length:\t\t\t"
+        if self.row_extra_gap == -1.0:
+            self.row_extra_gap_text += "TBD"
+        elif self.row_extra_gap < -1:
+            self.row_extra_gap_text += "N/A"
         else:
-            self.extra_gap_text += str(self.extra_gap)
+            self.row_extra_gap_text += str(self.row_extra_gap)
 
         self.rows_text = "Number of rows:\t\t\t\t"
         if self.rows == -1:
@@ -118,6 +124,22 @@ class tray_info():
             self.rows_between_gap_text += "N/A"
         else:
             self.rows_between_gap_text += str(self.rows_between_gap)
+        
+        self.cols_between_gap_text = "Number of cols between additional gaps:\t" # 41 CHARS
+        if self.cols_between_gap == -1:
+            self.cols_between_gap_text += "TBD"
+        elif self.cols_between_gap < -1:
+            self.cols_between_gap_text += "N/A"
+        else:
+            self.cols_between_gap_text += str(self.cols_between_gap)
+        
+        self.col_extra_gap_text = "Special col gap length:\t\t\t"
+        if self.col_extra_gap == -1.0:
+            self.col_extra_gap_text += "TBD"
+        elif self.col_extra_gap < -1:
+            self.col_extra_gap_text += "N/A"
+        else:
+            self.col_extra_gap_text += str(self.col_extra_gap)
 
         # Now that all information is updated, display it on the Tkinter object
         self.info_label.config(text = self.tray_name_text + "\n"
@@ -130,7 +152,9 @@ class tray_info():
                                + self.rows_text + "\n"
                                + self.columns_text + "\n"
                                + self.rows_between_gap_text + "\n"
-                               + self.extra_gap_text + "\n",
+                               + self.row_extra_gap_text + "\n"
+                               + self.cols_between_gap_text + "\n"
+                               + self.col_extra_gap_text,
                                font = ("Arial", 10),
                                justify = LEFT,
                                bg = 'light green')
@@ -157,7 +181,9 @@ class tray_info():
             "rows" : self.rows,
             "columns" : self.columns,
             "rows_between_gap" : self.rows_between_gap,
-            "extra_gap" : self.extra_gap
+            "row_extra_gap" : self.row_extra_gap,
+            "cols_between_gap" : self.cols_between_gap,
+            "col_extra_gap" : self.col_extra_gap
         }
         
         with open(file_name, 'w') as output:

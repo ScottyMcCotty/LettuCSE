@@ -1,0 +1,12 @@
+{
+    "hole_length": 32.3,
+    "hole_width": 32.3,
+    "short_axis_distance": 12.6,
+    "long_axis_distance": 21.4,
+    "short_axis_distance_to_edge": 33.1,
+    "long_axis_distance_to_edge": 47.4,
+    "rows": 15,
+    "columns": 12,
+    "rows_between_gap": 5,
+    "extra_gap": 29.3
+}

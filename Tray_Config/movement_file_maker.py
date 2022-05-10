@@ -12,9 +12,11 @@ class movement_file_maker():
     rows = None
     columns = None
     rows_between_gap = None
-    extra_gap = None
+    row_extra_gap = None
+    cols_between_gap = None
+    col_extra_gap = None
 
-    def __init__(self, fN, hL, hW, sAD, lAD, sADtE, lADtE, row, col, rBG, eG):
+    def __init__(self, fN, hL, hW, sAD, lAD, sADtE, lADtE, row, col, rBG, rEG, cBG, cEG):
         if fN == "Source":
             self.output_file_name = "source_tray.json"
         elif fN == "Destination":
@@ -30,32 +32,50 @@ class movement_file_maker():
         self.rows = row
         self.columns = col
         self.rows_between_gap = rBG
-        self.extra_gap = eG
+        self.row_extra_gap = rEG
+        self.cols_between_gap = cBG
+        self.col_extra_gap = cEG
 
 
     def ith_hole_x(self, i) -> float:
         # Instead of i% self.columns, it's columns - i%self.columns to reflect order going from left to right
         # instead of right to left.
-        column_number = (self.columns - 1) - (i% self.columns)
-        total_gap = self.short_axis_distance*column_number
+        col_number = (self.columns - 1) - (i% self.columns)
+        #total_gap = self.short_axis_distance*column_number
+        if self.cols_between_gap > 0:
+            thicker_cols = col_number // self.cols_between_gap
+        else:
+            thicker_cols = 0
+
+        total_gap = self.short_axis_distance * (col_number - thicker_cols) + self.col_extra_gap * (thicker_cols)
+
         # use hole_length or hole_width?
-        total_hole_width = self.hole_width*column_number + column_number/2
-        return total_gap + total_hole_width + self.short_axis_distance_to_edge*2
+        total_hole_width = self.hole_width*col_number
+
+        # Destination tray needs the short axis distance to edge, but source tray does not if (0,0) is directly above the 1st hole.
+        if self.output_file_name == "destination_tray.json":
+            return total_gap + total_hole_width + self.short_axis_distance_to_edge
+        else:
+            return total_gap + total_hole_width
 
     def ith_hole_y(self, i:int) -> float:
         row_number = i//self.columns
         if self.rows_between_gap > 0:
-            thicker_rows = row_number%self.rows_between_gap
+            thicker_rows = row_number//self.rows_between_gap
         else:
             thicker_rows = 0
 
-        total_gap = self.long_axis_distance*(row_number-thicker_rows)+self.extra_gap*(thicker_rows)
+        total_gap = self.long_axis_distance*(row_number-thicker_rows)+self.row_extra_gap*(thicker_rows)
         # use hole_length or hole_width?
-        total_hole_distance = self.hole_length*row_number + row_number/2
-        return total_gap + total_hole_distance + self.long_axis_distance_to_edge*2
+        total_hole_distance = self.hole_length*row_number
+        # Destination tray needs the long axis distance to edge, but source tray does not if (0,0) is directly above the 1st hole.
+        if self.output_file_name == "destination_tray.json":
+            return total_gap + total_hole_distance + self.long_axis_distance_to_edge
+        else:
+            return total_gap + total_hole_distance
 
     def ith_hole_location(self, i) -> tuple:
-        return '["' + str(round(self.ith_hole_x(i), 3)) + '","' + str(round(self.ith_hole_y(i), 3)) + '"]'
+        return '["' + str(round(self.ith_hole_x(i), 6)) + '","' + str(round(self.ith_hole_y(i), 6)) + '"]'
 
     def get_width(self) -> float:
         
@@ -82,7 +102,7 @@ class movement_file_maker():
         holes = str(self.get_number_of_holes())
         file_info["holes"] = holes
         distance = str(self.get_width())
-        file_info["distance_from_bottom"] = distance
+        file_info["width_of_source_tray"] = distance
         
         with open(self.output_file_name, 'w') as output:
             json.dump(file_info, output, indent = 4)
