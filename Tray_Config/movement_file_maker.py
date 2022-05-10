@@ -78,7 +78,7 @@ class movement_file_maker():
             return total_gap + total_hole_distance
 
     def ith_hole_location(self, i) -> tuple:
-        return '["' + str(round(self.ith_hole_x(i), 6)) + '","' + str(round(self.ith_hole_y(i), 6)) + '"]'
+        return '["' + str(round(self.ith_hole_x(i), 10)) + '","' + str(round(self.ith_hole_y(i), 10)) + '"]'
 
     def get_width(self) -> float:
         

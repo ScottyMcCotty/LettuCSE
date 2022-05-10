@@ -720,5 +720,6 @@
         "769.4"
     ],
     "holes": "180",
-    "width_of_source_tray": "595.31"
+    "width_of_source_tray": 0.0,
+    "height_offset_distance": 0.0
 }
