@@ -32,6 +32,7 @@ class Arduino():
     arduino_connection = None
     port_name = "arduino not connected"
     mm_to_motor_constant = 0.1403
+    name = "Arduino"
 
     def __init__(self, arduino_id:str, motor_data:list) -> None:
         """
@@ -65,6 +66,7 @@ class Arduino():
             while "Done" not in response and "Calibrated" not in response:
                 sleep(0.5)
                 response = self.arduino_connection.readline().decode("utf-8")
+            print(f"{self.name} says '{response}'")
         else:
             sleep(0.2)
 
