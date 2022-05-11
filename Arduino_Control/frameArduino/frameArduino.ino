@@ -57,6 +57,8 @@ void loop() {
 
     current_x = 0;
     current_y = 0;
+    Serial.println("Calibrated");
+
   }
   else {
 
@@ -65,13 +67,11 @@ void loop() {
     int x = input.substring(0, space).toInt();
     int y = input.substring(space+1).toInt();
   
-    Serial.print("Split into '"); Serial.print(x); Serial.print("' and '"); Serial.print(y); Serial.println("'");
+    //Serial.print("Split into '"); Serial.print(x); Serial.print("' and '"); Serial.print(y); Serial.println("'");
   
     move_coordinates(x, y);
+    Serial.println("Done");
   }
-
-  Serial.println("Done");
-  
 }
 
 
@@ -102,8 +102,6 @@ void auto_calibrate_axis(int motor_pin, int dir_pin, int stop_pin) {
     digitalWrite(motor_pin, LOW);
     delayMicroseconds(half_period * 2);
   }
-
-  Serial.println("Calibrated");
   // we can say this is the home position. Barely just in front of triggering the limit switch
 }
 
@@ -161,9 +159,9 @@ void move_coordinates(int x, int y) {
   // move_double(x - current_x, y - current_y, half_period);
 
   int steps_x = x - current_x;
-  move_blocking(X_STEP_PIN, X_DIR_PIN, abs(steps_x), dir(steps_x), half_period, X_STOP_PIN)
+  move_blocking(X_STEP_PIN, X_DIR_PIN, abs(steps_x), dir(steps_x), half_period, X_STOP_PIN);
   int steps_y = y - current_y;
-  move_blocking(Z_STEP_PIN, Y_DIR_PIN, abs(steps_y), dir(steps_y), half_period, Z_STOP_PIN)
+  move_blocking(Z_STEP_PIN, Z_DIR_PIN, abs(steps_y), dir(steps_y), half_period, Z_STOP_PIN);
 
 
   current_x = x;
@@ -190,21 +188,22 @@ void move_coordinates(int x, int y) {
  * Return: None
  */
 void move_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, int dir, int half_step_delay, int stop_pin) {
-  
+
+  /*
    Serial.print("Moving single axis "); Serial.println(motor_step_pin);
    Serial.print("  steps = "); Serial.println(num_steps);
    Serial.print("  direction = "); Serial.println(dir);
    Serial.print("  dir pin = "); Serial.println(motor_direction_pin);
    Serial.print("  delay = "); Serial.println(half_step_delay);
    Serial.print("  stop pin = "); Serial.println(stop_pin);
-
+*/
   // set direction
   digitalWrite(motor_direction_pin, dir);
 
   // do movement
   for (int ii = 0; ii < num_steps; ii++) {
 
-    if (digitalRead(stop_pin) == HIGH) {
+    if (digitalRead(stop_pin) == LOW) {
       break;
     }
 
