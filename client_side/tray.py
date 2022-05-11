@@ -48,14 +48,20 @@ class Tray:
            motor needs to go. Measurement is in absolute coordinates, not motor coordinates.
            Tuple is converted from a string tuple to a float tuple
         """
-        next_hole = (float(self.hole_location_map.get(str(self.hole_iterator))[0]), float(self.hole_location_map.get(str(self.hole_iterator))[1]))
+        hole_x_value =  float(self.hole_location_map.get(str(self.hole_iterator))[0])
+        hole_y_value =  float(self.hole_location_map.get(str(self.hole_iterator))[1])
+        print("offset distance",  float(self.hole_location_map.get("height_offset_distance")), self.json_file_link)
+        adjusted_hole_x_value = hole_x_value + float(self.hole_location_map.get("width_of_source_tray")) +float(self.hole_location_map.get("width_offset_distance"))
+        adjusted_hole_y_value = hole_y_value + float(self.hole_location_map.get("height_offset_distance"))
 
-        next_hole_distance_from_origin = (next_hole[0] + float(self.hole_location_map.get("width_of_source_tray")), next_hole[1])
+        next_hole = (adjusted_hole_x_value, adjusted_hole_y_value)
+        print(next_hole)
+
         if self.hole_iterator+1 == int(self.hole_location_map.get("holes")):
             self.hole_iterator = 0
         else:
             self.hole_iterator += 1
-        return (float(next_hole_distance_from_origin[0]), float(next_hole_distance_from_origin[1]))
+        return next_hole
 
     def is_tray_full(self) -> bool:
         """return whether all holes have been visited and it is time

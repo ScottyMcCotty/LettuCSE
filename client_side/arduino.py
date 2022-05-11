@@ -61,6 +61,7 @@ class Arduino():
         othewise sleep because if there are no arduinos connected it means the software
         is being tested and nothing needs to be sent """
         if self.arduino_connection:
+            print("string_to_send = " + string_to_send)
             self.arduino_connection.write(bytes(string_to_send + "\n", 'utf8'))
             response = self.arduino_connection.readline().decode("utf-8")
             while "Done" not in response and "Calibrated" not in response:
