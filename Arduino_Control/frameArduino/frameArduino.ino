@@ -191,6 +191,13 @@ void move_coordinates(int x, int y) {
  */
 void move_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, int dir, int half_step_delay, int stop_pin) {
   
+   Serial.print("Moving single axis "); Serial.println(motor_step_pin);
+   Serial.print("  steps = "); Serial.println(num_steps);
+   Serial.print("  direction = "); Serial.println(dir);
+   Serial.print("  dir pin = "); Serial.println(motor_direction_pin);
+   Serial.print("  delay = "); Serial.println(half_step_delay);
+   Serial.print("  stop pin = "); Serial.println(stop_pin);
+
   // set direction
   digitalWrite(motor_direction_pin, dir);
 
@@ -200,7 +207,7 @@ void move_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, i
     if (digitalRead(stop_pin) == HIGH) {
       break;
     }
-    
+
     digitalWrite(motor_step_pin, HIGH);
     delayMicroseconds(half_step_delay);
     digitalWrite(motor_step_pin, LOW);
