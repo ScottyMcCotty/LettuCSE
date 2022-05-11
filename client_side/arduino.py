@@ -64,6 +64,7 @@ class Arduino():
             self.arduino_connection.write(bytes(string_to_send + "\n", 'utf8'))
             response = self.arduino_connection.readline().decode("utf-8")
             while "Done" not in response and "Calibrated" not in response:
+                print(f"{self.name}'s response was invalid: '{response}'")
                 sleep(0.5)
                 response = self.arduino_connection.readline().decode("utf-8")
             print(f"{self.name} says '{response}'")
