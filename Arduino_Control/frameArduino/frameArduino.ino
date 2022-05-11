@@ -65,7 +65,7 @@ void loop() {
     int x = input.substring(0, space).toInt();
     int y = input.substring(space+1).toInt();
   
-//    Serial.print("Split into '"); Serial.print(x); Serial.print("' and '"); Serial.print(y); Serial.println("'");
+    Serial.print("Split into '"); Serial.print(x); Serial.print("' and '"); Serial.print(y); Serial.println("'");
   
     move_coordinates(x, y);
   }
@@ -157,7 +157,15 @@ void move_coordinates(int x, int y) {
 //  Serial.print("Moving from ("); Serial.print(current_x); Serial.print(", "); Serial.print(current_y);
 //  Serial.print(") to ("); Serial.print(x); Serial.print(", "); Serial.print(y); Serial.println(")");
 
-  move_double(x - current_x, y - current_y, half_period);
+  // for moving diagonally:
+  // move_double(x - current_x, y - current_y, half_period);
+
+  int steps_x = x - current_x;
+  move_blocking(X_STEP_PIN, X_DIR_PIN, abs(steps_x), dir(steps_x), half_period, X_STOP_PIN)
+  int steps_y = y - current_y;
+  move_blocking(Z_STEP_PIN, Y_DIR_PIN, abs(steps_y), dir(steps_y), half_period, Z_STOP_PIN)
+
+
   current_x = x;
   current_y = y;
   
@@ -181,68 +189,23 @@ void move_coordinates(int x, int y) {
  * 
  * Return: None
  */
-void move_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, int dir, int half_step_delay) {
-
-//  Serial.print("Moving single axis "); Serial.println(motor_step_pin);
-//  Serial.print("  steps = "); Serial.println(num_steps);
-//  Serial.print("  direction = "); Serial.println(dir);
-//  Serial.print("  dir pin = "); Serial.println(motor_direction_pin);
-//  Serial.print("  delay = "); Serial.println(half_step_delay);
+void move_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, int dir, int half_step_delay, int stop_pin) {
   
   // set direction
   digitalWrite(motor_direction_pin, dir);
 
   // do movement
   for (int ii = 0; ii < num_steps; ii++) {
+
+    if (digitalRead(stop_pin) == HIGH) {
+      break;
+    }
+    
     digitalWrite(motor_step_pin, HIGH);
     delayMicroseconds(half_step_delay);
     digitalWrite(motor_step_pin, LOW);
     delayMicroseconds(half_step_delay);
   }
-
-//  Serial.println("Finished move_blocking");
-}
-
-void move_not_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, int dir, int half_step_delay) {
-
-//  Serial.print("Moving single axis "); Serial.println(motor_step_pin);
-//  Serial.print("  steps = "); Serial.println(num_steps);
-//  Serial.print("  direction = "); Serial.println(dir);
-//  Serial.print("  dir pin = "); Serial.println(motor_direction_pin);
-//  Serial.print("  delay = "); Serial.println(half_step_delay);
-
-  // double the number of steps because we're incrementing every half-step!!
-  num_steps = num_steps * 2;
-
-  // set direction
-  digitalWrite(motor_direction_pin, dir);
-
-  // set up for movement
-  int counter = 0;
-  unsigned long othercounter = 0;
-//  Serial.println(sizeof(othercounter));
-  int pulse = HIGH;
-  unsigned long previous = micros();
-
-  while (counter < num_steps) {
-
-    unsigned long current = micros();
-    
-    if (current - previous > half_step_delay) {
-      digitalWrite(motor_step_pin, pulse);
-      pulse = (pulse + 1) % 2;
-      previous = current;
-      counter++;
-    }
-    else {
-      othercounter++;
-    }
-  }
-
-//  Serial.println("Finished move:");
-//  Serial.print("  # times skipped: "); Serial.println(othercounter);
-//  Serial.print("  # times pulsed:  "); Serial.println(num_steps);
-  
 }
 
 
@@ -269,8 +232,8 @@ void move_double(int steps_x, int steps_y, int half_step_delay) {
 
   // need to figure out which axis is moving more
   // in order to make general statements in the loop
-  int more_steps, more_steps_pin, more_dir, more_dir_pin;
-  int less_steps, less_steps_pin, less_dir, less_dir_pin;
+  int more_steps, more_steps_pin, more_dir, more_dir_pin, more_stop_pin;
+  int less_steps, less_steps_pin, less_dir, less_dir_pin, less_stop_pin;
 
   // the number of steps is being doubled because when we increment the counter
   // we'll be counting half-steps. So we need to count twice as many.
@@ -281,10 +244,12 @@ void move_double(int steps_x, int steps_y, int half_step_delay) {
     more_steps_pin = X_STEP_PIN;
     more_dir = dir(steps_x);
     more_dir_pin = X_DIR_PIN;
+    more_stop_pin = X_STOP_PIN;
     less_steps = abs(steps_y) * 2;
     less_steps_pin = Z_STEP_PIN;
     less_dir = dir(steps_y);
     less_dir_pin = Z_DIR_PIN;
+    less_stop_pin = Z_STOP_PIN;
   }
   else {
     // we're moving further in the y direction than the x
@@ -292,15 +257,17 @@ void move_double(int steps_x, int steps_y, int half_step_delay) {
     more_steps_pin = Z_STEP_PIN;
     more_dir = dir(steps_y);
     more_dir_pin = Z_DIR_PIN;
+    more_stop_pin = Z_STOP_PIN;
     less_steps = abs(steps_x) * 2;
     less_steps_pin = X_STEP_PIN;
     less_dir = dir(steps_x);
     less_dir_pin = X_DIR_PIN;
+    less_stop_pin = X_STOP_PIN;
   }
 
   if (less_steps == 0) {
 //    Serial.println("One of the step directions was 0. Shortcutting out of here");
-    move_blocking(more_steps_pin, more_dir_pin, more_steps / 2, more_dir, half_step_delay);
+    move_blocking(more_steps_pin, more_dir_pin, more_steps / 2, more_dir, half_step_delay, more_stop_pin);
     return;
   }
 
