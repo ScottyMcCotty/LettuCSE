@@ -25,11 +25,11 @@ def main():
     source_tray = Tray(config["JSON_FILES"]["source_tray"])
     next_source_hole = source_tray.get_next_hole
     source_tray_full = source_tray.is_tray_full
-
+    
     t_arduino = ToolheadArduino(config["ARDUINO_ID"]["toolhead_arduino_id"], config["MOTOR"]) #toolhead must be initialized before frame so it calibrates first
     raise_toolhead = t_arduino.raise_toolhead
     lower_toolhead = t_arduino.lower_toolhead
-    
+
     f_arduino = FrameArduino(config["ARDUINO_ID"]["frame_arduino_id"], config["MOTOR"])
     go_to_cup = f_arduino.go_to_cup
     go_behind_cup = f_arduino.go_behind_cup

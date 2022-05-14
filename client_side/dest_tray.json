@@ -1,7 +1,7 @@
 {
     "0": [
         "499.35",
-        "16.0"
+        "0.0"
     ],
     "1": [
         "399.48",
@@ -216,7 +216,7 @@
         "740.3"
     ],
     "holes": "54",
-    "width_of_source_tray": "603.8899999999999",
-    "height_offset_distance": "16.339999999999996",
+    "width_of_source_tray": "606.8899999999999",
+    "height_offset_distance": "14.339999999999996",
     "width_offset_distance": "0.18999999999999773"
 }
