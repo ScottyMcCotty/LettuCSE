@@ -41,6 +41,9 @@ class windowHandler():
     end_col = 0
 
     ignored_holes = []
+
+    ignored_rows = []
+    ignored_cols = []
     
     # The buttons.
     start_measuring_button = None
@@ -80,6 +83,12 @@ class windowHandler():
     part2_continue_button = None
     part2_back_button = None
 
+    part2_altsteps_continue_button = None
+    part2_altsteps_back_button = None
+
+    part2_altstep2_clear_last_row_button = None
+    part2_altstep2_clear_last_col_button = None
+
     # The labels.
     main_title = None
     start_measuring_warning = None
@@ -92,6 +101,7 @@ class windowHandler():
     complete_message = None
     complete_movement_message = None
     part2_info_label = None
+    part2_altstep2_info_label = None
 
     # The pictures & canvases.
     step2_pictureA_canvas = None
@@ -110,6 +120,8 @@ class windowHandler():
     part2_step2_picture = None
     part2_step3_picture_canvas = None
     part2_step3_picture = None
+    part2_altstep2_picture_canvas = None
+    part2_altstep2_picture = None
 
     # The text input boxes.
     text_entryA = None
@@ -335,9 +347,37 @@ class windowHandler():
         self.part2_step3_picture = PhotoImage(file = "images/Part2Step3Image.png")
         self.part2_step3_clear_last_input_button = Button(self.window,
                                                           text = "Clear last entered tray hole",
-                                                          font = ("Arial,", 10),
+                                                          font = ("Arial", 10),
                                                           command = self.part2_step3_clear_last_input,
                                                           state = NORMAL)
+        
+        # PART 2 ALT STEP 2 SCREEN
+        self.part2_altstep2_picture_canvas = Canvas(master = None, width = 501, height = 400)
+        self.part2_altstep2_picture = PhotoImage(file = "images/Part2AltStep2Image.png")
+        self.part2_altstep2_clear_last_row_button = Button(self.window,
+                                                           text = "Clear last entered row",
+                                                           font = ("Arial", 10),
+                                                           command = self.part2_altstep2_clear_last_row,
+                                                           state = NORMAL)
+        self.part2_altstep2_clear_last_col_button = Button(self.window,
+                                                           text = "Clear last entered col",
+                                                           font = ("Arial", 10),
+                                                           command = self.part2_altstep2_clear_last_col,
+                                                           state = NORMAL)
+        self.part2_altsteps_continue_button = Button(self.window,
+                                                     text = "Next",
+                                                     command = self.part2_altsteps_next,
+                                                     state = NORMAL)
+        self.part2_altsteps_back_button = Button(self.window,
+                                                 text = "Previous",
+                                                 command = self.part2_altsteps_previous,
+                                                 state = DISABLED)
+        self.part2_altstep2_info_label = Label(text = "Rows recently added to ignore list:\tN/A\n"
+                                             "Cols recently added to ignore list:\tN/A",
+                                             font = ("Arial", 10),
+                                             justify = LEFT,
+                                             bg = 'light green')
+        # TODO                                        
                                               
         # Initialize to title screen.
         self.title_screen()
@@ -387,6 +427,10 @@ class windowHandler():
         self.end_row = 0
         self.end_col = 0
         self.ignored_holes = []
+
+        # Reset part 2's alt input.
+        self.ignored_rows = []
+        self.ignored_cols = []
 
         # Hide step 1 objects.
         self.step_title.place_forget()
@@ -448,6 +492,14 @@ class windowHandler():
         # Hide part 2 step 3 objects.
         self.part2_step3_picture_canvas.place_forget()
         self.part2_step3_clear_last_input_button.place_forget()
+
+        # Hide part 2 alt step 2 objects.
+        self.part2_altstep2_picture_canvas.place_forget()
+        self.part2_altstep2_info_label.place_forget()
+        self.part2_altstep2_clear_last_row_button.place_forget()
+        self.part2_altstep2_clear_last_col_button.place_forget()
+        self.part2_altsteps_continue_button.place_forget()
+        self.part2_altsteps_back_button.place_forget()
 
         # Displays the title screen objects.
         self.main_title.place(relx = 0.5, rely = 0.1, anchor = CENTER)
@@ -667,6 +719,7 @@ class windowHandler():
         # Step 6 and 7 can have decimals for input B, but not input A
         # Step -2 (part 2 step 2) can only have whole numbers
         # Step -3 (part 2 step 3) can only have whole numbers
+        # Step -4 (part 2 alt step 2) can only have whole numbers, but can be valid if only one of the two entries is valid
         # If invalid input is detected, return without updating any information.
         if self.current_step <= 4 and self.current_step >= 2:
             if not inputA.replace(".","",1).isdigit() or not inputB.replace(".","",1).isdigit():
@@ -676,6 +729,18 @@ class windowHandler():
                 return
             elif int(inputA) <= 0 or int(inputB) <= 0:
                 return
+        elif self.current_step == -4:
+            # Requires doing the error checking all in one go here.
+            if not inputA.isdigit() and not inputB.isdigit():
+                return
+            # Check to ensure the input values are within the bounds of the data set's row and columns.
+            if inputA.isdigit() and int(inputA) >= 1 and int(inputA) <= self.uploaded_measurements.rows and int(inputA) not in self.ignored_rows:
+                self.ignored_rows.append(int(inputA)) # TODO
+                self.update_part2_altstep2_info() # TODO
+            if inputB.isdigit() and int(inputB) >= 1 and int(inputB) <= self.uploaded_measurements.columns and int(inputB) not in self.ignored_cols:
+                self.ignored_cols.append(int(inputB)) # TODO
+                self.update_part2_altstep2_info() # TODO
+            return
         elif self.current_step == 6 or self.current_step == 7:
             if not inputA.isdigit() or not inputB.replace(".","",1).isdigit():
                 return
@@ -980,7 +1045,7 @@ class windowHandler():
 
         # Display upload file button & accompanying objects.
         self.return_title_button.place(relx = 0.1, rely = 0.04, anchor = CENTER)
-        self.step_title.config(text = "Step 1 of 3\n\nUpload measurement file",
+        self.step_title.config(text = "Step 1\n\nUpload measurement file",
                                  font = ("Arial", 15),
                                  bg = 'light green')
         self.step_title.place(relx = 0.5, rely = 0.05, anchor = CENTER)
@@ -1105,10 +1170,10 @@ class windowHandler():
         self.uploaded_measurements.col_extra_gap = data['col_extra_gap']
         self.uploaded_measurements.update_info()
 
-        # If the uploaded file is a destination tray, skip ahead to the review step, since
-        # there is no reason to designate end holes or ignored holes in the destination tray.
+        # If the uploaded file is a destination tray, go to the alternate step 2
+        # to allow user to ignore certain rows and columns.
         if not self.is_dense:
-            self.part2_review_screen()
+            self.part2_altstep2_screen()
             return
 
         # Hide/modify upload file screen objects.
@@ -1170,10 +1235,20 @@ class windowHandler():
 
     # Function that handles the previous step button in Part 2.
     def part2_previous(self):
-        if self.current_step == -4:
+        if self.current_step == -5:
             self.part2_step3_screen()
         elif self.current_step == -3:
             self.part2_step2_screen()
+
+    # Function that handles the next step button in the alternate Part 2 (destination tray specific).
+    def part2_altsteps_next(self):
+        if self.current_step == -4:
+            self.part2_review_screen()
+
+    # Function that handles the previous step button in the alternate Part 2.
+    def part2_altsteps_previous(self):
+        if self.current_step == -5:
+            self.part2_altstep2_screen()
 
     # Function that displays Part 2, step 3.
     def part2_step3_screen(self):
@@ -1212,18 +1287,126 @@ class windowHandler():
         self.part2_step3_picture_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
         self.part2_step3_picture_canvas.create_image(250, 200, anchor=CENTER, image=self.part2_step3_picture)
 
+    # Function that clears the last entered row from the relevant list.
+    def part2_altstep2_clear_last_row(self):
+        if len(self.ignored_rows) == 0:
+            return
+        
+        self.ignored_rows = self.ignored_rows[:-1]
+        self.update_part2_altstep2_info()
+
+    # Function that clears the last entered column from the relevant list.
+    def part2_altstep2_clear_last_col(self):
+        if len(self.ignored_cols) == 0:
+            return
+        
+        self.ignored_cols = self.ignored_cols[:-1]
+        self.update_part2_altstep2_info()
+
+    # Function that displays relevant information to alt part 2 (last 5 ignored rows & last 5 ignored cols).
+    def update_part2_altstep2_info(self):
+        """Displays additional information entered by user during the alternate Part 2 of file generation"""
+
+        # Display entered information.
+        reversed_rows = self.ignored_rows[::-1]
+        ignored_rows_string = ""
+        if len(reversed_rows) == 0:
+            ignored_rows_string = "N/A"
+        else:
+            for i in range(len(reversed_rows) - 1):
+                ignored_rows_string += "#" + str(reversed_rows[i]) + ", "
+                if i >= 3:
+                    break
+
+            if len(reversed_rows) > 5:
+                ignored_rows_string += "#" + str(reversed_rows[4])
+            else:
+                ignored_rows_string += "#" + str(reversed_rows[len(reversed_rows) - 1]) + "\t"
+
+        reversed_cols = self.ignored_cols[::-1]
+        ignored_cols_string = ""
+        if len(reversed_cols) == 0:
+            ignored_cols_string = "N/A"
+        else:
+            for i in range(len(reversed_cols) - 1):
+                ignored_cols_string += "#" + str(reversed_cols[i]) + ", "
+                if i >= 3:
+                    break
+
+            if len(reversed_cols) > 5:
+                ignored_cols_string += "#" + str(reversed_cols[4])
+            else:
+                ignored_cols_string += "#" + str(reversed_cols[len(reversed_cols) - 1]) + "\t"
+
+        self.part2_altstep2_info_label.config(text = "Rows recently added to ignore list:\t" + ignored_rows_string + "\n" +
+                                            "Cols recently added to ignore list:\t" + ignored_cols_string)
+
+        self.part2_altstep2_info_label.place_forget()
+        self.part2_altstep2_info_label.place(relx = 0.23, rely = 0.9, anchor = CENTER)
+        return
+
+    # Function that displays the alternate step 2 of Part 2 (ignore certain rows or columns in destination tray)
+    def part2_altstep2_screen(self):
+        """Displays the 2nd step of destination tray configuration"""
+
+        self.current_step = -4
+
+        # Hide/modify current/next step objects.
+        self.part2_altsteps_back_button.config(state = DISABLED)
+        self.part2_altsteps_continue_button.config(state = NORMAL)
+        self.upload_button.place_forget()
+        self.create_movement_file_button.place_forget()
+        self.step_title.config(text = "Step 2 of 2\n\nSpecify ignored rows/cols",
+                                 font = ("Arial", 15),
+                                 bg = 'light green')
+        self.step_instructions.config(text = "If the destination tray needs to be more sparsely distributed, designate\n"
+                                             "any rows and/or columns to ignore. All holes in the specified rows/cols will NOT\n"
+                                             "be transplanted to. If no rows/cols are given, the transplanter will\n"
+                                             "attempt to transplant to every hole on the tray.",
+                                      font = ("Arial", 15),
+                                      bg = 'light green')
+        self.update_part2_altstep2_info()
+        self.part2_altstep2_clear_last_row_button.place(relx = 0.15, rely = 0.95, anchor = CENTER)
+        self.part2_altstep2_clear_last_col_button.place(relx = 0.3, rely = 0.95, anchor = CENTER)
+        self.part2_altsteps_continue_button.config(state = NORMAL)
+        self.part2_altsteps_continue_button.place(relx = 0.65, rely = 0.02, anchor = CENTER)
+        self.part2_altsteps_back_button.config(state = DISABLED)
+        self.part2_altsteps_back_button.place(relx = 0.35, rely = 0.02, anchor = CENTER)
+
+        self.text_entry_warning.place(relx = 0.9, rely = 0.55, anchor = CENTER)
+        self.text_entryA.place(relx = 0.9, rely = 0.6, anchor = CENTER)
+        self.text_entryB.place(relx = 0.9, rely = 0.65, anchor = CENTER)
+        self.text_entryA_label.config(text = "    Row:",
+                                        font = ("Arial", 12),
+                                        bg = 'light green')
+        self.text_entryB_label.config(text = " Column:",
+                                        font = ("Arial", 12),
+                                        bg = 'light green')
+        self.text_entryA_label.place(relx = 0.8, rely = 0.6, anchor = CENTER)
+        self.text_entryB_label.place(relx = 0.8, rely = 0.65, anchor = CENTER)
+        self.accept_input_button.place(relx = 0.9, rely = 0.7, anchor = CENTER)
+
+        self.part2_altstep2_picture_canvas.place(relx = 0.3, rely = 0.6, anchor=CENTER)
+        self.part2_altstep2_picture_canvas.create_image(250, 200, anchor=CENTER, image=self.part2_altstep2_picture)
+
     # Function that displays the review step of Part 2 before generating the movement JSON file.
     def part2_review_screen(self):
         """Displays the review step of Part 2"""
 
-        self.current_step = -4
+        self.current_step = -5
 
         # Hide/modify previous step objects.
         if not self.is_dense:
             self.part2_back_button.config(state = DISABLED)
+            self.part2_altsteps_back_button.config(state = NORMAL)
         else:
             self.part2_back_button.config(state = NORMAL)
+            self.part2_altsteps_back_button.config(state = DISABLED)
+        self.part2_altstep2_picture_canvas.place_forget()
+        self.part2_altstep2_clear_last_row_button.place_forget()
+        self.part2_altstep2_clear_last_col_button.place_forget()
         self.part2_continue_button.config(state = DISABLED)
+        self.part2_altsteps_continue_button.config(state = DISABLED)
         self.part2_step3_clear_last_input_button.place_forget()
         self.part2_step3_picture_canvas.place_forget()
         self.text_entry_warning.place_forget()
@@ -1280,10 +1463,22 @@ class windowHandler():
         # Decrement each value in ignored_holes by 1 to account for off-by-1 issue.
         for i in range(len(self.ignored_holes)):
             self.ignored_holes[i] -= 1
+        for i in range(len(self.ignored_rows)):
+            self.ignored_rows[i] -= 1
+        for i in range(len(self.ignored_cols)):
+            self.ignored_cols[i] -= 1
         if self.end_row <= 0 or self.end_col <= 0:
-            file_maker.create_movement_file(self.uploaded_measurements.rows, self.uploaded_measurements.columns, self.ignored_holes)
+            file_maker.create_movement_file(self.uploaded_measurements.rows,
+                                            self.uploaded_measurements.columns,
+                                            self.ignored_holes,
+                                            self.ignored_rows,
+                                            self.ignored_cols)
         else:
-            file_maker.create_movement_file(self.end_row, self.end_col, self.ignored_holes)
+            file_maker.create_movement_file(self.end_row,
+                                            self.end_col,
+                                            self.ignored_holes,
+                                            self.ignored_rows,
+                                            self.ignored_cols)
 
         # Hide/modify confirm upload file screen objects.
         self.return_title_button.place_forget()
@@ -1296,6 +1491,9 @@ class windowHandler():
         self.part2_back_button.place_forget()
         self.part2_info_label.place_forget()
         self.uploaded_measurements.hide_label()
+        self.part2_altstep2_info_label.place_forget()
+        self.part2_altsteps_continue_button.place_forget()
+        self.part2_altsteps_back_button.place_forget()
         self.step_instructions.config(text = "CREATION PROCESS COMPLETE\n"
                                              "File '" + file_maker.output_file_name + "'\n"
                                              "has been created.",
