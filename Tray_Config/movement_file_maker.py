@@ -96,13 +96,26 @@ class movement_file_maker():
         """Returns total number of holes in tray"""
         return self.columns*self.rows
 
-    def create_movement_file(self, end_row, end_col, ignored_holes) -> None:
+    def create_movement_file(self, end_row, end_col, ignored_holes, ignored_rows, ignored_cols) -> None:
         """Creates a JSON file with generated coordinates based on the parameters and stored tray information."""
         file_info = {}
         coord = []
+
+        # Add more ignored holes based on ignored rows and ignored cols.
+        all_ignored_holes = ignored_holes
+        for row in ignored_rows:
+            for i in range(0,self.columns):
+                if ((row * self.columns) + i) not in all_ignored_holes:
+                    all_ignored_holes.append((row * self.columns) + i)
+        
+        for col in ignored_cols:
+            for i in range(0, self.rows):
+                if ((i * self.columns) + col) not in all_ignored_holes:
+                    all_ignored_holes.append((i * self.columns) + col)
+
         # Only create coordinates up to the end row and end column.
         for m in range (0,(end_row - 1) * self.columns + end_col):
-            if m not in ignored_holes:
+            if m not in all_ignored_holes:
                 coord = [str(round(self.ith_hole_x(m), 3)), str(round(self.ith_hole_y(m), 3))]
                 file_info[str(m)] = coord
 
