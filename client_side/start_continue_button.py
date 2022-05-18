@@ -23,20 +23,20 @@ class StartContinueButton():
     Methods
     ----------
 
-    set_to_transplanting()
+    start_transplanting_thread()
         Firstly, set the button so that it is disabled so it can't be repressed.
         Secondly, run the transplanting function in another thread.
-    set_to_paused()
+    set_to_pause_mode()
         Make it so that the button continues transplanting from where it left off
         rather than restart it. Also changes the button's image to show the user that
         this is true.
-    set_to_stopped()
+    set_to_stopped_mode()
         Reset the button so it's like it is after the button
         is initialized
     __continue_transplanting()
         a private function that is called
         when the user presses the continue button.
-        this is called when the button is set to 
+        this is called when the button is set to
         paused, and then pressed.
     """
     tkinter_instance = None

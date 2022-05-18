@@ -53,21 +53,13 @@ class RelocatePlant():
             it is moving, which would crush the plants, and making
             the video look a bit cleaner."""
         self.go_behind_cup(source)
-        print("finished go_behind_cup")
         self.lower_toolhead()
-        print("finished lower_toolhead")
         self.go_to_cup(source)
-        sleep(0.2)
         self.raise_toolhead()
-        sleep(3)
         self.go_to_cup(destination)
-        sleep(7)
         self.lower_toolhead()
-        sleep(3)
         self.go_behind_cup(destination)
-        sleep(0.5)
         self.raise_toolhead()
-        sleep(2)
 
     def reset_transplanter(self):
         """Raise the toolhead and go to the origin"""

@@ -41,7 +41,7 @@ class StopButton():
         self.tkinter_button = Button(tkinter_instance,
                                      image =stop_button_photo,
                                      command=self.stop,
-                                     bd=0,
+                                     bd = 0,
                                      state=DISABLED)
         self.tkinter_button.image=stop_button_photo
         self.tkinter_button.place(relx = 0.5, rely = 0.4, anchor = N)

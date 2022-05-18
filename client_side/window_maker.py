@@ -28,7 +28,7 @@ class WindowMaker():
         self.window = tkinter_instance
         self.window.title("LettuCSE Transplanter")
         self.window.geometry("1000x800")
-        self.window.configure(bg='green')
+        self.window.configure(bg='#AFD275')
 
         title_photo = PhotoImage(file='images/title.png')
         title_label = Label(self.window,image = title_photo, borderwidth=0,)

@@ -1,11 +1,15 @@
-"""Module contains the GUI class"""
+"""Module contains the port name label class"""
 
-from tkinter import LEFT, RIGHT, Tk, Label
+from tkinter import Tk, Label
 
 class PortNameLabel():
     """
-    This class bundles all the 'junk' that comes with the tkinter class that doesn't need to
-    be exposed to the GUI, such as size, title, etc.
+    The ports are very finniky in the sense that they are computer dependent. Some people
+    might have their ports set to private, or have some other odd configuration. However you
+    can't really deal with it because if your code affects the permissions of other people's
+    folders than you have made malware. So instead of dealing with it we just make it super
+    easy to debug by having the names of the ports displayed on the GUI. These are the labels
+    that display the ports!
     ...
 
     Attributes
@@ -21,13 +25,13 @@ class PortNameLabel():
         self._toolhead_arudino_port_label = Label(tkinter_instance,
                                                  text = "Toolhead " + toolhead_port,
                                                  borderwidth=0,
-                                                 bg="green")
+                                                 bg="#AFD275")
         self._toolhead_arudino_port_label.place(relx = 0.22, rely = 0.975, anchor = 'e')
 
         self._frame_arudino_port_label = Label(tkinter_instance,
                                                  text = "Frame " + frame_port,
                                                  borderwidth=0,
-                                                 bg="green")
+                                                 bg="#AFD275")
         self._frame_arudino_port_label.place(relx = 0.78, rely = 0.975, anchor = 'w')
 
 

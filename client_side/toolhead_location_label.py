@@ -30,9 +30,9 @@ class ToolheadLocationLabel():
         self.tkinter_instance = tkinter_instance
         self.label_instance = Label(tkinter_instance,
                                     text = "(0,0)",
-                                    bg = "green",
+                                    bg = "#AFD275",
                                     bd = 0,
-                                    fg = "white")
+                                    fg = "black")
         self.label_instance.place(relx = 0.5, rely = 0.5, anchor = N)
 
     def update_location(self, coords:tuple):
