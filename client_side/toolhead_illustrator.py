@@ -47,22 +47,26 @@ class ToolheadIllustrator():
             object because it can be edited in greater detail than the
             canvas object (ie: it can change color). Then, make two rectangles
             to represent the trays and give them both grids"""
-        canvas = tk.Canvas(master = tkinter_instance, width = 700, height = 425)
+        canvas = tk.Canvas(master = tkinter_instance, width = 750, height = 425)
         canvas.place(relx = 0.5, rely = 0.22, anchor = tk.N)
 
         screen = t.TurtleScreen(canvas)
         screen.bgcolor("#C2CAD0")
 
         self.turtle = t.RawTurtle(screen, shape='circle')
-        canvas.create_rectangle(300, 200, 5, -200, fill='#C2CAD0')
+        canvas.create_rectangle(360, 200, 5, -200, fill='#C2CAD0')
 
-        for source_tray_width_line in range(12):
-            x_location = source_tray_width_line*25+5
+        for source_tray_width_line in range(0, 11):
+            x_location = source_tray_width_line*30+30
             canvas.create_line(x_location, 200, x_location, -200)
 
-        canvas.create_rectangle(-5, 200, -300, -200, fill='#C2CAD0')
+        canvas.create_rectangle(-5, 200, -360, -200, fill='#C2CAD0')
 
-        self.turtle.shapesize(1, 1, 1)
+        for destination_tray_width_line in range(0, 5):
+            x_location = destination_tray_width_line*60-305
+            canvas.create_line(x_location, 200, x_location, -200)
+
+        self.turtle.shapesize(0.5, 0.5, 1)
         self.turtle.penup()
 
 
@@ -73,4 +77,4 @@ class ToolheadIllustrator():
         The coordinates are modified to fit on the canvas, and the x axis is flipped to reflect the 
         appearance of the transplanter when you are looking at it
         """
-        self.turtle.goto(290-coords[0]/15, coords[1]/20-180)
+        self.turtle.goto(347-(coords[0]/11.95), coords[1]/20-180)
