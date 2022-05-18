@@ -11,14 +11,14 @@ class Transplanter():
     ----------
         paused : boolean
             This indicates whether the trays are waiting to be replaced.'
-            It is used several times intirally, and once externally in the
+            It is used several times internally, and once externally in the
             while loop in main (so it can't be private)
         stopped : boolean
             This is an internally used variable that indicates
             whether the transplanter is transplanting or not.
             In this case, being paused and waiting for tray replacement
-            counts as tranplanting. It's 'private' although that isn't
-            really a thing in python
+            counts as tranplanting. It is used several times internally
+            and once externally in the while loop in main (so it can't be private)
         source_is_full : function
             a function which indicates that the source tray is full
         dest_is_full : function
@@ -40,7 +40,7 @@ class Transplanter():
         This function makes them continue
     """
     paused = False
-    __stopped = False
+    stopped = False
 
     source_is_full = None
     dest_is_full = None
@@ -65,9 +65,9 @@ class Transplanter():
             Run the transplanter until things are stopped. Take a break when
             the trays are full
         """
-        self.__stopped = False
+        self.stopped = False
         self.paused = False
-        while not self.__stopped:
+        while not self.stopped:
             if not self.paused:
                 if self.source_is_full() or self.dest_is_full():
                     self.paused = True
@@ -79,11 +79,11 @@ class Transplanter():
 
     def stop(self):
         """Causes the transplant function to stop running, resets everything"""
-        self.__stopped = True
         self.reset()
+        self.stopped = True
 
     def restart(self):
         """If you want to run the transplanter after stopping it
         you need to reset the stop variable, so this does that
         """
-        self.__stopped = False
+        self.stopped = False

@@ -42,15 +42,26 @@ class ToolheadIllustrator():
     destination_tray_box = None
 
     def __init__(self, tkinter_instance) -> None:
-
-        canvas = tk.Canvas(master = tkinter_instance, width = 700, height = 425, bg = '#afeeee')
-        canvas.config(bg = '#afeeee')
+        """First, create canvas object because this can be placed on the
+            tkinter object. Then, create a screen object from the canvas
+            object because it can be edited in greater detail than the
+            canvas object (ie: it can change color). Then, make two rectangles
+            to represent the trays and give them both grids"""
+        canvas = tk.Canvas(master = tkinter_instance, width = 700, height = 425)
         canvas.place(relx = 0.5, rely = 0.22, anchor = tk.N)
 
-        self.turtle = t.RawTurtle(canvas)
+        screen = t.TurtleScreen(canvas)
+        screen.bgcolor("#C2CAD0")
+
+        self.turtle = t.RawTurtle(screen, shape='circle')
         canvas.create_rectangle(300, 200, 5, -200, fill='#C2CAD0')
+
+        for source_tray_width_line in range(12):
+            x_location = source_tray_width_line*25+5
+            canvas.create_line(x_location, 200, x_location, -200)
+
         canvas.create_rectangle(-5, 200, -300, -200, fill='#C2CAD0')
-        self.turtle.shape("circle")
+
         self.turtle.shapesize(1, 1, 1)
         self.turtle.penup()
 

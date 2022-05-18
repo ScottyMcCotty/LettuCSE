@@ -32,12 +32,18 @@ class RelocatePlant():
     raise_toolhead = None
     lower_toolhead = None
     go_to_origin = None
+    reset_source_tray = None
+    reset_dest_tray = None
+    go_to_origin = None
 
-    def __init__(self, go_behind_cup, go_to_cup, raise_toolhead, lower_toolhead, go_to_origin) -> None:
+
+    def __init__(self, go_behind_cup, go_to_cup, raise_toolhead, lower_toolhead, go_to_origin, reset_source_tray, reset_dest_tray) -> None:
         self.lower_toolhead = lower_toolhead
         self.go_behind_cup = go_behind_cup
         self.go_to_cup = go_to_cup
         self.raise_toolhead = raise_toolhead
+        self.reset_source_tray = reset_source_tray
+        self.reset_dest_tray = reset_dest_tray
         self.go_to_origin = go_to_origin
 
 
@@ -59,5 +65,7 @@ class RelocatePlant():
 
     def reset_transplanter(self):
         """Raise the toolhead and go to the origin"""
+        self.reset_source_tray()
+        self.reset_dest_tray()
         self.raise_toolhead()
         self.go_to_origin()

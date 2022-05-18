@@ -65,3 +65,7 @@ class Tray:
         """return whether all holes have been visited and it is time
            for the tray to be replaced"""
         return self.hole_iterator == int(self.hole_location_map.get("holes")) - 1
+
+    def reset(self) -> None:
+        """When the 'stop' button is pressed this needs to reset"""
+        self.hole_iterator = 0

@@ -43,7 +43,9 @@ def main():
                                     f_arduino.go_to_cup,
                                     t_arduino.raise_toolhead,
                                     t_arduino.lower_toolhead,
-                                    f_arduino.go_to_origin)
+                                    f_arduino.go_to_origin,
+                                    source_tray.reset,
+                                    dest_tray.reset)
     reset = plant_relocator.reset_transplanter
 
     transplanter = Transplanter(source_tray.is_tray_full, dest_tray.is_tray_full,
@@ -56,8 +58,8 @@ def main():
                                                 transplanter.transplant,
                                                 transplanter.continue_transplant)
 
-    stop_transplant = start_continue_button.set_to_stopped_mode
-    stop_button = StopButton(tkinter_instance, stop_transplant)
+    stop_function = start_continue_button.set_to_stopped_mode
+    stop_button = StopButton(tkinter_instance, stop_function)
     location_label = ToolheadLocationLabel(tkinter_instance)
     toolhead_illustrator = ToolheadIllustrator(tkinter_instance)
 
