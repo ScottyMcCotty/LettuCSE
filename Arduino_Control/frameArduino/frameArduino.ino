@@ -56,6 +56,8 @@ void loop() {
 
     current_x = 0;
     current_y = 0;
+    Serial.println("Calibrated");
+
   }
   else {
 
@@ -67,10 +69,7 @@ void loop() {
     Serial.print("Split into '"); Serial.print(x); Serial.print("' and '"); Serial.print(y); Serial.println("'");
   
     move_coordinates(x, y);
-  }
-
-  Serial.println("Done");
-  
+  }  
 }
 
 
@@ -102,7 +101,6 @@ void auto_calibrate_axis(int motor_pin, int dir_pin, int stop_pin) {
     delayMicroseconds(half_period * 2);
   }
 
-  Serial.println("Calibrated");
   // we can say this is the home position. Barely just in front of triggering the limit switch
 }
 
@@ -168,7 +166,7 @@ void move_coordinates(int x, int y) {
   current_x = x;
   current_y = y;
   
-//  Serial.println("Finished move");
+  Serial.println("Done");
   
 }
 
@@ -203,7 +201,8 @@ void move_blocking(int motor_step_pin, int motor_direction_pin, int num_steps, i
   // do movement
   for (int ii = 0; ii < num_steps; ii++) {
 
-    if (digitalRead(stop_pin) == HIGH) {
+    
+    if (digitalRead(stop_pin) == LOW) {
       break;
     }
 

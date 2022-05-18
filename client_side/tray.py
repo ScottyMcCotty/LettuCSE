@@ -59,7 +59,6 @@ class Tray:
             self.hole_iterator = 0
         else:
             self.hole_iterator += 1
-        print("uwu i'm in tray.py " + str(next_hole))
         return next_hole
 
     def is_tray_full(self) -> bool:
