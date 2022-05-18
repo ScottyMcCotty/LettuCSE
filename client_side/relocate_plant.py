@@ -1,9 +1,6 @@
 """Module contains the RelocatePlant class"""
 
 
-from time import sleep
-
-
 class RelocatePlant():
     """
     Creates a function that moves a plant from the source to the destination
@@ -23,7 +20,7 @@ class RelocatePlant():
 
     Methods
     ----------
-    transport_plant ()
+    transport_plant()
         calls the attribute functions in the proper order
         to move from one location to another.
     reset_toolhead()
@@ -35,7 +32,6 @@ class RelocatePlant():
     raise_toolhead = None
     lower_toolhead = None
     go_to_origin = None
-    width_of_source_tray = None
 
     def __init__(self, go_behind_cup, go_to_cup, raise_toolhead, lower_toolhead, go_to_origin) -> None:
         self.lower_toolhead = lower_toolhead
@@ -63,5 +59,5 @@ class RelocatePlant():
 
     def reset_transplanter(self):
         """Raise the toolhead and go to the origin"""
-        self.go_to_origin()
         self.raise_toolhead()
+        self.go_to_origin()

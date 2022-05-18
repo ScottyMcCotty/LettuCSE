@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module start_continue_button</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>start_continue_button</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/punky/Documents/school/LettuCSE/client_side/start_continue_button.py">/home/punky/Documents/school/LettuCSE/client_side/start_continue_button.py</a></font></td></tr></table>
+    <p><tt>Module&nbsp;contains&nbsp;the&nbsp;Start_Continue_Button&nbsp;class</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="threading.html">threading</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="start_continue_button.html#StartContinueButton">StartContinueButton</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="StartContinueButton">class <strong>StartContinueButton</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#StartContinueButton">StartContinueButton</a>(tkinter_instance,&nbsp;transplanter_function,&nbsp;continue_transplant)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+This&nbsp;class&nbsp;creates&nbsp;a&nbsp;tkinter&nbsp;button&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;swaps&nbsp;between&nbsp;a&nbsp;start&nbsp;button&nbsp;and&nbsp;a<br>
+continue&nbsp;button&nbsp;depending&nbsp;on&nbsp;whether&nbsp;the&nbsp;tranplanting&nbsp;is&nbsp;in&nbsp;progress<br>
+...<br>
+&nbsp;<br>
+Attributes<br>
+----------<br>
+tkinter_instance&nbsp;:&nbsp;Tkinter.Tk()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;tkinter&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;is&nbsp;being&nbsp;fed&nbsp;into&nbsp;all&nbsp;objects&nbsp;on&nbsp;the&nbsp;window.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Documentation&nbsp;can&nbsp;be&nbsp;found&nbsp;here:&nbsp;<a href="https://docs.python.org/3/library/tk.html">https://docs.python.org/3/library/tk.html</a><br>
+tkinter_button&nbsp;:&nbsp;Tkinter.Button<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;button&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;is&nbsp;placed&nbsp;in&nbsp;a&nbsp;location&nbsp;on&nbsp;the&nbsp;window&nbsp;and&nbsp;changed<br>
+transplanter_function&nbsp;:&nbsp;function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;runs&nbsp;the&nbsp;transplanting&nbsp;proccess&nbsp;and&nbsp;must&nbsp;be&nbsp;called&nbsp;in&nbsp;another&nbsp;thread<br>
+continue_transplant:&nbsp;function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;continues&nbsp;the&nbsp;tranplanting&nbsp;from&nbsp;where&nbsp;it&nbsp;is&nbsp;left&nbsp;off.&nbsp;It&nbsp;comes&nbsp;from&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;Transplant&nbsp;<a href="builtins.html#object">object</a><br>
+is_transplanting&nbsp;:&nbsp;bool<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Records&nbsp;whether&nbsp;the&nbsp;transplanting&nbsp;is&nbsp;in&nbsp;progress&nbsp;or&nbsp;not,&nbsp;this&nbsp;is&nbsp;used<br>
+&nbsp;&nbsp;&nbsp;&nbsp;when&nbsp;the&nbsp;process&nbsp;is&nbsp;stopped&nbsp;so&nbsp;that&nbsp;the&nbsp;stop&nbsp;function&nbsp;is&nbsp;not&nbsp;triggered<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;the&nbsp;transplanting&nbsp;has&nbsp;already&nbsp;been&nbsp;stopped<br>
+&nbsp;<br>
+Methods<br>
+----------<br>
+&nbsp;<br>
+<a href="#StartContinueButton-start_transplanting_thread">start_transplanting_thread</a>()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Firstly,&nbsp;set&nbsp;the&nbsp;button&nbsp;so&nbsp;that&nbsp;it&nbsp;is&nbsp;disabled&nbsp;so&nbsp;it&nbsp;can't&nbsp;be&nbsp;repressed.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Secondly,&nbsp;run&nbsp;the&nbsp;transplanting&nbsp;function&nbsp;in&nbsp;another&nbsp;thread.<br>
+<a href="#StartContinueButton-set_to_pause_mode">set_to_pause_mode</a>()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Make&nbsp;it&nbsp;so&nbsp;that&nbsp;the&nbsp;button&nbsp;continues&nbsp;transplanting&nbsp;from&nbsp;where&nbsp;it&nbsp;left&nbsp;off<br>
+&nbsp;&nbsp;&nbsp;&nbsp;rather&nbsp;than&nbsp;restart&nbsp;it.&nbsp;Also&nbsp;changes&nbsp;the&nbsp;button's&nbsp;image&nbsp;to&nbsp;show&nbsp;the&nbsp;user&nbsp;that<br>
+&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;is&nbsp;true.<br>
+<a href="#StartContinueButton-set_to_stopped_mode">set_to_stopped_mode</a>()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Reset&nbsp;the&nbsp;button&nbsp;so&nbsp;it's&nbsp;like&nbsp;it&nbsp;is&nbsp;after&nbsp;the&nbsp;button<br>
+&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;initialized<br>
+__continue_transplanting()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;private&nbsp;function&nbsp;that&nbsp;is&nbsp;called<br>
+&nbsp;&nbsp;&nbsp;&nbsp;when&nbsp;the&nbsp;user&nbsp;presses&nbsp;the&nbsp;continue&nbsp;button.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;is&nbsp;called&nbsp;when&nbsp;the&nbsp;button&nbsp;is&nbsp;set&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;paused,&nbsp;and&nbsp;then&nbsp;pressed.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="StartContinueButton-__init__"><strong>__init__</strong></a>(self, tkinter_instance, transplanter_function, continue_transplant) -&gt; None</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="StartContinueButton-set_to_pause_mode"><strong>set_to_pause_mode</strong></a>(self)</dt><dd><tt>Set&nbsp;the&nbsp;button&nbsp;to&nbsp;it's&nbsp;'continue'&nbsp;mode,<br>
+so&nbsp;that&nbsp;the&nbsp;user&nbsp;can&nbsp;press&nbsp;it&nbsp;after&nbsp;they&nbsp;have&nbsp;replaced&nbsp;the&nbsp;trays</tt></dd></dl>
+
+<dl><dt><a name="StartContinueButton-set_to_stopped_mode"><strong>set_to_stopped_mode</strong></a>(self)</dt><dd><tt>Reset&nbsp;the&nbsp;button&nbsp;so&nbsp;it&nbsp;can&nbsp;start&nbsp;again</tt></dd></dl>
+
+<dl><dt><a name="StartContinueButton-start_transplanting_thread"><strong>start_transplanting_thread</strong></a>(self)</dt><dd><tt>Make&nbsp;the&nbsp;button&nbsp;disabled,&nbsp;so&nbsp;you&nbsp;can't&nbsp;re-press&nbsp;it&nbsp;when&nbsp;it's&nbsp;transplanting&nbsp;already</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>continue_transplant</strong> = None</dl>
+
+<dl><dt><strong>is_transplanting</strong> = False</dl>
+
+<dl><dt><strong>tkinter_button</strong> = None</dl>
+
+<dl><dt><strong>tkinter_instance</strong> = None</dl>
+
+<dl><dt><strong>transplanter_function</strong> = None</dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>N</strong> = 'n'</td></tr></table>
+</body></html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module stop_button</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>stop_button</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/punky/Documents/school/LettuCSE/client_side/stop_button.py">/home/punky/Documents/school/LettuCSE/client_side/stop_button.py</a></font></td></tr></table>
+    <p><tt>Module&nbsp;contains&nbsp;the&nbsp;Stop_Button&nbsp;class</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="stop_button.html#StopButton">StopButton</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="StopButton">class <strong>StopButton</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#StopButton">StopButton</a>(tkinter_instance,&nbsp;stop_function)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+This&nbsp;class&nbsp;creates&nbsp;a&nbsp;tkinter&nbsp;button&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;stops&nbsp;the&nbsp;whole&nbsp;process<br>
+...<br>
+&nbsp;<br>
+Attributes<br>
+----------<br>
+tkinter_instance&nbsp;:&nbsp;Tkinter.Tk()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;tkinter&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;is&nbsp;being&nbsp;fed&nbsp;into&nbsp;all&nbsp;objects&nbsp;on&nbsp;the&nbsp;window<br>
+tkinter_button&nbsp;:&nbsp;Tkinter.Button<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;button&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;is&nbsp;placed&nbsp;in&nbsp;a&nbsp;location&nbsp;on&nbsp;the&nbsp;window&nbsp;and&nbsp;changed<br>
+stop_function&nbsp;:&nbsp;function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;runs&nbsp;the&nbsp;stops&nbsp;the&nbsp;transplanting&nbsp;procecss<br>
+is_enabled&nbsp;:&nbsp;boolean<br>
+&nbsp;&nbsp;&nbsp;&nbsp;whether&nbsp;the&nbsp;stop&nbsp;button&nbsp;is&nbsp;pressable<br>
+&nbsp;&nbsp;&nbsp;&nbsp;at&nbsp;the&nbsp;moment<br>
+&nbsp;<br>
+Methods<br>
+----------<br>
+&nbsp;<br>
+<a href="#StopButton-enable_button">enable_button</a>()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;enable&nbsp;the&nbsp;stop&nbsp;button&nbsp;because&nbsp;the&nbsp;transplanting&nbsp;has&nbsp;started<br>
+disable_button()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;disable&nbsp;the&nbsp;stop&nbsp;button&nbsp;because&nbsp;the&nbsp;transplanting&nbsp;is&nbsp;over<br>
+&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;you&nbsp;don't&nbsp;want&nbsp;to&nbsp;allow&nbsp;the&nbsp;user&nbsp;to&nbsp;press&nbsp;the&nbsp;stop&nbsp;button<br>
+&nbsp;&nbsp;&nbsp;&nbsp;twice<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="StopButton-__init__"><strong>__init__</strong></a>(self, tkinter_instance, stop_function) -&gt; None</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="StopButton-enable_button"><strong>enable_button</strong></a>(self)</dt><dd><tt>Enable&nbsp;button,&nbsp;this&nbsp;is&nbsp;called&nbsp;when&nbsp;the&nbsp;transplanting&nbsp;has&nbsp;started</tt></dd></dl>
+
+<dl><dt><a name="StopButton-stop"><strong>stop</strong></a>(self)</dt><dd><tt>reset&nbsp;everything</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>is_enabled</strong> = False</dl>
+
+<dl><dt><strong>stop_function</strong> = None</dl>
+
+<dl><dt><strong>stopped_flag</strong> = False</dl>
+
+<dl><dt><strong>tkinter_button</strong> = None</dl>
+
+<dl><dt><strong>tkinter_instance</strong> = None</dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>N</strong> = 'n'</td></tr></table>
+</body></html>

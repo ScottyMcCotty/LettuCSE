@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module frame_arduino</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>frame_arduino</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/punky/Documents/school/LettuCSE/client_side/frame_arduino.py">/home/punky/Documents/school/LettuCSE/client_side/frame_arduino.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;module&nbsp;contains&nbsp;the&nbsp;Frame&nbsp;<a href="arduino.html#Arduino">Arduino</a>&nbsp;class&nbsp;which&nbsp;is&nbsp;a&nbsp;child&nbsp;of&nbsp;the&nbsp;<a href="arduino.html#Arduino">Arduino</a>&nbsp;class</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="arduino.html#Arduino">arduino.Arduino</a>(<a href="builtins.html#object">builtins.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="frame_arduino.html#FrameArduino">FrameArduino</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FrameArduino">class <strong>FrameArduino</strong></a>(<a href="arduino.html#Arduino">arduino.Arduino</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#FrameArduino">FrameArduino</a>(arduino_id:&nbsp;str,&nbsp;motor_data:&nbsp;list)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+A&nbsp;class&nbsp;to&nbsp;represent&nbsp;the&nbsp;frame&nbsp;arduino,&nbsp;which&nbsp;moves&nbsp;the&nbsp;toolhead&nbsp;along<br>
+the&nbsp;x&nbsp;and&nbsp;y&nbsp;axis.&nbsp;It&nbsp;is&nbsp;also&nbsp;the&nbsp;class&nbsp;in&nbsp;which&nbsp;absolute&nbsp;coordinates<br>
+are&nbsp;converted&nbsp;to&nbsp;motor&nbsp;coordinates.&nbsp;Absolute&nbsp;coordinates&nbsp;are&nbsp;in&nbsp;mm,<br>
+motor&nbsp;coordinates&nbsp;are&nbsp;in&nbsp;motor&nbsp;steps.<br>
+...<br>
+&nbsp;<br>
+Attributes<br>
+----------<br>
+distance_traveled_to_lift_cup&nbsp;:&nbsp;float<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;number&nbsp;of&nbsp;mm&nbsp;behind&nbsp;the&nbsp;cup&nbsp;that&nbsp;the&nbsp;toolhead&nbsp;will&nbsp;first<br>
+&nbsp;&nbsp;&nbsp;&nbsp;land&nbsp;when&nbsp;it&nbsp;is&nbsp;lowered,&nbsp;and&nbsp;the&nbsp;number&nbsp;of&nbsp;mm&nbsp;behind&nbsp;the&nbsp;cup<br>
+&nbsp;&nbsp;&nbsp;&nbsp;that&nbsp;the&nbsp;toolhead&nbsp;will&nbsp;slide&nbsp;after&nbsp;dropping&nbsp;a&nbsp;cup<br>
+name&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;arduino&nbsp;(for&nbsp;debugging)<br>
+location&nbsp;:&nbsp;tuple<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;coordinates&nbsp;that&nbsp;the&nbsp;toolhead&nbsp;is&nbsp;moving&nbsp;to&nbsp;in&nbsp;motor<br>
+&nbsp;&nbsp;&nbsp;&nbsp;coordinates.&nbsp;This&nbsp;data&nbsp;is&nbsp;used&nbsp;by&nbsp;the&nbsp;label&nbsp;which&nbsp;shows<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;location&nbsp;of&nbsp;the&nbsp;toolhead&nbsp;in&nbsp;the&nbsp;GUI.<br>
+&nbsp;<br>
+Methods<br>
+-------<br>
+<a href="#FrameArduino-go_to_origin">go_to_origin</a>()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Go&nbsp;to&nbsp;the&nbsp;center&nbsp;of&nbsp;the&nbsp;first&nbsp;cup.&nbsp;This&nbsp;is&nbsp;used&nbsp;to&nbsp;end&nbsp;the&nbsp;transplanting<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;the&nbsp;user&nbsp;stops&nbsp;everything<br>
+<a href="#FrameArduino-go_behind_cup">go_behind_cup</a>(coords:tuple)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Goes&nbsp;to&nbsp;a&nbsp;given&nbsp;value&nbsp;behind&nbsp;the&nbsp;first&nbsp;cup&nbsp;so&nbsp;that<br>
+&nbsp;&nbsp;&nbsp;&nbsp;when&nbsp;the&nbsp;toolhead&nbsp;is&nbsp;lowered,&nbsp;it&nbsp;is&nbsp;beind&nbsp;the&nbsp;cup<br>
+&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;does&nbsp;not&nbsp;squish&nbsp;the&nbsp;plant&nbsp;on&nbsp;landing.&nbsp;Also&nbsp;useful<br>
+&nbsp;&nbsp;&nbsp;&nbsp;after&nbsp;a&nbsp;cup&nbsp;has&nbsp;been&nbsp;dropped&nbsp;so&nbsp;it&nbsp;can&nbsp;slide&nbsp;behind&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cup<br>
+<a href="#FrameArduino-go_to_cup">go_to_cup</a>(coords:tuple)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Goes&nbsp;to&nbsp;the&nbsp;coordinates&nbsp;specified<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="frame_arduino.html#FrameArduino">FrameArduino</a></dd>
+<dd><a href="arduino.html#Arduino">arduino.Arduino</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="FrameArduino-go_behind_cup"><strong>go_behind_cup</strong></a>(self, coords: tuple) -&gt; bool</dt><dd><tt>Go&nbsp;to&nbsp;a&nbsp;given&nbsp;distance&nbsp;behind&nbsp;the&nbsp;cup&nbsp;so&nbsp;that&nbsp;it&nbsp;will<br>
+be&nbsp;in&nbsp;place&nbsp;to&nbsp;scoop&nbsp;it&nbsp;up&nbsp;when&nbsp;it&nbsp;is&nbsp;lifted</tt></dd></dl>
+
+<dl><dt><a name="FrameArduino-go_to_cup"><strong>go_to_cup</strong></a>(self, coords: tuple) -&gt; bool</dt><dd><tt>Go&nbsp;directly&nbsp;to&nbsp;the&nbsp;cordinate&nbsp;location</tt></dd></dl>
+
+<dl><dt><a name="FrameArduino-go_to_origin"><strong>go_to_origin</strong></a>(self) -&gt; None</dt><dd><tt>Sends&nbsp;the&nbsp;toolhead&nbsp;to&nbsp;the&nbsp;center&nbsp;of&nbsp;the&nbsp;first&nbsp;cup</tt></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>distance_traveled_to_lift_cup</strong> = 0</dl>
+
+<dl><dt><strong>location</strong> = (0, 0)</dl>
+
+<dl><dt><strong>name</strong> = 'Frame Arduino'</dl>
+
+<hr>
+Methods inherited from <a href="arduino.html#Arduino">arduino.Arduino</a>:<br>
+<dl><dt><a name="FrameArduino-__init__"><strong>__init__</strong></a>(self, arduino_id: str, motor_data: list) -&gt; None</dt><dd><tt>Set&nbsp;constants,&nbsp;find&nbsp;which&nbsp;port&nbsp;the&nbsp;arduino&nbsp;is&nbsp;connected&nbsp;to&nbsp;using<br>
+list_ports,&nbsp;which&nbsp;is&nbsp;described&nbsp;here:<br>
+<a href="https://pyserial.readthedocs.io/en/latest/tools.html">https://pyserial.readthedocs.io/en/latest/tools.html</a>,<br>
+wait&nbsp;for&nbsp;arduino&nbsp;to&nbsp;confirm&nbsp;connection,&nbsp;and&nbsp;then&nbsp;calibrate</tt></dd></dl>
+
+<dl><dt><a name="FrameArduino-calibrate"><strong>calibrate</strong></a>(self) -&gt; None</dt><dd><tt>sends&nbsp;a&nbsp;string&nbsp;saying&nbsp;calibrate&nbsp;to&nbsp;the&nbsp;toolhead</tt></dd></dl>
+
+<dl><dt><a name="FrameArduino-send_to_arduino"><strong>send_to_arduino</strong></a>(self, string_to_send: str) -&gt; None</dt><dd><tt>Convert&nbsp;input&nbsp;to&nbsp;bytes,&nbsp;send&nbsp;string&nbsp;to&nbsp;arduino,&nbsp;wait&nbsp;until<br>
+the&nbsp;arduino&nbsp;has&nbsp;finished&nbsp;movement&nbsp;which&nbsp;is&nbsp;indicated&nbsp;by&nbsp;it&nbsp;responding&nbsp;"Done"<br>
+or&nbsp;"Calibrated",&nbsp;othewise&nbsp;sleep&nbsp;because&nbsp;if&nbsp;there&nbsp;are&nbsp;no&nbsp;arduinos&nbsp;connected&nbsp;it<br>
+means&nbsp;the&nbsp;software&nbsp;is&nbsp;being&nbsp;tested&nbsp;and&nbsp;nothing&nbsp;needs&nbsp;to&nbsp;be&nbsp;sent</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="arduino.html#Arduino">arduino.Arduino</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="arduino.html#Arduino">arduino.Arduino</a>:<br>
+<dl><dt><strong>arduino_connection</strong> = None</dl>
+
+<dl><dt><strong>mm_to_motor_constant</strong> = 0.1403</dl>
+
+<dl><dt><strong>port_name</strong> = 'arduino not connected'</dl>
+
+</td></tr></table></td></tr></table>
+</body></html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module toolhead_arduino</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>toolhead_arduino</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/punky/Documents/school/LettuCSE/client_side/toolhead_arduino.py">/home/punky/Documents/school/LettuCSE/client_side/toolhead_arduino.py</a></font></td></tr></table>
+    <p><tt>Module&nbsp;contains&nbsp;toolhead&nbsp;arduino&nbsp;class</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="arduino.html#Arduino">arduino.Arduino</a>(<a href="builtins.html#object">builtins.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="toolhead_arduino.html#ToolheadArduino">ToolheadArduino</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ToolheadArduino">class <strong>ToolheadArduino</strong></a>(<a href="arduino.html#Arduino">arduino.Arduino</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#ToolheadArduino">ToolheadArduino</a>(arduino_id:&nbsp;str,&nbsp;motor_data:&nbsp;list)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+A&nbsp;class&nbsp;to&nbsp;represent&nbsp;the&nbsp;frame&nbsp;arduino,&nbsp;which&nbsp;moves&nbsp;the&nbsp;toolhead&nbsp;along<br>
+the&nbsp;horiznontal&nbsp;axis.&nbsp;It&nbsp;is&nbsp;also&nbsp;the&nbsp;class&nbsp;in&nbsp;which&nbsp;absolute&nbsp;coordinates<br>
+are&nbsp;converted&nbsp;to&nbsp;motor&nbsp;coordinates<br>
+...<br>
+&nbsp;<br>
+Attributes<br>
+----------<br>
+name&nbsp;:&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;arduino&nbsp;to&nbsp;aid&nbsp;debugging<br>
+&nbsp;<br>
+Methods<br>
+-------<br>
+<a href="#ToolheadArduino-raise_toolhead">raise_toolhead</a>()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;instruct&nbsp;the&nbsp;toolhead&nbsp;arduino&nbsp;to&nbsp;raise<br>
+&nbsp;<br>
+<a href="#ToolheadArduino-lower_toolhead">lower_toolhead</a>()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;instruct&nbsp;the&nbsp;toolhead&nbsp;arduino&nbsp;to&nbsp;lower<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="toolhead_arduino.html#ToolheadArduino">ToolheadArduino</a></dd>
+<dd><a href="arduino.html#Arduino">arduino.Arduino</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="ToolheadArduino-lower_toolhead"><strong>lower_toolhead</strong></a>(self) -&gt; bool</dt><dd><tt>Sends&nbsp;a&nbsp;'1'&nbsp;signal&nbsp;to&nbsp;the&nbsp;toolhead&nbsp;arduino,<br>
+which&nbsp;instructs&nbsp;the&nbsp;toolhead&nbsp;to&nbsp;go&nbsp;down</tt></dd></dl>
+
+<dl><dt><a name="ToolheadArduino-raise_toolhead"><strong>raise_toolhead</strong></a>(self) -&gt; bool</dt><dd><tt>Sends&nbsp;a&nbsp;'0'&nbsp;signal&nbsp;to&nbsp;the&nbsp;toolhead&nbsp;arduino,<br>
+which&nbsp;instructs&nbsp;the&nbsp;toolhead&nbsp;to&nbsp;go&nbsp;up</tt></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>name</strong> = 'Toolhead Arduino'</dl>
+
+<hr>
+Methods inherited from <a href="arduino.html#Arduino">arduino.Arduino</a>:<br>
+<dl><dt><a name="ToolheadArduino-__init__"><strong>__init__</strong></a>(self, arduino_id: str, motor_data: list) -&gt; None</dt><dd><tt>Set&nbsp;constants,&nbsp;find&nbsp;which&nbsp;port&nbsp;the&nbsp;arduino&nbsp;is&nbsp;connected&nbsp;to&nbsp;using<br>
+list_ports,&nbsp;which&nbsp;is&nbsp;described&nbsp;here:<br>
+<a href="https://pyserial.readthedocs.io/en/latest/tools.html">https://pyserial.readthedocs.io/en/latest/tools.html</a>,<br>
+wait&nbsp;for&nbsp;arduino&nbsp;to&nbsp;confirm&nbsp;connection,&nbsp;and&nbsp;then&nbsp;calibrate</tt></dd></dl>
+
+<dl><dt><a name="ToolheadArduino-calibrate"><strong>calibrate</strong></a>(self) -&gt; None</dt><dd><tt>sends&nbsp;a&nbsp;string&nbsp;saying&nbsp;calibrate&nbsp;to&nbsp;the&nbsp;toolhead</tt></dd></dl>
+
+<dl><dt><a name="ToolheadArduino-send_to_arduino"><strong>send_to_arduino</strong></a>(self, string_to_send: str) -&gt; None</dt><dd><tt>Convert&nbsp;input&nbsp;to&nbsp;bytes,&nbsp;send&nbsp;string&nbsp;to&nbsp;arduino,&nbsp;wait&nbsp;until<br>
+the&nbsp;arduino&nbsp;has&nbsp;finished&nbsp;movement&nbsp;which&nbsp;is&nbsp;indicated&nbsp;by&nbsp;it&nbsp;responding&nbsp;"Done"<br>
+or&nbsp;"Calibrated",&nbsp;othewise&nbsp;sleep&nbsp;because&nbsp;if&nbsp;there&nbsp;are&nbsp;no&nbsp;arduinos&nbsp;connected&nbsp;it<br>
+means&nbsp;the&nbsp;software&nbsp;is&nbsp;being&nbsp;tested&nbsp;and&nbsp;nothing&nbsp;needs&nbsp;to&nbsp;be&nbsp;sent</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="arduino.html#Arduino">arduino.Arduino</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="arduino.html#Arduino">arduino.Arduino</a>:<br>
+<dl><dt><strong>arduino_connection</strong> = None</dl>
+
+<dl><dt><strong>mm_to_motor_constant</strong> = 0.1403</dl>
+
+<dl><dt><strong>port_name</strong> = 'arduino not connected'</dl>
+
+</td></tr></table></td></tr></table>
+</body></html>

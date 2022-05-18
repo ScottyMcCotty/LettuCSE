@@ -13,6 +13,16 @@ from window_maker import WindowMaker
 from relocate_plant import RelocatePlant
 from stop_button import StopButton
 
+def stop_transplanter_handler(start_continue_button, stop_button, transplanter):
+    """Checks to see if the transplanting should be halted and shut down"""
+    if start_continue_button.is_transplanting and not transplanter.stopped:
+        transplanter.restart()
+        stop_button.enable_button()
+    if stop_button.stopped_flag:
+        transplanter.stop()
+        start_continue_button.set_to_stopped_mode()
+    if start_continue_button.is_transplanting and not stop_button.is_enabled:
+        stop_button.enable_button()
 
 def main():
     config = configparser.ConfigParser()
@@ -52,23 +62,13 @@ def main():
     toolhead_illustrator = ToolheadIllustrator(tkinter_instance)
 
     while True:
-        #stop handler
-        if start_continue_button.is_transplanting and not transplanter.stopped:
-            transplanter.restart()
-            stop_button.enable_button()
-        if stop_button.stopped_flag:
-            transplanter.stop()
-            start_continue_button.set_to_stopped_mode()
-        if start_continue_button.is_transplanting and not stop_button.is_enabled:
-            stop_button.enable_button()
-
-        #pause handler
-        if transplanter.paused:
-            start_continue_button.set_to_pause_mode()
-
-        # location display handler
         location_label.update_location(f_arduino.location)
         toolhead_illustrator.update_location(f_arduino.location)
+
+        stop_transplanter_handler(start_continue_button, stop_button, transplanter)
+
+        if transplanter.paused:
+            start_continue_button.set_to_pause_mode()
 
         window_maker.window.update()
 

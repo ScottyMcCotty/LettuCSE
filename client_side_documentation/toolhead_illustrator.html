@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module toolhead_illustrator</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>toolhead_illustrator</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/punky/Documents/school/LettuCSE/client_side/toolhead_illustrator.py">/home/punky/Documents/school/LettuCSE/client_side/toolhead_illustrator.py</a></font></td></tr></table>
+    <p><tt>Module&nbsp;contains&nbsp;the&nbsp;Toolhead&nbsp;Illustrator&nbsp;class</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="turtle.html">turtle</a><br>
+</td><td width="25%" valign=top><a href="tkinter.html">tkinter</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="toolhead_illustrator.html#ToolheadIllustrator">ToolheadIllustrator</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ToolheadIllustrator">class <strong>ToolheadIllustrator</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#ToolheadIllustrator">ToolheadIllustrator</a>(tkinter_instance)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+This&nbsp;class&nbsp;creates&nbsp;a&nbsp;canvas&nbsp;that&nbsp;shows&nbsp;in&nbsp;which&nbsp;hole&nbsp;the&nbsp;toolhead&nbsp;is&nbsp;supposed&nbsp;to&nbsp;be&nbsp;at&nbsp;a&nbsp;given&nbsp;time<br>
+this&nbsp;is&nbsp;partually&nbsp;for&nbsp;debugging&nbsp;purposes&nbsp;and&nbsp;also&nbsp;because&nbsp;it&nbsp;might&nbsp;increase&nbsp;our&nbsp;grade<br>
+...<br>
+&nbsp;<br>
+Attributes<br>
+----------<br>
+tkinter_instance&nbsp;:&nbsp;Tkinter.Tk()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;tkinter&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;is&nbsp;being&nbsp;fed&nbsp;into&nbsp;all&nbsp;objects&nbsp;on&nbsp;the&nbsp;window<br>
+toolhead_image&nbsp;:&nbsp;turtle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;python&nbsp;'turtle',&nbsp;which&nbsp;is&nbsp;configured&nbsp;so&nbsp;that&nbsp;it&nbsp;appears&nbsp;as&nbsp;a&nbsp;circle.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;It&nbsp;will&nbsp;move&nbsp;in&nbsp;accordance&nbsp;with&nbsp;how&nbsp;the&nbsp;toolhead&nbsp;moves<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://docs.python.org/3/library/turtle.html">https://docs.python.org/3/library/turtle.html</a><br>
+canvas&nbsp;:&nbsp;turtle&nbsp;canvas<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;'canvas'&nbsp;<a href="builtins.html#object">object</a>&nbsp;which&nbsp;comes&nbsp;with&nbsp;the&nbsp;turtle&nbsp;package.&nbsp;It&nbsp;provides&nbsp;a&nbsp;white<br>
+&nbsp;&nbsp;&nbsp;&nbsp;rectangle&nbsp;on&nbsp;which&nbsp;the&nbsp;turtle&nbsp;<a href="builtins.html#object">object</a>&nbsp;is&nbsp;allowed&nbsp;to&nbsp;move<br>
+source_tray_box:&nbsp;turtle&nbsp;rectangle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;rectangle&nbsp;image&nbsp;drawn&nbsp;by&nbsp;the&nbsp;'turtle'&nbsp;during&nbsp;initialization&nbsp;(although&nbsp;it's<br>
+&nbsp;&nbsp;&nbsp;&nbsp;too&nbsp;fast&nbsp;to&nbsp;see&nbsp;it&nbsp;be&nbsp;drawn&nbsp;so&nbsp;just&nbsp;think&nbsp;of&nbsp;it&nbsp;as&nbsp;a&nbsp;black&nbsp;rectangle&nbsp;on&nbsp;the&nbsp;canvas).<br>
+&nbsp;&nbsp;&nbsp;&nbsp;It&nbsp;shows&nbsp;roughly&nbsp;where&nbsp;the&nbsp;toolhead&nbsp;is&nbsp;in&nbsp;relation&nbsp;to&nbsp;the&nbsp;source&nbsp;tray<br>
+destination_tray_box:&nbsp;turtle&nbsp;rectangle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;rectangle&nbsp;image&nbsp;drawn&nbsp;by&nbsp;the&nbsp;'turtle'&nbsp;during&nbsp;initialization&nbsp;(although<br>
+&nbsp;&nbsp;&nbsp;&nbsp;it's&nbsp;too&nbsp;fast&nbsp;to&nbsp;see&nbsp;it&nbsp;be&nbsp;drawn&nbsp;so&nbsp;just&nbsp;think&nbsp;of&nbsp;it&nbsp;as&nbsp;a&nbsp;black&nbsp;rectangle&nbsp;on&nbsp;the&nbsp;canvas).<br>
+&nbsp;&nbsp;&nbsp;&nbsp;It&nbsp;shows&nbsp;roughly&nbsp;where&nbsp;the&nbsp;toolhead&nbsp;is&nbsp;in&nbsp;relation&nbsp;to&nbsp;the&nbsp;destination&nbsp;tray<br>
+&nbsp;<br>
+Methods<br>
+----------<br>
+&nbsp;<br>
+<a href="#ToolheadIllustrator-update_location">update_location</a>()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;when&nbsp;the&nbsp;toolhead&nbsp;is&nbsp;somewhere&nbsp;else,&nbsp;move&nbsp;the&nbsp;turtle&nbsp;<a href="builtins.html#object">object</a>&nbsp;to&nbsp;that&nbsp;location&nbsp;on&nbsp;the&nbsp;canvas<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="ToolheadIllustrator-__init__"><strong>__init__</strong></a>(self, tkinter_instance) -&gt; None</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="ToolheadIllustrator-update_location"><strong>update_location</strong></a>(self, coords: tuple)</dt><dd><tt>When&nbsp;the&nbsp;toolhead&nbsp;is&nbsp;somewhere&nbsp;else,&nbsp;move&nbsp;the&nbsp;turtle&nbsp;<a href="builtins.html#object">object</a>&nbsp;to&nbsp;that&nbsp;location&nbsp;on&nbsp;the&nbsp;canvas<br>
+The&nbsp;coordinates&nbsp;are&nbsp;modified&nbsp;to&nbsp;fit&nbsp;on&nbsp;the&nbsp;canvas,&nbsp;and&nbsp;the&nbsp;x&nbsp;axis&nbsp;is&nbsp;flipped&nbsp;to&nbsp;reflect&nbsp;the&nbsp;<br>
+appearance&nbsp;of&nbsp;the&nbsp;transplanter&nbsp;when&nbsp;you&nbsp;are&nbsp;looking&nbsp;at&nbsp;it</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>destination_tray_box</strong> = None</dl>
+
+<dl><dt><strong>label_instance</strong> = None</dl>
+
+<dl><dt><strong>source_tray_box</strong> = None</dl>
+
+<dl><dt><strong>tkinter_instance</strong> = None</dl>
+
+<dl><dt><strong>turtle</strong> = None</dl>
+
+</td></tr></table></td></tr></table>
+</body></html>

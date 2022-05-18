@@ -1,4 +1,4 @@
-"""Module contains the Transplanter class"""
+"""Module contains the Start_Continue_Button class"""
 
 import threading
 from tkinter import N, Button, PhotoImage
@@ -6,19 +6,25 @@ from tkinter import N, Button, PhotoImage
 class StartContinueButton():
     """
     This class creates a tkinter button object that swaps between a start button and a
-    continue button
+    continue button depending on whether the tranplanting is in progress
     ...
 
     Attributes
     ----------
     tkinter_instance : Tkinter.Tk()
-        The tkinter object that is being fed into all objects on the window
+        The tkinter object that is being fed into all objects on the window.
+        Documentation can be found here: https://docs.python.org/3/library/tk.html
     tkinter_button : Tkinter.Button
         The button object that is placed in a location on the window and changed
     transplanter_function : function
         This runs the transplanting proccess and must be called in another thread
+    continue_transplant: function
+        This continues the tranplanting from where it is left off. It comes from 
+        the Transplant object
     is_transplanting : bool
-        Records whether the transplanting is in progress or not
+        Records whether the transplanting is in progress or not, this is used
+        when the process is stopped so that the stop function is not triggered
+        if the transplanting has already been stopped
 
     Methods
     ----------
@@ -74,7 +80,7 @@ class StartContinueButton():
                                    state="normal",
                                    command=self.__continue_transplanting)
         self.tkinter_button.image = paused_photo
-        self.tkinter_button.place(relx = 0.5, rely = 0.3, anchor = N)
+        self.tkinter_button.place(relx = 0.5, rely = 0.790, anchor = N)
 
     def set_to_stopped_mode(self):
         """Reset the button so it can start again"""

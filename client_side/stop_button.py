@@ -1,6 +1,6 @@
-"""Module contains the Transplanter class"""
+"""Module contains the Stop_Button class"""
 
-from tkinter import DISABLED, N, NORMAL, Button, PhotoImage
+from tkinter import N, Button, PhotoImage
 
 class StopButton():
     """
@@ -42,7 +42,7 @@ class StopButton():
                                      image =stop_button_photo,
                                      command=self.stop,
                                      bd = 0,
-                                     state=DISABLED)
+                                     state='disabled')
         self.tkinter_button.image=stop_button_photo
         self.tkinter_button.place(relx = 0.5, rely = 0.875, anchor = N)
 

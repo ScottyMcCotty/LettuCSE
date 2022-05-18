@@ -4,8 +4,8 @@ from tkinter import N, Label
 
 class ToolheadLocationLabel():
     """
-    This class creates a tkinter button object that swaps between a start button and a
-    continue button
+    This class creates a tkinter label object which diplays the motor coordinates
+    (coordinates in terms of motor steps) and is updated in real time
     ...
 
     Attributes
@@ -14,8 +14,6 @@ class ToolheadLocationLabel():
         The tkinter object that is being fed into all objects on the window
     label_instance : Tkinter.Label
         The button object that is placed in a location on the window and changed
-    toolhead_location : tuple
-        The location coords to be displayed
 
     Methods
     ----------

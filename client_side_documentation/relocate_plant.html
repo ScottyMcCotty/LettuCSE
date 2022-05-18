@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module relocate_plant</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>relocate_plant</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/punky/Documents/school/LettuCSE/client_side/relocate_plant.py">/home/punky/Documents/school/LettuCSE/client_side/relocate_plant.py</a></font></td></tr></table>
+    <p><tt>Module&nbsp;contains&nbsp;the&nbsp;<a href="#RelocatePlant">RelocatePlant</a>&nbsp;class</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="relocate_plant.html#RelocatePlant">RelocatePlant</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="RelocatePlant">class <strong>RelocatePlant</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#RelocatePlant">RelocatePlant</a>(go_behind_cup,&nbsp;go_to_cup,&nbsp;raise_toolhead,&nbsp;lower_toolhead,&nbsp;go_to_origin)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Creates&nbsp;a&nbsp;function&nbsp;that&nbsp;moves&nbsp;a&nbsp;plant&nbsp;from&nbsp;the&nbsp;source&nbsp;to&nbsp;the&nbsp;destination<br>
+...<br>
+&nbsp;<br>
+Attributes<br>
+----------<br>
+go_behind_cup&nbsp;:&nbsp;function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;received&nbsp;function&nbsp;which&nbsp;moves&nbsp;the&nbsp;toolhead&nbsp;a&nbsp;distance&nbsp;behind&nbsp;the&nbsp;cup&nbsp;hole<br>
+&nbsp;&nbsp;&nbsp;&nbsp;so&nbsp;the&nbsp;cup&nbsp;can&nbsp;be&nbsp;slid&nbsp;on&nbsp;or&nbsp;off.<br>
+go_to_cup&nbsp;:&nbsp;function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;go&nbsp;directly&nbsp;to&nbsp;the&nbsp;cup&nbsp;location&nbsp;in&nbsp;the&nbsp;xy&nbsp;plane<br>
+raise_toolhead&nbsp;:&nbsp;function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;signals&nbsp;the&nbsp;toolhead&nbsp;arduino&nbsp;to&nbsp;go&nbsp;up<br>
+lower_toolhead&nbsp;:&nbsp;function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;signals&nbsp;the&nbsp;toolhead&nbsp;arduino&nbsp;to&nbsp;go&nbsp;down<br>
+&nbsp;<br>
+Methods<br>
+----------<br>
+<a href="#RelocatePlant-transport_plant">transport_plant</a>()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;calls&nbsp;the&nbsp;attribute&nbsp;functions&nbsp;in&nbsp;the&nbsp;proper&nbsp;order<br>
+&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;move&nbsp;from&nbsp;one&nbsp;location&nbsp;to&nbsp;another.<br>
+reset_toolhead()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;raise&nbsp;the&nbsp;toolhead&nbsp;and&nbsp;send&nbsp;it&nbsp;to&nbsp;the&nbsp;origin<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="RelocatePlant-__init__"><strong>__init__</strong></a>(self, go_behind_cup, go_to_cup, raise_toolhead, lower_toolhead, go_to_origin) -&gt; None</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="RelocatePlant-reset_transplanter"><strong>reset_transplanter</strong></a>(self)</dt><dd><tt>Raise&nbsp;the&nbsp;toolhead&nbsp;and&nbsp;go&nbsp;to&nbsp;the&nbsp;origin</tt></dd></dl>
+
+<dl><dt><a name="RelocatePlant-transport_plant"><strong>transport_plant</strong></a>(self, source: tuple, destination: tuple)</dt><dd><tt>Get&nbsp;the&nbsp;toolhead&nbsp;to&nbsp;go&nbsp;from&nbsp;a&nbsp;raised&nbsp;position,&nbsp;move<br>
+a&nbsp;plant&nbsp;from&nbsp;the&nbsp;source&nbsp;to&nbsp;the&nbsp;destination,&nbsp;and&nbsp;again<br>
+enter&nbsp;a&nbsp;raised&nbsp;position.&nbsp;The&nbsp;sleep&nbsp;commands&nbsp;serve&nbsp;the&nbsp;dual<br>
+purpose&nbsp;of&nbsp;ensuring&nbsp;the&nbsp;toolhead&nbsp;does&nbsp;not&nbsp;lower&nbsp;while<br>
+it&nbsp;is&nbsp;moving,&nbsp;which&nbsp;would&nbsp;crush&nbsp;the&nbsp;plants,&nbsp;and&nbsp;making<br>
+the&nbsp;video&nbsp;look&nbsp;a&nbsp;bit&nbsp;cleaner.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>go_behind_cup</strong> = None</dl>
+
+<dl><dt><strong>go_to_cup</strong> = None</dl>
+
+<dl><dt><strong>go_to_origin</strong> = None</dl>
+
+<dl><dt><strong>lower_toolhead</strong> = None</dl>
+
+<dl><dt><strong>raise_toolhead</strong> = None</dl>
+
+</td></tr></table></td></tr></table>
+</body></html>

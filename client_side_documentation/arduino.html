@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module arduino</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>arduino</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/punky/Documents/school/LettuCSE/client_side/arduino.py">/home/punky/Documents/school/LettuCSE/client_side/arduino.py</a></font></td></tr></table>
+    <p><tt>Module&nbsp;contains&nbsp;the&nbsp;arduino&nbsp;class</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="serial.tools.list_ports.html">serial.tools.list_ports</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="arduino.html#Arduino">Arduino</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Arduino">class <strong>Arduino</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Arduino-name">Arduino</a>(arduino_id:&nbsp;str,&nbsp;motor_data:&nbsp;list)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+A&nbsp;class&nbsp;to&nbsp;represent&nbsp;the&nbsp;arduinos,&nbsp;and&nbsp;handle&nbsp;the&nbsp;client&nbsp;computer's&nbsp;connetions&nbsp;to&nbsp;them&nbsp;via&nbsp;port.<br>
+It&nbsp;behaves&nbsp;as&nbsp;an&nbsp;'abstract&nbsp;class'&nbsp;in&nbsp;the&nbsp;sense&nbsp;that&nbsp;it&nbsp;is&nbsp;never&nbsp;initialized,&nbsp;although&nbsp;since&nbsp;it<br>
+is&nbsp;a&nbsp;python&nbsp;class&nbsp;it&nbsp;is&nbsp;not&nbsp;truly&nbsp;abstract<br>
+...<br>
+&nbsp;<br>
+Attributes<br>
+----------<br>
+arduino_connection&nbsp;:&nbsp;serial&nbsp;connection<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;serial&nbsp;connection&nbsp;between&nbsp;the&nbsp;client's&nbsp;port&nbsp;and&nbsp;the&nbsp;given&nbsp;arduino.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Library&nbsp;documentation&nbsp;here:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://pyserial.readthedocs.io/en/latest/shortintro.html#opening-serial-ports">https://pyserial.readthedocs.io/en/latest/shortintro.html#opening-serial-ports</a><br>
+port_name&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;client&nbsp;computer&nbsp;will&nbsp;likely&nbsp;have&nbsp;many&nbsp;ports,&nbsp;however&nbsp;the&nbsp;names<br>
+&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;vary&nbsp;depending&nbsp;on&nbsp;the&nbsp;type&nbsp;of&nbsp;computer&nbsp;that&nbsp;the&nbsp;user&nbsp;has.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;After&nbsp;the&nbsp;ports&nbsp;have&nbsp;been&nbsp;querried&nbsp;for&nbsp;connections,&nbsp;the&nbsp;name&nbsp;of&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;port&nbsp;that&nbsp;has&nbsp;the&nbsp;connection&nbsp;will&nbsp;be&nbsp;stored&nbsp;here<br>
+&nbsp;<br>
+Methods<br>
+-------<br>
+<a href="#Arduino-send_to_arduino">send_to_arduino</a>()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Called&nbsp;by&nbsp;the&nbsp;child&nbsp;classes&nbsp;to&nbsp;communicate&nbsp;with&nbsp;the&nbsp;the&nbsp;arduino.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;It&nbsp;converts&nbsp;the&nbsp;input&nbsp;string&nbsp;into&nbsp;bytes,&nbsp;encodes&nbsp;it&nbsp;in&nbsp;utf-8,&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sends&nbsp;it&nbsp;to&nbsp;the&nbsp;arduino&nbsp;connection.&nbsp;If&nbsp;there&nbsp;is&nbsp;no&nbsp;connection&nbsp;it<br>
+&nbsp;&nbsp;&nbsp;&nbsp;passes<br>
+<a href="#Arduino-calibrate">calibrate</a>()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Sends&nbsp;the&nbsp;string&nbsp;'calibrate'&nbsp;to&nbsp;the&nbsp;arduino,&nbsp;which&nbsp;is&nbsp;interprited&nbsp;as<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;command&nbsp;to&nbsp;go&nbsp;to&nbsp;the&nbsp;origin&nbsp;and&nbsp;set&nbsp;everything&nbsp;to&nbsp;zero.&nbsp;It&nbsp;is&nbsp;its<br>
+&nbsp;&nbsp;&nbsp;&nbsp;own&nbsp;function&nbsp;because&nbsp;it&nbsp;is&nbsp;likely&nbsp;that&nbsp;it&nbsp;will&nbsp;become&nbsp;more&nbsp;complex<br>
+&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;future&nbsp;itterations<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Arduino-__init__"><strong>__init__</strong></a>(self, arduino_id: str, motor_data: list) -&gt; None</dt><dd><tt>Set&nbsp;constants,&nbsp;find&nbsp;which&nbsp;port&nbsp;the&nbsp;arduino&nbsp;is&nbsp;connected&nbsp;to&nbsp;using<br>
+list_ports,&nbsp;which&nbsp;is&nbsp;described&nbsp;here:<br>
+<a href="https://pyserial.readthedocs.io/en/latest/tools.html">https://pyserial.readthedocs.io/en/latest/tools.html</a>,<br>
+wait&nbsp;for&nbsp;arduino&nbsp;to&nbsp;confirm&nbsp;connection,&nbsp;and&nbsp;then&nbsp;calibrate</tt></dd></dl>
+
+<dl><dt><a name="Arduino-calibrate"><strong>calibrate</strong></a>(self) -&gt; None</dt><dd><tt>sends&nbsp;a&nbsp;string&nbsp;saying&nbsp;calibrate&nbsp;to&nbsp;the&nbsp;toolhead</tt></dd></dl>
+
+<dl><dt><a name="Arduino-send_to_arduino"><strong>send_to_arduino</strong></a>(self, string_to_send: str) -&gt; None</dt><dd><tt>Convert&nbsp;input&nbsp;to&nbsp;bytes,&nbsp;send&nbsp;string&nbsp;to&nbsp;arduino,&nbsp;wait&nbsp;until<br>
+the&nbsp;arduino&nbsp;has&nbsp;finished&nbsp;movement&nbsp;which&nbsp;is&nbsp;indicated&nbsp;by&nbsp;it&nbsp;responding&nbsp;"Done"<br>
+or&nbsp;"Calibrated",&nbsp;othewise&nbsp;sleep&nbsp;because&nbsp;if&nbsp;there&nbsp;are&nbsp;no&nbsp;arduinos&nbsp;connected&nbsp;it<br>
+means&nbsp;the&nbsp;software&nbsp;is&nbsp;being&nbsp;tested&nbsp;and&nbsp;nothing&nbsp;needs&nbsp;to&nbsp;be&nbsp;sent</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>arduino_connection</strong> = None</dl>
+
+<dl><dt><strong>mm_to_motor_constant</strong> = 0.1403</dl>
+
+<dl><dt><strong>name</strong> = 'Arduino'</dl>
+
+<dl><dt><strong>port_name</strong> = 'arduino not connected'</dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-sleep"><strong>sleep</strong></a>(...)</dt><dd><tt><a href="#-sleep">sleep</a>(seconds)<br>
+&nbsp;<br>
+Delay&nbsp;execution&nbsp;for&nbsp;a&nbsp;given&nbsp;number&nbsp;of&nbsp;seconds.&nbsp;&nbsp;The&nbsp;argument&nbsp;may&nbsp;be<br>
+a&nbsp;floating&nbsp;point&nbsp;number&nbsp;for&nbsp;subsecond&nbsp;precision.</tt></dd></dl>
+</td></tr></table>
+</body></html>
