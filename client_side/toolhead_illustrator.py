@@ -5,8 +5,8 @@ import turtle as t
 
 class ToolheadIllustrator():
     """
-    This class creates a tkinter button object that swaps between a start button and a
-    continue button
+    This class creates a canvas that shows in which hole the toolhead is supposed to be at a given time
+    this is partually for debugging purposes and also because it might increase our grade
     ...
 
     Attributes
@@ -42,14 +42,16 @@ class ToolheadIllustrator():
     destination_tray_box = None
 
     def __init__(self, tkinter_instance) -> None:
-        canvas = tk.Canvas(master = tkinter_instance, width = 340, height = 230)
-        canvas.place(relx = 0.5, rely = 0.55, anchor = tk.N)
+
+        canvas = tk.Canvas(master = tkinter_instance, width = 700, height = 425, bg = '#afeeee')
+        canvas.config(bg = '#afeeee')
+        canvas.place(relx = 0.5, rely = 0.22, anchor = tk.N)
+
         self.turtle = t.RawTurtle(canvas)
-        canvas.create_rectangle(160, 100, 5, -100, fill='white')
-        canvas.create_rectangle(-5, 100, -160, -100, fill='white')
+        canvas.create_rectangle(300, 200, 5, -200, fill='#C2CAD0')
+        canvas.create_rectangle(-5, 200, -300, -200, fill='#C2CAD0')
         self.turtle.shape("circle")
-        self.turtle.pencolor("#000000")
-        self.turtle.shapesize(0.5, 0.5, 1)
+        self.turtle.shapesize(1, 1, 1)
         self.turtle.penup()
 
 
@@ -60,4 +62,4 @@ class ToolheadIllustrator():
         The coordinates are modified to fit on the canvas, and the x axis is flipped to reflect the 
         appearance of the transplanter when you are looking at it
         """
-        self.turtle.goto(130-coords[0]/28, coords[1]/40-90)
+        self.turtle.goto(290-coords[0]/15, coords[1]/20-180)

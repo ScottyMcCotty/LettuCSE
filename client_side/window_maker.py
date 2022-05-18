@@ -33,7 +33,7 @@ class WindowMaker():
         title_photo = PhotoImage(file='images/title.png')
         title_label = Label(self.window,image = title_photo, borderwidth=0,)
         self.window.image = title_photo
-        title_label.place(relx = 0.5, rely = 0.1, anchor = N)
+        title_label.place(relx = 0.5, rely = 0.02, anchor = N)
 
     def set_window_to_paused(self) -> None:
         """Makes the window red"""

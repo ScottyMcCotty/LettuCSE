@@ -56,7 +56,7 @@ class StartContinueButton():
                                      state='normal',
                                      image = start_button_photo)
         self.tkinter_button.image = start_button_photo
-        self.tkinter_button.place(relx = 0.5, rely = 0.3, anchor = N)
+        self.tkinter_button.place(relx = 0.5, rely = 0.790, anchor = N)
 
 
 

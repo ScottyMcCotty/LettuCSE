@@ -33,7 +33,7 @@ class ToolheadLocationLabel():
                                     bg = "#AFD275",
                                     bd = 0,
                                     fg = "black")
-        self.label_instance.place(relx = 0.5, rely = 0.5, anchor = N)
+        self.label_instance.place(relx = 0.5, rely = 0.765, anchor = N)
 
     def update_location(self, coords:tuple):
         """change the text on the label to reflect new location"""

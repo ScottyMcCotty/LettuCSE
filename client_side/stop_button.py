@@ -44,7 +44,7 @@ class StopButton():
                                      bd = 0,
                                      state=DISABLED)
         self.tkinter_button.image=stop_button_photo
-        self.tkinter_button.place(relx = 0.5, rely = 0.4, anchor = N)
+        self.tkinter_button.place(relx = 0.5, rely = 0.875, anchor = N)
 
     def stop(self):
         """reset everything"""
