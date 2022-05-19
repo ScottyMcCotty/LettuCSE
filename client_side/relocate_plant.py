@@ -67,5 +67,5 @@ class RelocatePlant():
         """Raise the toolhead and go to the origin"""
         self.reset_source_tray()
         self.reset_dest_tray()
-        self.raise_toolhead()
         self.go_to_origin()
+        self.raise_toolhead()

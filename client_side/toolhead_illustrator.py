@@ -48,7 +48,7 @@ class ToolheadIllustrator():
             canvas object (ie: it can change color). Then, make two rectangles
             to represent the trays and give them both grids"""
         canvas = tk.Canvas(master = tkinter_instance, width = 840, height = 500)
-        canvas.place(relx = 0.5, rely = 0.22, anchor = tk.N)
+        canvas.place(relx = 0.5, rely = 0.18, anchor = tk.N)
 
         screen = t.TurtleScreen(canvas)
         screen.bgcolor("#C2CAD0")

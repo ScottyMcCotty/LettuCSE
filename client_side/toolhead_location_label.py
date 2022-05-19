@@ -1,6 +1,7 @@
 """Module contains the toolhead location label class"""
 
 from tkinter import N, Label
+from tkinter import font
 
 class ToolheadLocationLabel():
     """
@@ -26,11 +27,14 @@ class ToolheadLocationLabel():
 
     def __init__(self, tkinter_instance) -> None:
         self.tkinter_instance = tkinter_instance
+        my_font = font.Font(family='Helvetica', size = 10, weight = 'bold', slant = 'roman', underline = 0, overstrike = 0)
+        font.families()
         self.label_instance = Label(tkinter_instance,
                                     text = "(0,0)",
                                     bg = "#AFD275",
                                     bd = 0,
-                                    fg = "black")
+                                    fg = "black",
+                                    font = my_font)
         self.label_instance.place(relx = 0.5, rely = 0.765, anchor = N)
 
     def update_location(self, coords:tuple):

@@ -61,5 +61,6 @@ class FrameArduino(Arduino):
         """Go directly to the cordinate location"""
         x_coord = round(coords[0]/super().mm_to_motor_constant)
         y_coord = round(coords[1]/super().mm_to_motor_constant)
+        self.location = (x_coord,y_coord)
         super().send_to_arduino(str(x_coord) + " " +str(y_coord))
         return True

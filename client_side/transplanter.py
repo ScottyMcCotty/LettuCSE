@@ -72,6 +72,8 @@ class Transplanter():
                 if self.source_is_full() or self.dest_is_full():
                     self.paused = True
                 self.transport(self.next_source_hole(), self.next_dest_hole())
+        self.reset()
+
 
     def continue_transplant(self):
         """permanantly end the whole process"""
@@ -79,7 +81,6 @@ class Transplanter():
 
     def stop(self):
         """Causes the transplant function to stop running, resets everything"""
-        self.reset()
         self.stopped = True
         self.paused = False
 
