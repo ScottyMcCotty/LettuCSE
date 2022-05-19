@@ -81,6 +81,7 @@ class Transplanter():
         """Causes the transplant function to stop running, resets everything"""
         self.reset()
         self.stopped = True
+        self.paused = False
 
     def restart(self):
         """If you want to run the transplanter after stopping it

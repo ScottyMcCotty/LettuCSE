@@ -43,8 +43,8 @@ class FrameArduino(Arduino):
 
     def go_to_origin(self) -> None:
         """Sends the toolhead to the center of the first cup"""
-        self.location = (0,0)
         super().send_to_arduino('calibrate')
+        self.location = (0,0)
 
 
     def go_behind_cup(self, coords:tuple) -> bool:

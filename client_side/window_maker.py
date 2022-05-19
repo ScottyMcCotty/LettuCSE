@@ -20,7 +20,7 @@ class WindowMaker():
     def __init__(self, tkinter_instance:Tk) -> None:
         self.window = tkinter_instance
         self.window.title("LettuCSE Transplanter")
-        self.window.geometry("1000x800")
+        self.window.geometry("1000x900")
         self.window.configure(bg='#AFD275')
 
         title_photo = PhotoImage(file='images/title.png')
