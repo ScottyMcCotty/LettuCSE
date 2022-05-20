@@ -35,7 +35,7 @@ double coefficient = 0.0;
 //                      700, 700, 700,
 //                      600, 600, 600};
 
-int delays[STEPS_TO_MAX_SPEED] = {1000};
+int delays[STEPS_TO_MAX_SPEED] = {1200};
 
 
 void setup() {
@@ -128,15 +128,6 @@ void populate_delay_array() {
 
 
 void smooth_velocity(int motor_step_pin, int motor_direction_pin, int num_steps, int dir) {
-
-//  Serial.print("Moving single axis "); Serial.println(motor_step_pin);
-//  Serial.print("  steps = "); Serial.println(num_steps);
-//  Serial.print("  direction = "); Serial.println(dir);
-//  Serial.print("  dir pin = "); Serial.println(motor_direction_pin);
-
-  // double the number of steps because we're incrementing every half-step!!
-  // actually, don't do this because we're only going to count low pulses as steps
-//  num_steps = num_steps * 2;
 
   // set direction
   digitalWrite(motor_direction_pin, dir);

@@ -6,7 +6,7 @@ void setup() {
   // put your setup code here, to run once:
   pinMode(Z_STOP_NEG, INPUT_PULLUP);
   pinMode(Z_STOP_POS, INPUT_PULLUP);
-  Serial.begin(115200);
+  Serial.begin(9600);
   delay(300);
 }
 
@@ -15,5 +15,5 @@ void loop() {
 
   Serial.print("NEG: "); Serial.print(digitalRead(Z_STOP_NEG));
   Serial.print(" | POS: "); Serial.println(digitalRead(Z_STOP_POS));
-  delay(200);
+//  delay(200);
 }
