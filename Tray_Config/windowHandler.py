@@ -293,7 +293,7 @@ class windowHandler():
                                                      command = lambda: self.upload_file_screen(False),
                                                      state = NORMAL)
         self.start_uploading_warning = Label(text = "NOTE: Completing this process will create a new file:\n"
-                                                  "destination_tray.json or source_tray.json.\n"
+                                                  "dest_tray.json or source_tray.json.\n"
                                                   "If this file already exists within the directory, it will"
                                                   " be overwritten.\nProceed?",
                                              font = ("Arial", 12),
