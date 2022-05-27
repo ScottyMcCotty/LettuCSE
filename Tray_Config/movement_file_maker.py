@@ -23,7 +23,7 @@ class movement_file_maker():
         if fN == "Source":
             self.output_file_name = "source_tray.json"
         elif fN == "Destination":
-            self.output_file_name = "destination_tray.json"
+            self.output_file_name = "dest_tray.json"
         else:
             return
         self.hole_length = hL
@@ -59,7 +59,7 @@ class movement_file_maker():
 
         '''# Destination tray needs the short axis distance to edge, but source tray does not if (0,0) is directly above the 1st hole.
         # NOTE: This should no longer be needed if the measurement file contains both X and Y offsets for destination tray
-        if self.output_file_name == "destination_tray.json":
+        if self.output_file_name == "dest_tray.json":
             return total_gap + total_hole_width + self.short_axis_distance_to_edge
         else:'''
         return total_gap + total_hole_width
@@ -76,7 +76,7 @@ class movement_file_maker():
         total_hole_distance = self.hole_length*row_number
         '''# Destination tray needs the long axis distance to edge, but source tray does not if (0,0) is directly above the 1st hole.
         # NOTE: This should no longer be needed if the measurement file contains both X and Y offsets for destination tray
-        if self.output_file_name == "destination_tray.json":
+        if self.output_file_name == "dest_tray.json":
             return total_gap + total_hole_distance + self.long_axis_distance_to_edge
         else:'''
         return total_gap + total_hole_distance
@@ -122,7 +122,7 @@ class movement_file_maker():
         holes = str(self.get_number_of_holes())
         file_info["holes"] = holes
         distance = str(self.get_width())
-        if self.output_file_name == "destination_tray.json":
+        if self.output_file_name == "dest_tray.json":
             file_info["width_of_source_tray"] = str(distance)
             # NOTE: Getting the height offset distance requires the source tray measurements in the directory.
             #       This means you can't individually make source & destination files anymore; you need source tray measurements
