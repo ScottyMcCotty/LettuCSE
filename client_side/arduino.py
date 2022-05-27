@@ -69,11 +69,13 @@ class Arduino():
         or "Calibrated", othewise sleep because if there are no arduinos connected it
         means the software is being tested and nothing needs to be sent """
         if self.arduino_connection:
+            print(f"sending: '{string_to_send}'")
             self.arduino_connection.write(bytes(string_to_send + "\n", 'utf8'))
             response = self.arduino_connection.readline().decode("utf-8")
             while "Done" not in response and "Calibrated" not in response:
                 sleep(0.1)
                 response = self.arduino_connection.readline().decode("utf-8")
+            sleep(1) #awful Martin fix that shouldn't work but we don't have time to fix multithreadingd
         else:
             sleep(0.2)
 

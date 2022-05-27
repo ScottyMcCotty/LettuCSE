@@ -45,7 +45,8 @@ def main():
                                     t_arduino.lower_toolhead,
                                     f_arduino.go_to_origin,
                                     source_tray.reset,
-                                    dest_tray.reset)
+                                    dest_tray.reset,
+                                   606.8899999999999) # terrible hack - this is the width of the source tray. TODO: Fix bc this is awful
     reset = plant_relocator.reset_transplanter
 
     transplanter = Transplanter(source_tray.is_tray_full, dest_tray.is_tray_full,

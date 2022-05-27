@@ -35,9 +35,10 @@ class RelocatePlant():
     reset_source_tray = None
     reset_dest_tray = None
     go_to_origin = None
+    between_trays_x_value = None
 
 
-    def __init__(self, go_behind_cup, go_to_cup, raise_toolhead, lower_toolhead, go_to_origin, reset_source_tray, reset_dest_tray) -> None:
+    def __init__(self, go_behind_cup, go_to_cup, raise_toolhead, lower_toolhead, go_to_origin, reset_source_tray, reset_dest_tray, between_trays_x_value) -> None:
         self.lower_toolhead = lower_toolhead
         self.go_behind_cup = go_behind_cup
         self.go_to_cup = go_to_cup
@@ -45,23 +46,27 @@ class RelocatePlant():
         self.reset_source_tray = reset_source_tray
         self.reset_dest_tray = reset_dest_tray
         self.go_to_origin = go_to_origin
-
+        self.between_trays_x_value = between_trays_x_value
 
     def transport_plant(self, source:tuple, destination:tuple):
         """Get the toolhead to go from a raised position, move
             a plant from the source to the destination, and again
-            enter a raised position. The sleep commands serve the dual
-            purpose of ensuring the toolhead does not lower while
-            it is moving, which would crush the plants, and making
-            the video look a bit cleaner."""
+            enter a raised position."""
         self.go_behind_cup(source)
         self.lower_toolhead()
         self.go_to_cup(source)
         self.raise_toolhead()
+
+        #goes to edge of tray so as to not hit plants
+        self.go_to_cup((self.between_trays_x_value, source[1]))
+
+
         self.go_to_cup(destination)
         self.lower_toolhead()
         self.go_behind_cup(destination)
         self.raise_toolhead()
+        #goes to edge of tray so as to not hit plants
+        self.go_to_cup((self.between_trays_x_value, source[1]))
 
     def reset_transplanter(self):
         """Raise the toolhead and go to the origin"""
