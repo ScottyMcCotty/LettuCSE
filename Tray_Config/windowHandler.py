@@ -412,6 +412,9 @@ class windowHandler():
         self.tray_measurements.rows = -1
         self.tray_measurements.columns = -1
         self.tray_measurements.rows_between_gap = -1
+        self.tray_measurements.row_extra_gap = -1
+        self.tray_measurements.cols_between_gap = -1
+        self.tray_measurements.col_extra_gap = -1
         self.tray_measurements.hide_label()
 
         self.uploaded_measurements.hide_label()
